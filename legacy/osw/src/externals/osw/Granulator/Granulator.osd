@@ -1,0 +1,301 @@
+<?xml version="1.0" ?>
+<osw-external name="Granulator" package="osw">
+<description>Granular Synthesizer</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inlet name="timeIn" type="Time" description="Time source controls traversal through sound source" />
+<inlet name="rate" type="Float" default="1.0" description="Rate of progress through source" persistent="1" />
+<inlet name="gotoTime" type="Float" default="0" description="Jump to time in source (seconds)" />
+<inlet name="zero" type="Unit" description="Jump to time zero (same as goto 0)" />
+<inlet name="grain_size" type="Float" default="0" description="Grain size, in seconds" persistent="1" />
+<inlet name="hop_size" type="Float" default="0" description="distance between successive grains, in seconds" persistent="1" />
+<inlet name="table" type="String" description="Table containing sound source" persistent="1" />
+<outlet name="samplesOut" type="Samples" description="output samples" />
+<state name="num_grains" type="Integer" default="10" description="number of simultaneous grains" persistent="1" />
+<state name="window" type="String" default="!quottriangle!quot" description="Window function (triangle, rectangle, hamming, hanning, bh3)" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">if (grain_size == 0.0f) &#123;
+  grain_size = (Integer) NumberOfSamples * 2 / (Float) SampleRate;
+&#125;
+if (hop_size == 0.0f) &#123;
+  hop_size = (Integer) NumberOfSamples / (Float) SampleRate;
+&#125;
+
+next_grain = 0;
+
+grain_index.reserve(num_grains);
+grains.reserve(num_grains);
+
+for (int i = 0; i &lt; num_grains; ++i) &#123;
+	grain_index.push_back(0);
+&#125;
+UpdateGrainSize();
+time_before_next_grain = 0;
+time_in_source = 0;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">
+State&lt;Table&lt;Float > > *xtable;
+Integer   xgrain_size_samples, next_grain;
+std::vector&lt;Samples> grains;
+std::vector&lt;Integer> grain_index;
+Float time_before_next_grain, time_in_source, xlocalTime;
+Float *window_samples;
+
+void UpdateGrainSize () &#123;
+  xgrain_size_samples = grain_size * SampleRate;
+  cout &lt;&lt; "Samples in grain: " &lt;&lt; xgrain_size_samples &lt;&lt; endl;
+  for (int i = 0; i &lt; num_grains; ++i) &#123;
+	if (i &lt; grains.size()) &#123;
+		grains&#91;i&#93; = Samples(xgrain_size_samples);
+	&#125; else &#123;
+		grains.push_back(Samples(xgrain_size_samples));
+	&#125;
+  &#125;
+  ChooseWindow();
+&#125;
+
+void SampleRateHasChanged () &#123;
+   UpdateGrainSize();
+&#125;
+
+
+
+
+
+void ChooseWindow () &#123;
+
+   if (window_samples) &#123;
+	delete &#91;&#93; window_samples;
+   &#125;
+   window_samples = new float&#91;xgrain_size_samples&#93;;
+ 
+   if ((string)window == "rectangle") &#123;
+	RvecRecwind(xgrain_size_samples,window_samples,1);
+   &#125; else if ((string)window == "triangle") &#123;
+	RvecTriangularwind(xgrain_size_samples,window_samples,1);
+   &#125; else if ((string)window == "hamming") &#123;
+	RvecHammingwind(xgrain_size_samples,window_samples,1);
+   &#125; else if ((string)window == "hanning") &#123;
+	hanning(xgrain_size_samples,window_samples,1);
+   &#125; else if ((string)window == "bh3") &#123;
+	RvecBhwind3(xgrain_size_samples,window_samples,1);
+   &#125;  else &#123;
+      window = string("triangle");
+       RvecTriangularwind(xgrain_size_samples,window_samples,1);
+   &#125;
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="grain_size_changed" activators="grain_size" order="0" >
+
+
+if (grain_size == 0.0f) &#123;
+  grain_size = NumberOfSamples * 2 / SampleRate;
+&#125;
+UpdateGrainSize();
+</activation>
+<activation name="zero_activation" activators="zero" order="0" >
+
+
+time_in_source = xlocalTime = time_before_next_grain = 0;
+</activation>
+<activation name="change_table" activators="table" order="0" >
+
+
+
+if (string(table) != "") &#123;
+   xtable = dynamic_cast&lt;State&lt;Table&lt;float> > *>
+	  (Nameable::Find(table,GetContainer()));
+   if (xtable != NULL) &#123;
+      Alert("found table");
+   &#125;
+&#125; else &#123;
+   xtable = NULL;
+&#125;
+</activation>
+<activation name="goto_activation" activators="gotoTime" order="0" >
+
+
+xlocalTime = time_in_source = time_before_next_grain = gotoTime;
+</activation>
+<activation name="hop_size_changed" activators="hop_size" order="0" >
+
+
+if (hop_size == 0.0f) &#123;
+   hop_size = NumberOfSamples / SampleRate;
+&#125;
+</activation>
+<activation name="activation1" activators="timeIn" order="0" >
+
+
+
+Samples samples(NumberOfSamples,0.0f);
+
+int active_grains = 0;
+for (int i = 0; i &lt; num_grains; ++i) &#123;
+  if (grain_index&#91;i&#93; &lt; xgrain_size_samples) &#123;
+	++active_grains;
+  &#125;
+  for (int j = 0; 
+       j &lt; NumberOfSamples &amp;&amp; grain_index&#91;i&#93;+j &lt; xgrain_size_samples; 
+       ++j) &#123;
+     samples&#91;j&#93; += grains&#91;i&#93;&#91;grain_index&#91;i&#93;+j&#93;;
+  &#125;
+  grain_index&#91;i&#93; += NumberOfSamples;
+&#125;
+
+
+xlocalTime += timeIn->time - timeIn->prevtime;
+
+if (time_in_source &lt; (*xtable)->finish()) &#123;
+ while (time_before_next_grain &lt; xlocalTime) &#123;
+   float t = time_in_source;
+   float dt = rate * (timeIn->time - timeIn->prevtime) / float(NumberOfSamples);
+   for (int k = 0; k &lt; xgrain_size_samples; ++k) &#123;
+	grains&#91;next_grain&#93;&#91;k&#93; = (**xtable)(t,true);
+        t += dt;
+   &#125;
+   int startingPoint = (time_before_next_grain - timeIn->prevtime)
+	 * SampleRate;
+   int i,j;
+   for (i = 0,j = startingPoint; j &lt; NumberOfSamples; ++j) &#123;
+	samples&#91;j&#93; += grains&#91;next_grain&#93;&#91;i&#93;;
+   &#125;
+   grain_index&#91;next_grain&#93; = i % NumberOfSamples;
+   time_before_next_grain += hop_size;
+   time_in_source = t;
+   ++next_grain;
+   next_grain %= num_grains;
+ &#125;
+&#125;
+
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+&#123; vectorop.c  &#125;
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes">vectorop.h</xblock>
+<xblock name="Syntax">Granulator &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links">SampleBuffer SamplePlayer</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Granulator" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Granulator " name="granulator0" x="162.0" y="341.0" width="108" height="22" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="granulator0/rate" value="1" />
+
+&lt;STATE name="granulator0/grain_size" value="0.1" />
+
+&lt;STATE name="granulator0/hop_size" value="0.1" />
+
+&lt;STATE name="granulator0/table" value="quack/0" />
+
+&lt;STATE name="granulator0/num_grains" value="10" />
+
+&lt;STATE name="granulator0/window" value="triangle" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SampleBuffer -name glass" name="glass" x="462.0" y="513.0" width="154" height="25" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA src="glass_again.WAV" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="455.0" y="257.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="glass/0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get0" x="452.0" y="197.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="77.0" y="495.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="325.0" y="204.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="310.0" y="137.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox2" x="30.0" y="78.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox2/floatIn" value="1" />
+
+&lt;STATE name="floatbox2/max" value="1" />
+
+&lt;STATE name="floatbox2/min" value="0" />
+
+&lt;STATE name="floatbox2/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="149.0" y="74.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="0" />
+
+&lt;STATE name="hslider0/max" value="1" />
+
+&lt;STATE name="hslider0/resolution" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox3" x="149.0" y="138.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox3/floatIn" value="0" />
+
+&lt;STATE name="floatbox3/max" value="1" />
+
+&lt;STATE name="floatbox3/min" value="0" />
+
+&lt;STATE name="floatbox3/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="285.0" y="74.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="197.0" y="416.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="0.391763" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="344.0" y="382.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="granulator0/samplesOut" inlet="gain0/samplesIn" vertices="168.0 394.5 203.0 394.5" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="granulator0/table" vertices="461.0 316.0 270.0 316.0" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="458.0 244.5 609.0 244.5" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="granulator0/hop_size" vertices="331.0 289.0 253.0 289.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="granulator0/grain_size" vertices="316.0 255.5 236.0 255.5" />
+&lt;CONNECTION  outlet="floatbox2/floatOut" inlet="granulator0/rate" vertices="36.0 226.0 185.0 226.0" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="floatbox3/floatIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox3/floatOut" inlet="granulator0/gotoTime" vertices="155.0 256.0 202.0 256.0" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="granulator0/zero" vertices="291.0 228.5 219.0 228.5" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="350.0 465.0 292.5 465.0 292.5 401.0 235.0 401.0" />
+&lt;STICKY  x="472.0" y="423.0" width="137.0" height="70.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Broken glass, the most
+overused granular 
+synthesis sound of all
+time&lt;/STICKY>&lt;TITLE  x="71.0" y="26.0" color="#FFFFFF" text="Granulator" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="73.0" y="62.0" color="#FFFFFF" text="rate" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="206.0" y="57.0" color="#FFFFFF" text="position (s)" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="302.0" y="54.0" color="#FFFFFF" text="zero" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="359.0" y="119.0" color="#FFFFFF" text="grain size (s)" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="367.0" y="191.0" color="#FFFFFF" text="hop size (s)" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="387.0" y="362.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+<xblock name="HelpPatchSupportFiles">glass_again.WAV</xblock>
+</osw-external>

@@ -1,0 +1,315 @@
+
+
+#Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+#Copyright (c) 1998-2001 Regents of the University of California.
+#All rights reserved.
+#
+#     ``The contents of this file are subject to the Open Sound World Public
+#     License Version 1.0 (the "License"); you may not use this file except in
+#     compliance with the License. A copy of the License should be included
+#     in a file named "License" or "License.txt" in the distribution from 
+#     which you obtained this file. 
+#
+#     Software distributed under the License is distributed on an "AS IS"
+#     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#     License for the specific language governing rights and limitations
+#     under the License.
+#
+#     The Original Code is Open Sound World (OSW) software.
+#
+#     The Initial Developer of the Original Code is Amar Chaudhary.
+#     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+#     Regents of the University of California and Amar Chaudhary. 
+#     All Rights Reserved.
+#
+#     Contributor(s):
+
+
+include ../generic/Version.mak
+
+CC = @CC@
+CXX = @CXX@
+
+STL_DIR = @STLPORT_DIR@
+BIN_DIR = @prefix@/bin
+LIB_DIR = @prefix@/lib
+INSTALL_DIR = @prefix@/lib/osw
+OSW_SOURCE_DIR = @ac_srcdir_abs@/../..
+TCL_INCLUDE_DIR = @TCL_INCLUDE_DIR@
+TK_INCLUDE_DIR = @TK_INCLUDE_DIR@
+TCL_BIN = @TCL_BIN@
+SOUND_ALSA = @alsa@
+SOUND_JACK = @jack@
+DALSA = @DALSA@
+DJACK = @DJACK@
+
+#used by RPM
+FINAL_INSTALL_DIR = @FINAL_DIR@/lib/osw
+FINAL_BIN_DIR = @FINAL_DIR@/bin
+FINAL_LIB_DIR = @FINAL_DIR@/lib
+
+
+CFLAGS = @CFLAGS@
+
+ifeq (TCL_INCLUDE_DIR,"")
+CFLAGS += "-I $(TCL_INCLUDE_DIR)"
+endif
+ifeq (TK_INCLUDE_DIR,"")
+CFLAGS += "-I $(TK_INCLUDE_DIR)"
+endif
+
+CFLAGS += $(VERSIONOPTS)
+
+MTFLAGS = -D_REENTRANT -pthread @FSTACK_CHECK@
+
+CFLAGS += $(MTFLAGS)
+
+CXXFLAGS = $(CFLAGS) @CXXFLAGS@
+
+OBJ = o
+
+LINUXOBJECTS = oswLinuxThread.o oswLinuxMutex.o oswLinuxLoadOSX.o oswLinuxSock.o oswLinuxSelect.o oswLinuxMidi.o oswLinuxHiResTimer.o oswLinuxPrefs.o oswLinuxFileUtils.o oswLinuxInit.o
+
+LIBFLAGS = -Wl,-rpath,@prefix@/lib
+SHLIBFLAGS = -shared $(LIBFLAGS)
+
+LIBRARIES =  @LIBS@
+ALSALIB = @ALSALIB@
+JACKLIB = @JACKLIB@
+
+################
+# Default is all
+
+all: libosw.so oswbin drivers
+
+###################
+# Generic C++ files
+
+include ../generic/Generic.mak
+
+########################
+#libraries / executables
+
+libosw.so : $(OBJECTS) $(LINUXOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS)
+	$(CXX) $(MTFLAGS) -o libosw.so $(SHLIBFLAGS) $(OBJECTS) $(LINUXOBJECTS) $(LIBRARIES) $(SDIF_OBJECTS) $(OSC_OBJECTS)
+
+# @todo -lpthread => $libraries
+# make tcllib/tklib, etc
+oswbin : libosw.so
+	$(CXX) $(MTFLAGS) -o oswbin $(LIBFLAGS) -lpthread -L. -losw
+
+# Audio drivers
+drivers : libosw.so oswLinuxOSSAudio.osx oswLinuxAlsaAudio.osx oswLinuxJackAudio.osx
+
+oswLinuxOSSAudio.o : oswLinuxOSSAudio.cpp oswLinuxOSSAudio.h ../include/oswAudio.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxOSSAudio.cpp
+
+oswLinuxAlsaAudio.o : oswLinuxAlsaAudio.cpp oswLinuxAlsaAudio.h ../include/oswAudio.h
+	$(CXX) $(CXXFLAGS) $(DALSA) -c oswLinuxAlsaAudio.cpp
+
+oswLinuxJackAudio.o : oswLinuxJackAudio.cpp oswLinuxJackAudio.h ../include/oswAudio.h
+	$(CXX) $(CXXFLAGS) $(DJACK) -c oswLinuxJackAudio.cpp
+
+oswLinuxOSSAudio.osx : oswLinuxOSSAudio.o
+	$(CXX) $(MTFLAGS) oswLinuxOSSAudio.o -o oswLinuxOSSAudio.osx $(SHLIBFLAGS) $(LIBRARIES) -L. -losw
+
+oswLinuxAlsaAudio.osx : oswLinuxAlsaAudio.o
+	$(CXX) $(MTFLAGS) oswLinuxAlsaAudio.o -o oswLinuxAlsaAudio.osx $(SHLIBFLAGS) $(LIBRARIES) $(ALSALIB) -L. -losw
+
+oswLinuxJackAudio.osx : oswLinuxJackAudio.o
+	$(CXX) $(MTFLAGS) oswLinuxJackAudio.o -o oswLinuxJackAudio.osx $(SHLIBFLAGS) $(LIBRARIES) $(JACKLIB) -L. -losw
+
+drivers_install: drivers
+	if test ! -d $(INSTALL_DIR)/externals ; then \
+	   mkdir $(INSTALL_DIR)/externals ; \
+        fi
+	if test ! -d $(INSTALL_DIR)/externals ; then \
+	   mkdir $(INSTALL_DIR)/externals/drivers ; \
+	fi
+	cp oswLinux*Audio.osx $(INSTALL_DIR)/externals/drivers
+
+drivers_clean:
+	rm oswLinux*Audio.o
+	rm oswLinux*Audio.osx
+
+##########################
+# Linux-specific C++ files
+
+oswLinuxThread.o : oswLinuxThread.cpp ../include/osw.h ../include/oswThread.h ../include/oswSched.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxThread.cpp
+
+oswLinuxMutex.o : oswLinuxMutex.cpp ../include/oswMutex.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxMutex.cpp
+
+oswLinuxSock.o : oswLinuxSock.cpp ../include/oswSock.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxSock.cpp
+
+oswLinuxSelect.o : oswLinuxSelect.cpp ../include/oswSelect.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxSelect.cpp
+
+oswLinuxLoadOSX.o : oswLinuxLoadOSX.cpp 
+	$(CXX) $(CXXFLAGS) -c oswLinuxLoadOSX.cpp
+
+oswLinuxMidi.o : oswLinuxMidi.cpp oswLinuxMidi.h ../include/oswMidi.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxMidi.cpp
+
+oswLinuxHiResTimer.o : oswLinuxHiResTimer.cpp ../include/oswHiResTimer.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxHiResTimer.cpp
+
+oswLinuxPrefs.o : oswLinuxPrefs.cpp ../include/oswPrefs.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxPrefs.cpp
+
+oswLinuxFileUtils.o : oswLinuxFileUtils.cpp ../include/oswFileUtils.h
+	$(CXX) $(CXXFLAGS) -c oswLinuxFileUtils.cpp
+
+oswLinuxInit.o : oswLinuxInit.cpp ../include/osw.h ../include/oswSched.h ../include/oswInit.h 
+	$(CXX) $(CXXFLAGS) -c oswLinuxInit.cpp
+
+########################
+# Cleanup & Installation
+
+clean:
+	rm *.o
+	rm *.so
+	rm *.osx
+	rm oswbin
+	rm osw
+	rm externalizer
+
+config_clean:
+	rm -f Makefile
+	rm -f config.*
+
+execlean:
+	rm libosw.so
+	rm *.osx
+	rm oswbin
+	rm osw
+	rm externalizer
+
+install: libosw.so oswbin drivers
+	echo "#!/bin/sh" > osw
+	echo "OSW_DIR=$(INSTALL_DIR)" >> osw
+	echo "export OSW_DIR" >> osw
+	echo "LD_LIBRARY_PATH=$(LIB_DIR)" >> osw
+	echo "export LD_LIBRARY_PATH" >> osw
+	echo "TCL_BIN=$(TCL_BIN)" >> osw
+	echo "export TCL_BIN" >> osw
+	cat osw_init.sh >> osw
+	chmod a+x osw
+	cp osw $(BIN_DIR)
+	cp oswbin $(BIN_DIR)
+	echo "OSWSourceDir $(OSW_SOURCE_DIR)/src" > ../../externalizer/preferences.txt
+	echo "OSWInstallDir $(INSTALL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWStlDir $(STL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTclInclude $(TCL_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTkInclude $(TK_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWLibs @LIBS@" >> ../../externalizer/preferences.txt
+
+	if test ! -d $(INSTALL_DIR); then \
+	  mkdir $(INSTALL_DIR); \
+	fi
+	cp libosw.so @prefix@/lib
+	cp -r ../../scripts $(INSTALL_DIR)
+	cp -r ../../bitmaps $(INSTALL_DIR)
+	cp -r ../../externalizer $(INSTALL_DIR)
+	cp -r ../../html $(INSTALL_DIR)
+	cp -r ../../help_patches $(INSTALL_DIR)
+	cp -r ../../tutorials $(INSTALL_DIR)	
+	cp -r ../../demos $(INSTALL_DIR)	
+	cp -r ../../oswinit.tcl $(INSTALL_DIR)
+	cp -r ../../TclXML-1.2 $(INSTALL_DIR)
+	echo "#!$(TCL_BIN)" > externalizer
+	echo "set env(OSW_DIR) $(INSTALL_DIR)" >> externalizer
+	echo 'source $$env(OSW_DIR)/externalizer/externalizer.tcl' >> externalizer
+	chmod a+x externalizer
+	cp externalizer $(BIN_DIR)
+	cp INSTALL.linux $(INSTALL_DIR)
+	cp ../macosx/INSTALL.macosx $(INSTALL_DIR)/html
+	cp ../win/INSTALL.win $(INSTALL_DIR)/html
+	cp ../sgi/INSTALL.sgi $(INSTALL_DIR)/html
+	cp INSTALL.linux $(INSTALL_DIR)/html
+	cp ../../README $(INSTALL_DIR)
+	cp ../../License $(INSTALL_DIR)
+	if test ! -d $(INSTALL_DIR)/src; then \
+	  mkdir $(INSTALL_DIR)/src; \
+	fi
+	cp -r ../include $(INSTALL_DIR)/src
+	cp -r ../types $(INSTALL_DIR)/src	
+	if test ! -d $(INSTALL_DIR)/externals ; then \
+	   mkdir $(INSTALL_DIR)/externals ; \
+        fi
+	if test ! -d $(INSTALL_DIR)/externals/drivers ; then \
+	   mkdir $(INSTALL_DIR)/externals/drivers ; \
+	fi
+	cp oswLinux*Audio.osx $(INSTALL_DIR)/externals/drivers
+
+bininstall: osw oswbin libosw.so drivers_install
+	cp libosw.so @prefix@/lib
+	cp osw @prefix@/bin
+	cp oswbin @prefix@/bin
+
+rpmexecs:
+	echo "#!/bin/sh" > osw
+	echo "OSW_DIR=$(FINAL_INSTALL_DIR)" >> osw
+	echo "export OSW_DIR" >> osw
+	echo "LD_LIBRARY_PATH=$(FINAL_LIB_DIR)" >> osw
+	echo "export LD_LIBRARY_PATH" >> osw
+	echo "TCL_BIN=$(TCL_BIN)" >> osw
+	echo "export TCL_BIN" >> osw
+	cat osw_init.sh >> osw
+	chmod a+x osw
+	cp osw $(BIN_DIR)
+	echo "OSWSourceDir $(FINAL_INSTALL_DIR)/src" > ../../externalizer/preferences.txt
+	echo "OSWInstallDir $(FINAL_INSTALL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWStlDir $(STL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTclInclude $(TCL_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTkInclude $(TK_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	cp -r ../../externalizer $(INSTALL_DIR)
+	echo "#!$(TCL_BIN)" > externalizer
+	echo "set env(OSW_DIR) $(FINAL_INSTALL_DIR)" >> externalizer
+	echo 'source $$env(OSW_DIR)/externalizer/externalizer.tcl' >> externalizer
+	chmod a+x externalizer
+	cp externalizer $(BIN_DIR)
+
+externals:
+	OSW_DIR=$(OSW_SOURCE_DIR)
+	export OSW_DIR
+	externalizer -batch -nogui ../externals/blob
+	externalizer -batch -nogui ../externals/osw
+	externalizer -batch -nogui ../externals/list
+	externalizer -batch -nogui ../externals/note
+	externalizer -batch -nogui ../externals/midi
+	externalizer -batch -nogui ../externals/sdif
+	externalizer -batch -nogui ../externals/table
+	externalizer -batch -nogui ../externals/cnmat
+	externalizer -batch -nogui ../externals/sinusoids
+	externalizer -batch -nogui ../externals/spectral
+	externalizer -batch -nogui ../externals/raw
+	externalizer -batch -nogui ../externals/fx
+	externalizer -batch -nogui ../externals/patented
+
+external_clean:
+	rm ../externals/*/*/*.o
+	rm ../externals/*/*/*.osx
+
+test:
+	python ../test/oswtest.py --server=$(BIN_DIR)/oswbin --gui=$(BIN_DIR)/osw
+
+dist:
+	chmod a+x install.sh
+	tar -uf osw.tar install.sh
+	tar -uf osw.tar -C $(INSTALL_DIR) .
+	tar -uf osw.tar oswbin
+#	tar --delete lib/osw/externals/patented/*
+	gzip osw.tar
+
+patented-dist:
+	chmod a+x install.sh
+	tar -uf osw.tar install.sh
+	tar -uf osw.tar oswbin
+	tar -uf osw.tar -C $(INSTALL_DIR) .
+	gzip osw.tar
+
+
+

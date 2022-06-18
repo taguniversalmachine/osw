@@ -1,0 +1,77 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">OSCDispatch <a href="http://localhost:7775/OSW_DIR/help_patches/help_OSCDispatch.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Route OSC Messages to OSW variables that match address pattern.</p>
+<h3 class="title">Syntax</h3>
+<p>OSCDispatch <i>options</i>
+<h3 class="title">Arguments</h3>
+<ul><dl>
+<dt><b>-name</b></dt><dd>Optional name for transform</dd>
+</dl></ul>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>messageIn</b></dt>
+<dd>Incoming OSC message</dd>
+<dd>Type: List</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>messageOut</b></dt>
+<dd>Return OSC message</dd>
+<dd>Type: List</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>When an OSC message is received, its address pattern (which may include valid OSC wildcard characters) is matched against all currently active OSW variables.  Each variable is set to the value of the argument(s) of the message.  If the message contains more than one argument, it is converted to a list (thus any matched variables must be of type List or Any).</p>
+<p>Consult the chapter on <a href="osc.htm">OpenSound Control support</a> for more information OSC addresses.</p>
+<p>If you are not using OSC packets for network or inter-process communication, consider <a href="Putmul.html">Put*</a>, which matches variables against OSC-style wildcards, but is a little more efficient when only matching state variables and also allows relative path names to variables (relative paths are disallowed in OSC).  However, Put* <i>only</i> matches and sets state variables; it does not handle other kinds of OSC messages (e.g., queries, special methods, root methods, documentation).  If you wish to use these other types of OSC messages on OSW objects, or receive return messages, OSCDispatch is required.</p>
+<h3 class="title">Known Issues</h3>
+OSCDispatch currently only accepts wildcard addresses for setting states.  Special object methods, root methods, documentation queries, etc., do not match wildcards.
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="Putmul.html">Put*</a></dt>
+<dt><a href="OSCBundle.html">OSCBundle</a></dt>
+<dt><a href="OSCRoute.html">OSCRoute</a></dt>
+<dt><a href="OSCSend.html">OSCSend</a></dt>
+<dt><a href="OSCListen.html">OSCListen</a></dt>
+<dt><a href="osc.htm">OpenSound Control support in OSW</a></dt>
+<dt><a href="http://www.cnmat.berkeley.edu/OSC">The OpenSound Control home page</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>
+

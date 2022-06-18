@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_SyncSwitch" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="SyncSwitch" name="syncswitch1" x="147.0" y="197.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="248" y="114" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="69" y="269" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="195.0" y="270.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="92" y="378" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Switch" name="switch1" x="179.0" y="379.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="89.0" y="112.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="syncswitch1/out1" inlet="floatbox0/floatIn" vertices="153.0 250.5 75.0 250.5" />
+<CONNECTION  outlet="syncswitch1/out2" inlet="floatbox1/floatIn" vertices="187.0 251.0 201.0 251.0" />
+<CONNECTION  outlet="intbox1/intOut" inlet="syncswitch1/switch" vertices="254 172.0 221.0 172.0" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="syncswitch1/in" vertices="95.0 171.0 153.0 171.0" />
+<STICKY  x="320.0" y="178.0" width="137.0" height="84.0" color="#FFFF77" text="Unlike an ordinary
+Switch, SyncSwitch
+requires that the output
+designation be set
+each time a new value is
+received" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="298.0" y="87.0" color="#FFFFFF" text="and choosehbetween outlet 0 or 1" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="68.0" y="34.0" color="#FFFFFF" text="SyncSwitch" fontface="Arial" fontsize="18" /><TITLE  x="165.0" y="349.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="131.0" y="88.0" color="#FFFFFF" text="set a new value" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

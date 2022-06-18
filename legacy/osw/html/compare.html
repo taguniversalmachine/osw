@@ -1,0 +1,76 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">&lt;, &lt;=, &gt;=, &gt;</h1>
+<p>Compare two numbers using less-than, less-than-or-equal-to, greater-than, or greater-than-or-equal-to tests. </p>
+<h3 class="title">Syntax</h3>
+<p>&lt; <i>rval</i><br>
+&lt;= <i>rval</i><br>
+&gt;= <i>rval</i><br>
+&gt; <i>rval</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><i>rval</i></dt>
+<dd>Optional initial value to be compared to values received via the left inlet.  See comments for acceptable types.</dd>
+</dl>
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>param1</b></dt><dd>The left inlet.  Any value received via this inlet is compared to the value in the right inlet <b>param2</b>, and the result is sent via the outlet <b>result</b>.</dd><dd>Type: Changeable</dd>
+<dt><b>param2</b></dt><dd>The right inlet.  The value is stored for comparison to any subsequent values received in the left inlet <b>param1</b>.</dd>
+<dd>Type: Changeable</dd>
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>result</b></dt>
+<dd>For scalar inputs, returns true if the values satisfy the comparison, false if not.<i>See comments for behavior with audio-sample inputs</i>.</dd>
+<dd>Type: Boolean or Samples</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>The comparison operators accept inputs and initialization arguments of any numeric type (Integers, Floats, Doubles, Complex and DoubleComplex).  For scalar input, the operators return a true or false value.</p>
+<p>If one of the arguments is an audio-sample type and the other is a numeric type, the comparison operators return a stream of audio-samples whose values are either 1 or 0 depending on whether the corresponding input sample satisfies the comparison with the numerical argument.  The comparison operators do not support both arguments as audio-sample types.</p>
+<p>These operators output a result whever a new value is received via the left inlet <b>param1</b>, using the new value of <b>param1</b> and the most recent value of <b>param2</b>, or the optional initial argument if no value has yet been received for <b>param2</b>.  If you want to wait until both <b>param1</b> and <b>param2</b> receive new input values before computing a result, use the <a href="scompare.html">synchronous comparison operators</a> instead.</p>
+<p>
+<h3 class="title">See Also</h3>
+<dl>
+
+<dt><a href="eq.html">==, !=</a></dt>
+<dt><a href="scompare.html">'&lt;, '&lt;=, '&gt;=, '&gt;</a></dt>
+<dt><a href="Expr.html">Expr</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

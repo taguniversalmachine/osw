@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_pow" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="'^" name="qx1" x="120.0" y="215.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="120.0" y="150.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="262" y="150" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="100" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="120.0" y="277.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="1" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="^" name="qx0" x="476" y="154" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="*" name="mul0" x="475.0" y="212.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Log" name="log0" x="475.0" y="267.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="qx1/result" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="qx1/param1" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="qx1/param2" vertices="268 199.0 158.0 199.0" />
+<STICKY  x="266.0" y="228.0" width="114.0" height="66.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Requires both inlets
+to change before
+emitting an output
+value</STICKY>
+<TITLE  x="198.0" y="54.0" color="#FFFFFF" text="'^ (sync exponential operator)" fontface="MS Sans Serif" fontsize="16" />
+<TITLE  x="498.0" y="126.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+</PATCH>
+</OSW>
+

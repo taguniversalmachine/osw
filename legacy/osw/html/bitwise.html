@@ -1,0 +1,54 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<h1 class="title">&lt;&lt; (left shift), &gt;&gt; (right shift),<br>
+?& (bitwise AND), ?| (bitwise OR), ?^ (bitwise XOR)</h1>
+<p>Bitwise operators </p>
+<h3 class="title">Syntax</h3>
+<p>&lt;&lt; <i>rval</i><br>
+&gt;&gt; <i>rval</i><br>
+?& <i>rval</i><br>
+?| <i>rval</i><br>
+?^ <i>rval</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><i>rval</i></dt>
+<dd>Optional initial right-operand value.</dd>
+<dd>Type: Integer</dd>
+</dl>
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>param1</b></dt><dd>The left inlet.  Any value received via this inlet is used with the value in the right inlet <b>param2</b>, and the result is sent via the outlet <b>result</b>.</dd><dd>Type: Changeable</dd>
+<dt><b>param2</b></dt><dd>The right inlet.  The value is stored for use with any subsequent values received in the left inlet <b>param1</b>.</dd>
+<dd>Type: Changeable</dd>
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>result</b></dt>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>These operators implement the low-level bitwise functions found in languages like C.  The symbols of the bitwise and, or and xor operators has been altered because the corresponding symbols in C are reserved in OSW for more frequently used operations.</p>
+<p>The bitwise operators currently only operate on integers.</p>
+<p>These operators output a result whever a new value is received via the left inlet <b>param1</b>, using the new value of <b>param1</b> and the most recent value of <b>param2</b>, or the optional initial argument if no value has yet been received for <b>param2</b>.  If you want to wait until both <b>param1</b> and <b>param2</b> receive new input values before computing a result, use the <a href="sbitwise.html">synchronous bitwise operators</a> instead.</p>
+<p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="sbitwise.html">'&lt;&lt;, '&gt;&gt;, '?&, '?|, '?^</a></dt>
+<dt><a href="Expr.html">Expr</a></dt>
+</dl>
+</body>
+</html>
+
+
+
+

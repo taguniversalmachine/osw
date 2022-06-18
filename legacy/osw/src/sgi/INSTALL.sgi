@@ -1,0 +1,46 @@
+INSTALLING THE BINARY VERSION OF OSW FOR LINUX
+
+0.  INSTALL THE OSW DISTRIBUTION
+
+If you have not already done so, unpack your OSW distribution into a directory
+of your choice (e.g., we recommend "/usr/local/lib/osw").  
+
+Copy the distribution to the directory, and type the following:
+
+	gzcat osw-x.xx.sgi.tar.gz | tar -xf -
+
+Where "x.xx" is the version number of your distribution.
+
+1.  INSTALLING TCL/TK
+
+If you do not already have Tcl/Tk 8.3 and Itcl installed, please do so now.  
+SGI maintains ready-to-install binaries of Tcl/Tk, but unfortunately they are
+only up to version 8.0.4.  So you will have to compile these yourself.  You
+can get the source from osw.sourceforge.net: proceed to the download area
+and select "SGI."  Download the following files:
+
+	tcl8.3.2.tar.gz
+	tk8.3.2.tar.gz
+	itcl3.2.tar.gz
+
+Unpack these distributions in a directory of your choice 
+(e.g., /usr/local/src). Proceed to the tcl8.3.2 directory and follow the build
+instructions.  Then do the same in tk8.3.2, followed by itcl3.2.
+
+
+2.  INSTALL.SH
+
+Once Tcl/Tk and Itcl are installed, return to the installation directory and 
+type "cd osw" to enter the OSW subdirectory.  To complete the installation,
+ type
+
+	install.sh
+
+This will create a command "osw" that you can use to start the program.
+
+
+3.  START PLAYING
+
+That's it.  You should be ready to start using OSW now.  Have fun!
+Note: for help with real-time performance under Irix 6.5, refer to
+README.sgi.

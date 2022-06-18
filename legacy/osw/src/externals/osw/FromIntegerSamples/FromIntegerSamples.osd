@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<osw-external name="FromIntegerSamples" package="osw">
+<description>Convert from 32-bit integer samples to regular (floating-point) samples</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inlet name="integerSamplesIn" type="IntegerSamples" description="Integer samples to convert" />
+<outlet name="samplesOut" type="Samples" description="floating-point samples" />
+<state name="unity" type="Float" default="1.0" description="Unity value (maximum sample amplitude)" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xunityOverMaxInt = Float(unity) / 2147483627.0f;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Float xunityOverMaxInt;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="unity_changed" activators="unity" order="0" >
+
+
+
+xunityOverMaxInt = unity / 2147483647.0f;
+</activation>
+<activation name="activation1" activators="integerSamplesIn" order="0" >
+
+
+Samples samples(integerSamplesIn->size());
+for (int i = 0; i &lt; integerSamplesIn->size(); ++i) &#123;
+   samples&#91;i&#93; = integerSamplesIn&#91;i&#93; * xunityOverMaxInt;
+&#125;
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">FromIntegerSamples &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">Converts  32-bit integer samples in floating-point samples.  By default, samples are converted to the floating-point range between -1 and 1.  Use the "-unity" option to adjust the floating-point range (e.g., between -2 and 2, etc.).</xblock>
+<xblock name="Links">ToIntegerSamples ToInteger16Samples FromInteger16Samples</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_ToIntegerSamples" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Sinewave " name="sinewave0" x="143.0" y="179.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sinewave0/freq" value="440" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="ToIntegerSamples " name="tointegersamples0" x="143.0" y="258.0" width="112" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="tointegersamples0/unity" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FromIntegerSamples " name="fromintegersamples0" x="143.0" y="326.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="fromintegersamples0/unity" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="133" y="420" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="sinewave0/samplesOut" inlet="tointegersamples0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="tointegersamples0/integerSamplesOut" inlet="fromintegersamples0/integerSamplesIn" vertices="" />
+&lt;CONNECTION  outlet="fromintegersamples0/samplesOut" inlet="out0/mix" vertices="149.0 390.5 259 390.5" />
+&lt;STICKY  x="314.0" y="266.0" width="114.0" height="52.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click the
+transforms to change
+the value of unity.&lt;/STICKY>&lt;TITLE  x="293.0" y="86.0" color="#FFFFFF" text="ToIntegerSamples / FromIntegerSamples" fontface="MS Sans Serif" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

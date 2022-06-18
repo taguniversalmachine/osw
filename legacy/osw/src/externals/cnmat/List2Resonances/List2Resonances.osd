@@ -1,0 +1,162 @@
+<?xml version="1.0" ?>
+<osw-external name="List2Resonances" package="cnmat">
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<description>Create a bank of resonances from a list</description>
+<inlet name="partials" type="List" description="List of partials (freq amp phase ...)" />
+<outlet name="resonances" type="Resonances" />
+<state name="db" type="Boolean" default="false" description="Amplitues given in dB format" persistent="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="partials" order="" >
+
+int length = partials->size();
+if (partials->size() % 3 != 0) &#123;
+    Alert ("size of list must be divisible by 3.  List truncated.");
+&#125;
+
+int numres(length / 3);
+Resonances newres(numres);
+int i,j;
+for (i = 0, j = 0; i &lt; numres; ++i, j += 3) &#123;
+   newres.freq&#91;i&#93; = (float) (*((Datum&lt;float> *)(partials->nth(j))));
+   float amp = (float) (*((Datum&lt;float> *)(partials->nth(j+1))));
+    if (db) &#123;
+          newres.amp&#91;i&#93; = exp(amp * 0.1151292546497f);
+   &#125; else &#123;
+          newres.amp&#91;i&#93; = amp;
+   &#125;
+   newres.decay&#91;i&#93; = (float) (*((Datum&lt;float> *)(partials->nth(j+2))));
+&#125;
+resonances = newres;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax"></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_List2Resonances" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="List2Resonances " name="list2resonances2" x="170.0" y="139.0" width="106" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="171.0" y="86.0" width="187" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="440.0 0.4 1.0 670.0 0.4 1.0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Resonators " name="resonators0" x="80.0" y="230.0" width="76" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Impulse " name="impulse0" x="44.0" y="155.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="42.0" y="100.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="1" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="40.0" y="33.0" width="42" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="80.0" y="289.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="0.117416" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="18.0" y="346.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="226.0" y="203.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="list2resonances2/resonances" inlet="resonators0/resonances" vertices="176.0 202.0 123.0 202.0" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="list2resonances2/partials" vertices="177.0 129.5 176.0 129.5" />
+&lt;CONNECTION  outlet="resonators0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="impulse0/samplesOut" inlet="resonators0/samplesIn" vertices="50.0 210.0 86.0 210.0" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="impulse0/impulse" vertices="48.0 144.0 106.0 144.0" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="floatbox0/unitIn" vertices="46.0 87.5 135.0 87.5" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="86.0 335.0 144.0 335.0" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="232.0 280.0 118.0 280.0" />
+&lt;STICKY  x="176.0" y="20.0" width="197.0" height="47.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Enter a sequence of frequency, 
+amplitude and decay-rate values as a
+list, and then press the button&lt;/STICKY>&lt;STICKY  x="295.0" y="129.0" width="140.0" height="57.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">The list is converted to
+a Resonances data type
+for use by the Resonators
+transform&lt;/STICKY>&lt;TITLE  x="127.0" y="1.0" color="#FFFFFF" text="cnmat::List2Resonances" fontface="Arial" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>
+
+

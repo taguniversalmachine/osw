@@ -1,0 +1,216 @@
+<?xml version="1.0" ?>
+<osw-external name="MidiEventFilter" package="midi">
+<description>filter Midi events by channel, status or value</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="channelIn" type="Integer" description="channel of event" />
+<inlet name="statusIn" type="Integer" description="status (i.e., type) of incoming event" />
+<inlet name="value1In" type="Integer" description="first value of incoming event" />
+<inlet name="value2In" type="Integer" description="second value of incoming message" />
+<outlet name="channelOut" type="Integer" description="channel of outgoing event" synchronous="1" />
+<outlet name="statusOut" type="Integer" description="status (i.e., type) of outgoing event" synchronous="1" />
+<outlet name="value1Out" type="Integer" description="value of outgoing event" synchronous="1" />
+<outlet name="value2Out" type="Integer" description="second value of outgoing message" synchronous="1" />
+<state name="channel" type="Integer" default="-1" description="channel filter" persistent="1" />
+<state name="status" type="String" default="!quotall!quot" description="status filter" persistent="1" />
+<state name="parameter" type="Integer" default="-1" description="parameter" persistent="1" />
+<state name="statusAsInt" type="Integer" default="-1" description="status as integer" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">
+status = status;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">struct StatusTypes &#123;
+  char *statusName;
+  int  statusNum;
+&#125;;
+
+static StatusTypes statusTypes&#91;&#93; = &#123;
+  &#123;"noteoff",0x8&#125;,
+  &#123;"note",0x9&#125;,
+  &#123;"noteon",0x9&#125;,
+  &#123;"polyaftertouch",0xA&#125;,
+  &#123;"poly",0xA&#125;,
+  &#123;"control",0xB&#125;,
+  &#123;"program",0xC&#125;,
+  &#123;"aftertouch",0xD&#125;,
+  &#123;"pitchbend",0xE&#125;,
+  &#123;"all",-1&#125;,
+  &#123;NULL,NULL&#125;
+&#125;;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="interpret_status" activators="status" order="" >
+
+
+
+
+
+for (int i = 0; statusTypes&#91;i&#93;.statusName != NULL; ++i) &#123;
+    if (statusTypes&#91;i&#93;.statusName == status) &#123;
+      statusAsInt = statusTypes&#91;i&#93;.statusNum;
+      break;
+    &#125;
+  &#125;
+</activation>
+<activation name="filter_msg" activators="channelIn value1In value2In statusIn" order="" >
+if (((channel == -1) || (channel == channelIn))
+    &amp;&amp; ((statusAsInt == -1) || (statusAsInt == statusIn))
+    &amp;&amp; ((parameter == -1) || (parameter == value1In))) &#123;
+   if (statusAsInt != 0x9 || value2In != 0) &#123;
+     channelOut = channelIn;
+     statusOut = statusIn;
+     value1Out = value1In;
+     value2Out = value2In;
+   &#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">MidiEventFilter &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_MidiEventFilter" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="MidiInput " name="midiinput0" x="36.0" y="67.0" width="194" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="midiinput0/driver" value="unknown" />
+
+&lt;STATE name="midiinput0/channel" value="-1" />
+
+&lt;STATE name="midiinput0/status" value="all" />
+
+&lt;STATE name="midiinput0/parameter" value="-1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiEventFilter -status noteon -channel 0" name="midieventfilter0" x="36.0" y="140.0" width="256" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="midieventfilter0/status" value="noteon" />
+
+&lt;STATE name="midieventfilter0/parameter" value="-1" />
+
+&lt;STATE name="midieventfilter0/channel" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="36.0" y="216.0" width="69" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/max" value="100" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox1" x="120.0" y="219.0" width="69" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox1/intIn" value="0" />
+
+&lt;STATE name="intbox1/step" value="1" />
+
+&lt;STATE name="intbox1/min" value="0" />
+
+&lt;STATE name="intbox1/max" value="100" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox2" x="205.0" y="216.0" width="69" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox2/intIn" value="0" />
+
+&lt;STATE name="intbox2/step" value="1" />
+
+&lt;STATE name="intbox2/min" value="0" />
+
+&lt;STATE name="intbox2/max" value="100" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox3" x="290.0" y="214.0" width="69" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox3/intIn" value="0" />
+
+&lt;STATE name="intbox3/step" value="1" />
+
+&lt;STATE name="intbox3/min" value="0" />
+
+&lt;STATE name="intbox3/max" value="100" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="midiinput0/channelOut" inlet="midieventfilter0/channelIn" vertices="" />
+&lt;CONNECTION  outlet="midiinput0/statusOut" inlet="midieventfilter0/statusIn" vertices="106.0 120.0 126.0 120.0" />
+&lt;CONNECTION  outlet="midiinput0/firstOut" inlet="midieventfilter0/value1In" vertices="170.0 120.0 210.0 120.0" />
+&lt;CONNECTION  outlet="midiinput0/secondOut" inlet="midieventfilter0/value2In" vertices="234.0 120.0 294.0 120.0" />
+&lt;CONNECTION  outlet="midieventfilter0/channelOut" inlet="intbox0/intIn" vertices="" />
+&lt;CONNECTION  outlet="midieventfilter0/statusOut" inlet="intbox1/intIn" vertices="" />
+&lt;CONNECTION  outlet="midieventfilter0/value1Out" inlet="intbox2/intIn" vertices="210.0 195.5 211.0 195.5" />
+&lt;CONNECTION  outlet="midieventfilter0/value2Out" inlet="intbox3/intIn" vertices="294.0 194.5 296.0 194.5" />
+&lt;STICKY  x="251.0" y="60.0" width="96.0" height="33.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+select MIDI port&lt;/STICKY>&lt;STICKY  x="43.0" y="281.0" width="206.0" height="52.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use the "-status" and "-channel" options,
+or double-click the MidiEventFilter to
+set these options dynamically.&lt;/STICKY>&lt;TITLE  x="84.0" y="25.0" color="#FFFFFF" text="MidiEventFilter" fontface="Arial" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>
+
+
+

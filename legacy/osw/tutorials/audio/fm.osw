@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="fm" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<COPYRIGHT>
+
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+</COPYRIGHT>
+<TRANSFORM  command="WaveTable " name="wavetable0" x="166.0" y="393.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="wavetable0/table" value="/sine" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="298.0" y="208.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="100.297" />
+</TRANSFORM>
+<TRANSFORM  command="Phasor" name="phasor0" x="166.0" y="265.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="phasor0/frequency" value="261.626" />
+</TRANSFORM>
+<TRANSFORM  command="'+" name="qadd0" x="166.0" y="337.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="474.0" y="219.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0.4623" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Keyboard " name="keyboard0" x="163.0" y="12.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="keyboard0/octave" value="5" />
+</TRANSFORM>
+<TRANSFORM  command="Midi2Freq " name="midi2freq0" x="161.0" y="131.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midi2freq0/freq_ref" value="440" />
+
+<STATE name="midi2freq0/midi_ref" value="69" />
+
+<STATE name="midi2freq0/degrees" value="12" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="161.0" y="189.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="*" name="mul1" x="357.0" y="150.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="473.0" y="146.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0.38336" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="80.0" y="499.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="166.0" y="446.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.420647" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="602.0" y="59.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob1" x="606.0" y="173.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob1/min" value="0" />
+
+<STATE name="knob1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob2" x="609.0" y="359.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob2/min" value="0" />
+
+<STATE name="knob2/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Expr $s1 * $f1 * 0.5 + 0.5" name="expr0" x="298.0" y="276.0" width="166" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="wavetable0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="expr0/s1" vertices="" />
+<CONNECTION  outlet="phasor0/samplesOut" inlet="qadd0/param1" vertices="" />
+<CONNECTION  outlet="qadd0/result" inlet="wavetable0/phases" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="expr0/f1" vertices="480.0 264.0 468.0 264.0" />
+<CONNECTION  outlet="keyboard0/noteOut" inlet="midi2freq0/midi_note" vertices="169.0 120.5 167.0 120.5" />
+<CONNECTION  outlet="midi2freq0/frequency" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="phasor0/frequency" vertices="167.0 244.5 195.0 244.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="mul1/param1" vertices="189.0 239.0 276.0 239.0 276.0 135.0 363.0 135.0" />
+<CONNECTION  outlet="mul1/result" inlet="sinewave0/freq" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="mul1/param2" vertices="479.0 194.0 437.0 194.0 437.0 135.0 395.0 135.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="172.0 490.0 206.0 490.0" />
+<CONNECTION  outlet="knob0/knobOut" inlet="floatbox1/floatIn" vertices="608.0 136.5 479.0 136.5" />
+<CONNECTION  outlet="knob1/knobOut" inlet="floatbox0/floatIn" vertices="612.0 256.0 546.0 256.0 546.0 204.0 480.0 204.0" />
+<CONNECTION  outlet="knob2/knobOut" inlet="gain0/amp_scale" vertices="615.0 436.5 204.0 436.5" />
+<CONNECTION  outlet="expr0/out" inlet="qadd0/param2" vertices="304.0 324.0 204.0 324.0" />
+<TITLE  x="636.0" y="36.0" color="#FFFFFF" text="Mod Frequency Ratio" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="642.0" y="149.0" color="#FFFFFF" text="Mod Amp" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="642.0" y="342.0" color="#FFFFFF" text="Volume" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="89.0" y="48.0" color="#FFFFFF" text="2 operator FM" fontface="MS Sans Serif" fontsize="14" /></PATCH>
+</OSW>
+

@@ -1,0 +1,97 @@
+COMPILING AND INSTALLING THE SOURCE VERSION OF OSW FOR WINDOWS
+
+0.  REQUIREMENTS
+
+This source version of OSW should compile on Windows 98, 2000, NT and XP.
+The following additional software is required:
+
+*  Microsoft Visual C++ .net (7.0) or Cygwin GCC 2.95.3
+*  Tcl/Tk 8.2 and Itcl
+
+Even if you go with Visual C++ instead of GCC, tt is also recommended that 
+you have a set of the standard GNU utilities (like gzip, tar, cp, etc.). 
+You can use the cygwin package availabe from RedHat.
+
+
+1.  INSTALLING REQUIRED PACKAGES
+
+This section describes installation of the required packages except for
+Visual C++ (You're on your own there).
+
+1.1.  INSTALLING TCL/TK
+
+If you do not already have Tcl/Tk 8.2 installed, please do so now by running
+ITCL82.EXE.  You can find it at the OSW site osw.sourceforge.net.  Proceed to
+the download area, and select the osw-win package.  You will find ITCL82.EXE
+in the release named "Tcl/Tk and Itcl."
+
+Make sure to check ALL the boxes when asked which components to install, 
+including Itcl/Iwidgets and the headers and libraries.
+
+Unfortunately, version 8.2 is required even if you have a newer version.  This
+is because of the boneheaded naming scheme that uses different DLL names for
+different versions.  I suppose with a little work I could get around this.
+
+2.  RUN OSWCONFIG.EXE
+
+In the osw/src/win directory, run the utility oswconfig.exe (you can
+do this from either the command line or a graphical window).  You
+will be presented with a graphical user interface into which you can
+provide locations for the the OSW source code, the install directory
+for the build, the location of Tcl/Tk, you compiler and other settings.
+The configuration utility will choose suitable defaults for you, including
+auto-detection of your source-code directory and Tcl/Tk install, so you
+will probably not need to change any of the settings. 
+
+Once you are satisfied with the configuration settings, press "Generate"
+to automatically generate a new Makefile and System.mak.  You can then
+exit oswconfig.
+
+Oswconfig can be run as many times as you want with different settings.
+
+
+*If you are using GCC, then edit System.mak.gcc instead.*
+
+3.  COMPILE AND INSTALL THE CORE SYSTEM
+
+You are now ready to compile OSW.  If you haven't done so already, open
+a command prompt window and change to this directory (osw/src/win).  
+To build the core system using Visual C++, type:
+
+  nmake all
+
+To build using gcc and GNU make, type:
+
+  make all
+
+The compilation may take a while, depending on CPU speed and available
+memory.  Because OSW makes extensive use of advanced C++ features, it
+often compiles slower than some other applications.  If your processor speed
+is less than about 700MHz, treat yourself to a snack, or maybe catch up
+on some reading.
+
+When the compilation is done, you will want to install OSW by typing:
+
+  (n)make install
+
+This will copy the newly compiled binaries plus all the support files
+(scripts, documentation, data files, etc.) to the location you specified
+in System.mak.  If you are using Windows 2000 or XP, make sure you
+have write permission in the destination directory or run this step as
+an Administrator.
+
+4.  COMPILE THE EXTERNALS
+
+Not quite done yet!  You still have to make all the external transforms.
+From the command prompt, type:
+
+  (n)make externals
+
+This will start a series of compilations, and pop up several instances of
+the "Externalizer", the graphical tool for building OSW externals.  During
+this build process, the Externalizer windows are fully automated, so you
+do not need to do anything.
+
+This step also installs the externals, so once its complete you're ready
+to go.  Change to the installation directory, type "osw", and have fun!
+

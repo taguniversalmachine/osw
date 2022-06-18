@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Sgn" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="HSlider" name="hslider0" x="67.0" y="127.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="-1" />
+
+<STATE name="hslider0/max" value="1" />
+
+<STATE name="hslider0/resolution" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="67.0" y="192.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sgn" name="sgn0" x="67.0" y="248.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="67.0" y="307.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="264" y="145" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Sgn" name="sgn1" x="264.0" y="217.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="264.0" y="276.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="267.0" y="348.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="390" y="187" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="sgn0/in" vertices="" />
+<CONNECTION  outlet="sgn0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="sgn1/in" vertices="" />
+<CONNECTION  outlet="sgn1/out" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="270.0 329.5 393.0 329.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="396 265.5 302.0 265.5" />
+<STICKY  x="56.0" y="58.0" width="135.0" height="46.0" color="#FFFF77" text="Sgn returns 1 if the input is
+positive, -1 if it is negative,
+or 0 if it is zero." fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="275.0" y="52.0" width="118.0" height="47.0" color="#FFFF77" text="Sgn can also be
+used to create a
+cheezy square wave" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="39.0" y="21.0" color="#FFFFFF" text="Sgn" fontface="Arial" fontsize="18" /></PATCH>
+</OSW>
+

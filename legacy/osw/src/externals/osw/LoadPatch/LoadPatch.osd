@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<osw-external name="LoadPatch" package="osw">
+<description>Load or unload patches programmatically</description>
+<copyright>
+
+</copyright>
+<inlet name="load" type="Unit" description="Load patch" />
+<inlet name="unload" type="Unit" description="Unload patch" />
+<state name="patch" type="String" description="Patch file name" persistent="1" />
+<state name="patchWindow" type="String" description="Patch widget descriptor, for internal use only" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog">oswLoadFile &#36;transformPath/patch .osw &#123;OSW Patch&#125;</xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">oswLoadScript oswLoadFile.tcl</xblock>
+<activation name="do_unload" activators="unload" order="0" >
+
+
+oswTclEvalStringOnTheEdge(("oswClosePatch " + patchWindow).c_str());
+</activation>
+<activation name="do_load" activators="load" order="0" >
+
+
+oswTclEvalStringOnTheEdge(("puts " + patch + " ; oswSourcePatch " + patch + " ; oswSet " + patchWindow.PathName() + " &#36;Patch::selected").c_str());
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">LoadPatch &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>LoadPatch allows a user to dynamically load and unload patches in response to events.  For example, the MIDI events can be routed to the load and unload inlets of LoadPatch in order to manage patches from a remote MIDI device.&lt;/p>
+&lt;h3>Known Issues&lt;/h3>
+&lt;p>LoadPatch requires the UI-based version of OSW, it will not run with oswbin.&lt;/p></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_LoadPatch" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="LoadPatch " name="loadpatch0" x="176" y="203" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="loadpatch0/patch" value="help_FloatBox.osw" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="244.0" y="135.0" width="29" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="157.0" y="136.0" width="27" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="green" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="button0/unitOut" inlet="loadpatch0/unload" vertices="" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="loadpatch0/load" vertices="163.0 190.0 182.0 190.0" />
+&lt;STICKY  x="175.0" y="245.0" width="80.0" height="50.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+to select a
+patch&lt;/STICKY>&lt;TITLE  x="165.0" y="116.0" color="#FFFFFF" text="load" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="264.0" y="114.0" color="#FFFFFF" text="unload" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="88.0" y="47.0" color="#FFFFFF" text="LoadPatch" fontface="MS Sans Serif" fontsize="14" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Coth" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox" name="floatbox0" x="115.0" y="134.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="100" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="115" y="260" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="1" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Coth" name="coth0" x="115.0" y="195.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="coth0/in" vertices="" />
+<CONNECTION  outlet="coth0/out" inlet="floatbox1/floatIn" vertices="" />
+<TITLE  x="132.0" y="57.0" color="#FFFFFF" text="Coth" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

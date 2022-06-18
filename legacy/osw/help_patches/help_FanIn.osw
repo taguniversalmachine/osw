@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_FanIn" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FanIn" name="fanin0" x="52.0" y="178.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="51.0" y="97.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="161.0" y="94.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="275.0" y="105.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="52.0" y="279.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="59" y="389" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Mixer" name="mixer0" x="147.0" y="393.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="fanin0/out" inlet="intbox3/intIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="fanin0/in1" vertices="57.0 154.0 58.0 154.0" />
+<CONNECTION  outlet="intbox1/intOut" inlet="fanin0/in2" vertices="167.0 152.5 77.0 152.5" />
+<STICKY  x="230.0" y="180.0" width="139.0" height="80.0" color="#FFFF77" text="Connect another
+transform to the
+remaining inlet, and a
+new one will automatically
+appear." fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="218.0" y="289.0" width="162.0" height="80.0" color="#FFFF77" text="FanIn connections are always
+either/or, even if the type
+is Samples.  Use a Mixer
+to sum multiple signals into
+a single inlet" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="173.0" y="62.0" color="#FFFFFF" text="Use a FanIn to connect multiple outlets to a single inlet" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="54.0" y="16.0" color="#FFFFFF" text="FanIn" fontface="Arial" fontsize="18" /><TITLE  x="121.0" y="365.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Tanh" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Tanh" name="tanh0" x="43.0" y="188.0" width="37" height="25" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="43.0" y="132.0" width="89" height="23" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+
+<STATE name="floatbox0/min" value="-1" />
+
+<STATE name="floatbox0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="43.0" y="252.0" width="89" height="23" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="215.0" y="127.0" width="61" height="38" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Tanh" name="tanh2" x="215.0" y="250.0" width="40" height="25" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="214.0" y="322.0" width="124" height="58" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="215.0" y="198.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.136677" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="384.0" y="118.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="3" />
+</TRANSFORM>
+<CONNECTION  outlet="tanh0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="tanh0/in" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="tanh2/out" inlet="out0/mix" vertices="221.0 303.5 340.0 303.5" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="tanh2/in" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="390.0 192.0 253.0 192.0" />
+<STICKY  x="35.0" y="64.0" width="123.0" height="47.0" color="#FFFF77" text="Compute the hyperbolic
+tangent of a number" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="215.0" y="52.0" width="119.0" height="51.0" color="#FFFF77" text="Tanh is a handy 
+distortion function
+for signals" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="66.0" y="27.0" color="#FFFFFF" text="Tanh" fontface="Arial" fontsize="18" /><TITLE  x="420.0" y="96.0" color="#FFFFFF" text="Crank it up!" fontface="MS Sans Serif" fontsize="12" /></PATCH>
+</OSW>
+

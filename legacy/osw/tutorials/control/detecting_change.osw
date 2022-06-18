@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="tutorial_Change" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="VSlider" name="vslider0" x="343.0" y="208.0" width="29" height="110" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider0/min" value="0" />
+
+<STATE name="vslider0/max" value="1" />
+
+<STATE name="vslider0/resolution" value="0.01" />
+
+<STATE name="vslider0/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider1" x="534.0" y="207.0" width="29" height="110" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider1/min" value="0" />
+
+<STATE name="vslider1/max" value="1" />
+
+<STATE name="vslider1/resolution" value="0.01" />
+
+<STATE name="vslider1/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command=";lt; 0.5" name="lt0" x="343.0" y="357.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Truth" name="truth0" x="343.0" y="416.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Print" name="print1" x="343.0" y="548.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="String Below_0.5_now." name="string0" x="343.0" y="480.0" width="127" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="string0/string_value" value="Below_0.5_now." />
+</TRANSFORM>
+<TRANSFORM  command=";lt; 0.5" name="lt1" x="534.0" y="354.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Change" name="change0" x="534.0" y="413.0" width="42" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Truth" name="truth1" x="534.0" y="477.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="String Just_went_below_0.5." name="string1" x="534.0" y="543.0" width="157" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="string1/string_value" value="Just_went_below_0.5." />
+</TRANSFORM>
+<TRANSFORM  command="Print" name="print2" x="534.0" y="606.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="vslider0/floatOut" inlet="lt0/param1" vertices="" />
+<CONNECTION  outlet="vslider1/floatOut" inlet="lt1/param1" vertices="" />
+<CONNECTION  outlet="lt0/result" inlet="truth0/test" vertices="" />
+<CONNECTION  outlet="truth0/trigger" inlet="string0/unitIn" vertices="" />
+<CONNECTION  outlet="string0/stringOut" inlet="print1/to_print" vertices="" />
+<CONNECTION  outlet="lt1/result" inlet="change0/valueIn" vertices="" />
+<CONNECTION  outlet="change0/valueOut" inlet="truth1/test" vertices="" />
+<CONNECTION  outlet="truth1/trigger" inlet="string1/unitIn" vertices="" />
+<CONNECTION  outlet="string1/stringOut" inlet="print2/to_print" vertices="" />
+<STICKY  x="188.0" y="349.0" width="96.0" height="64.0" color="#FFFF77" fontface="Helvetica" fontsize="8">For the slider on the 
+left, we detect all
+slider values that are 
+less than 0.5 and
+print out a statement.</STICKY><STICKY  x="655.0" y="348.0" width="142.0" height="67.0" color="#FFFF77" fontface="Helvetica" fontsize="8"> For the slider on the right, we
+detect only the change in output
+from values that are greater than 
+0.5 to values that are less than 
+0.5. We use the Change transform
+to do this.</STICKY><STICKY  x="71" y="59" width="216.0" height="51.0" color="#FFFF77" fontface="Helvetica" fontsize="8">You may find that there are certain cases where you want
+only one event triggered to indicate a change from one
+state to another. The Change transform can prove very
+useful in these cases.</STICKY></PATCH>
+</OSW>
+

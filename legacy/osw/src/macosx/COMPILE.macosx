@@ -1,0 +1,82 @@
+COMPILING AND INSTALLING THE SOURCE VERSION OF OSW FOR MAC OS X
+
+0.  REQUIREMENTS
+
+This source version of OSW should compile on Apple Mac OS X.
+The following additional software is required:
+
+*  gcc 3.1 or higher
+*  Tcl/Tk Aqua
+
+0.1  IMPORTANT ENVIRONMENT VARIABLE
+
+In the spirit of Apple's "Think Different" motto, dynamic libraries on OS X
+do not work quite the same way they do on Linux, Irix or indeed most other
+flavors of Unix.  The project is set up to compile and link using the OS X
+dynamic-library framework, but to run OSW you will need to define the 
+following environment variable:
+
+DYLD_BIND_AT_LAUNCH
+
+It doesn't seem to matter what you set it to, it just needs to be there.
+Without this variable, running oswbin or loading an external will hang.
+
+1.  INSTALLING REQUIRED PACKAGES
+
+1.1.  DOWNLOADING AND INSTALLING TCL/TK
+
+A self-installing version of Tcl/Tk, including Itcl is available from Apple's
+download site.  From the apple menu, select "Get Mac OSX Software."  Find
+the search box (it is not obvious on the current layout of Apple's website)
+and select "Tcl/Tk".  The "8.4.x" item should point you to Tcl/Tk Aqua.
+Follow the download and installation instructions provided.
+
+2.  Run configure
+
+If you have more than one version of gcc installed on your machine 
+(eg, gcc 2.95 and gcc 3.1), you may have to first switch to the appropriate
+version of gcc by typing "gcc_select 3".
+
+In the osw/src/macosx directory (that is presumably where you are now), run
+the standard "configure" script by typing "./configure".  
+
+Assuming all goes well, you should now have a Makefile in your
+osw/src/macosx directory.
+
+3.  COMPILE AND INSTALL THE CORE SYSTEM
+
+You are now ready to compile OSW.  If you haven't done so already, open
+a command prompt window and change to this directory (osw/src/macosx).  
+To build the core system, type:
+
+  make all
+
+The compilation may take a while, depending on CPU speed and available
+memory.  Because OSW makes extensive use of advanced C++ features, it
+often compiles slower than some other applications.  If your processor speed
+is less than about 700MHz, treat yourself to a snack, or maybe catch up
+on some reading.
+
+When the compilation is done, you will want to install OSW by typing:
+
+  make install
+
+This will copy the newly compiled binaries plus all the support files
+(scripts, documentation, data files, etc.) to the location you specified
+in System.mak.  Make sure you have write access to the install directory,
+or run the installatiion as root.
+
+4.  COMPILE THE EXTERNALS
+
+Not quite done yet!  You still have to make all the external transforms.
+From the command prompt, type:
+
+  make externals
+
+This will start a series of compilations, and pop up several instances of
+the "Externalizer", the graphical tool for building OSW externals.  During
+this build process, the Externalizer windows are fully automated, so you
+do not need to do anything.
+
+This step also installs the externals, so once its complete you're ready
+to go.  Simply type "osw", and have fun!

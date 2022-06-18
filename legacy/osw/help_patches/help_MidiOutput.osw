@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_MidiOutput" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FanIn" name="fanin0" x="141.0" y="162.0" width="45" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="95.0" y="80.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="0 noteon 60 80" />
+</TRANSFORM>
+<TRANSFORM  command="Unpack" name="unpack0" x="141.0" y="226.0" width="75" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MidiPack" name="midipack0" x="141.0" y="300.0" width="67" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="269.0" y="80.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="0 noteoff 60 0" />
+</TRANSFORM>
+<TRANSFORM  command="MidiOutput" name="midioutput0" x="141.0" y="367.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midioutput0/driver" value="/midiOut/0" />
+</TRANSFORM>
+<TRANSFORM  command="MidiSequencer " name="midisequencer0" x="359.0" y="273.0" width="105" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midisequencer0/tempo" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="MidiInput " name="midiinput0" x="374.0" y="218.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midiinput0/driver" value="unknown" />
+
+<STATE name="midiinput0/channel" value="-1" />
+
+<STATE name="midiinput0/status" value="all" />
+
+<STATE name="midiinput0/parameter" value="-1" />
+</TRANSFORM>
+<CONNECTION  outlet="fanin0/out" inlet="unpack0/toUnpack" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanin0/in1" vertices="101.0 138.0 147.0 138.0" />
+<CONNECTION  outlet="unpack0/out1" inlet="midipack0/channel" vertices="" />
+<CONNECTION  outlet="unpack0/out2" inlet="midipack0/status" vertices="165.0 280.0 168.0 280.0" />
+<CONNECTION  outlet="unpack0/out3" inlet="midipack0/first" vertices="183.0 280.0 189.0 280.0" />
+<CONNECTION  outlet="unpack0/out4" inlet="midipack0/second" vertices="201.0 280.0 210.0 280.0" />
+<CONNECTION  outlet="midipack0/messageOut" inlet="midioutput0/message" vertices="" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="fanin0/in2" vertices="275.0 138.0 168.0 138.0" />
+<STICKY  x="247" y="353" width="100.0" height="51.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+manually choose
+MIDI port</STICKY><TITLE  x="84.0" y="25.0" color="#FFFFFF" text="MidiOutput" fontface="Arial" fontsize="16" /><TITLE  x="161" y="59" color="#FFFFFF" text="Note On" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="339.0" y="60.0" color="#FFFFFF" text="Note Off" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="409.0" y="195.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

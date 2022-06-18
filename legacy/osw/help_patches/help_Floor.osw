@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Floor" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox" name="floatbox0" x="96.0" y="125.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+
+<STATE name="floatbox0/min" value="-2" />
+
+<STATE name="floatbox0/max" value="2" />
+</TRANSFORM>
+<TRANSFORM  command="Floor" name="sinh0" x="96.0" y="180.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="96.0" y="240.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="264.0" y="126.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+
+<STATE name="floatbox2/min" value="-2" />
+
+<STATE name="floatbox2/max" value="2" />
+</TRANSFORM>
+<TRANSFORM  command="Ceil" name="cosh0" x="264.0" y="181.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="264.0" y="241.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="1" />
+
+<STATE name="floatbox3/step" value="0.01" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="sinh0/in" vertices="" />
+<CONNECTION  outlet="sinh0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="cosh0/in" vertices="" />
+<CONNECTION  outlet="cosh0/out" inlet="floatbox3/floatIn" vertices="" />
+<STICKY  x="119.0" y="295.0" width="143.0" height="43.0" color="#FFFF77" text="You can also use Floor and
+Ceil on audio samples" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="80.0" y="68.0" width="130.0" height="32.0" color="#FFFF77" text="Floor returns the greatest
+integer less than a number" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="251" y="71" width="148.0" height="34.0" color="#FFFF77" text="Ceil returns the least
+integer greater than a number" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="95.0" y="34.0" color="#FFFFFF" text="Floor / Ceil" fontface="Arial" fontsize="18" /></PATCH>
+</OSW>
+

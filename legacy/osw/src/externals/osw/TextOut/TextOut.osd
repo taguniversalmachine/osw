@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<osw-external name="TextOut" package="osw">
+<description>Text file output</description>
+<copyright></copyright>
+<inlet name="fileIn" type="String" description="Name of file to read" persistent="1" />
+<inlet name="lineIn" type="String" description="Line of text to be written" />
+<inlet name="close" type="Unit" description="Close file" />
+<inlet name="reset" type="Unit" description="Return to beginning of file" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xfp = NULL;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">if (xfp) &#123;
+   fclose(xfp);
+&#125;</xblock>
+<xblock name="Private">FILE  *xfp;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="open_file" activators="fileIn" order="0" >
+
+
+
+if (xfp) &#123;
+  fclose(xfp);
+&#125;
+xfp = fopen(fileIn->c_str(),"w");
+if (!xfp) &#123;
+   Error ("Could not open " + fileIn + " for writing");
+&#125;
+</activation>
+<activation name="writeln" activators="lineIn" order="0" >
+
+
+
+fputs(lineIn->c_str(),xfp);
+</activation>
+<activation name="closenow" activators="close" order="0" >
+
+
+
+if (xfp) &#123;
+  fclose(xfp);
+  xfp = NULL;
+&#125;
+</activation>
+<activation name="resetfile" activators="reset" order="0" >
+
+
+
+if (xfp) &#123;
+  fclose(xfp);
+&#125;
+xfp = fopen(fileIn->c_str(),"w");
+if (xfp == NULL) &#123;
+   Error("Could not reopen " + fileIn + " for writing");
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">TextOut &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">TextOut opens the file named in the "fileIn" inlet for writing, erasing the file if it exists.  It then writes any lines of text received via the lineIn inlet until a unit is received via the "close" or "reset" inlets, or a new file is selected.</xblock>
+<xblock name="Links">TextIn FilePicker SampleWriter</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_TextOut" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="TextOut" name="textout0" x="116" y="296" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="textout0/fileIn" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="347.0" y="129.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="144.0" y="134.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FilePicker -save true" name="filepicker1" x="36.0" y="131.0" width="44" height="32" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="TextIn" name="textin0" x="124" y="381" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="textin0/fileIn" value="" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="button0/unitOut" inlet="textout0/close" vertices="353.0 233.5 160.0 233.5" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="textout0/lineIn" vertices="150.0 232.0 141.0 232.0" />
+&lt;CONNECTION  outlet="filepicker1/fileOut" inlet="textout0/fileIn" vertices="42.0 234.5 122.0 234.5" />
+&lt;TITLE  x="62.0" y="105.0" color="#FFFFFF" text="choose a file" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="208.0" y="107.0" color="#FFFFFF" text="enter lines of text" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="359.0" y="104.0" color="#FFFFFF" text="and close it" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="80.0" y="36.0" color="#FFFFFF" text="TextOut" fontface="MS Sans Serif" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

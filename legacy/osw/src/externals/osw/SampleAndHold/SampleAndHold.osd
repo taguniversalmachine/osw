@@ -1,0 +1,96 @@
+<?xml version="1.0" ?>
+<osw-external name="SampleAndHold" package="osw">
+<description>Sample-and-hold function</description>
+<copyright>
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="audio input signal" />
+<inlet name="controlIn" type="Samples" description="Control signal input" />
+<inlet name="threshold" type="Float" default="0.5" description="Threshold for control signal" persistent="1" />
+<outlet name="samplesOut" type="Samples" description="output signal" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xlastinput = xlastoutput = 0.0f;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Float xlastinput, xlastoutput;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="do_sah" activators="controlIn samplesIn" order="0" >
+Samples samples(samplesIn->size());
+
+// controlIn and samplesIn had better be the same size!
+
+for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+   if (controlIn&#91;i&#93; >= threshold &amp;&amp; xlastinput &lt; threshold) &#123;
+	xlastoutput = samplesIn&#91;i&#93;;
+   &#125;
+   xlastinput = controlIn&#91;i&#93;;
+   samples&#91;i&#93; = xlastoutput; 
+&#125;
+
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">SampleAndHold &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>SampleAndHold records the value of the incoming audio signal &lt;b>samplesIn&lt;/b> whenever the value of the incoming control signal &lt;b>controlIn&lt;/b> exceeds &lt;b>threshold&lt;/b>.  The recorded value is then &amp;quot;held&amp;quot; and output as a constant signal value until the next time the control signal crosses the threshold.&lt;/p>
+&lt;p>If a periodic ramping signal such as a Phasor is used as a control, the input signal will be subsampled at the frequency of the control signal.  Of course, the control signal need not be periodic.&lt;/p>
+&lt;p>Sample-and-hold modules were common in many modular analog synthesizers and were often used for creating complex control signals.&lt;/p></xblock>
+<xblock name="Links">Phaser Wavetable</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_SampleAndHold" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  name="pinknoise0" x="97.0" y="276.0" width="75" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>PinkNoise&lt;/COMMAND>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="whitenoise0" x="296.0" y="278.0" width="80" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>WhiteNoise&lt;/COMMAND>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="phasor0" x="201.0" y="277.0" width="59" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>Phasor&lt;/COMMAND>
+
+&lt;STATE name="phasor0/frequency" value="5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="188.0" y="208.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="5" />
+
+&lt;STATE name="floatbox0/max" value="50" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="sampleandhold0" x="148.0" y="379.0" width="108" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>SampleAndHold&lt;/COMMAND>
+
+&lt;STATE name="sampleandhold0/threshold" value="0.5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="'*" name="qmul0" x="260.0" y="470.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="241.0" y="557.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="pinknoise0/samplesOut" inlet="sampleandhold0/samplesIn" vertices="103.0 353.0 154.0 353.0" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="qmul0/param2" vertices="" />
+&lt;CONNECTION  outlet="phasor0/samplesOut" inlet="sampleandhold0/controlIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="phasor0/frequency" vertices="194.0 260.5 235.0 260.5" />
+&lt;CONNECTION  outlet="sampleandhold0/samplesOut" inlet="qmul0/param1" vertices="154.0 443.0 266.0 443.0" />
+&lt;CONNECTION  outlet="qmul0/result" inlet="out0/mix" vertices="266.0 532.0 316.0 532.0" />
+&lt;TITLE  x="242.0" y="182.0" color="#FFFFFF" text="sample-and-hold frequency" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="183" y="60" color="#FFFFFF" text="SampleAndHold" fontface="Arial" fontsize="14" />
+&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

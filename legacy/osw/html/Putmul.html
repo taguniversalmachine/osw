@@ -1,0 +1,67 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">Put* <a href="http://localhost:7775/OSW_DIR/help_patches/help_Putmul.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Exchange data between locations without connections.</p>
+<h3 class="title">Syntax</h3>
+<p>Put* <i>pattern</i></p>
+<h3 class="title">Arguments</h3>
+<ul><dl>
+<dt><i>pattern</i></dt>
+<dd>Pattern of the variable(s) to receive the data (required).</dd>
+</dl></ul>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>input</b></dt>
+<dd>Data to be sent to variables that match <i>pattern</i>.</dd>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+None
+</ul>
+<h3 class="title">Comments</h3>
+<p><i>Pattern</i> can be any valid <a href="osc.htm">OpenSound Control (OSC)</a> pattern, with wildcards, ranges, etc.  It will be matched against the names of inlets, outlets and state variables of other transforms.  It can match the variable name used by one or more <a href="Get.html">Get</a> transforms.  Unlike OSC address, the scope of the name can be relative.  The address is relative to the current patch unless it begins with a "/" character.</p>
+<p>When a new value is received by the Put* transform, it finds all variables that match the address and sets them to the new value.  If a matched variable is an inlet of another transform, the transform will be activated as if it received data via a connection to the inlet.  If a matched variable is  used by one or more Get transforms, they will all be activated, even when they are in other patches.</p>
+<p>Put can accept data of any type, although care should be taken when it is used on existing variables (e.g., inlets) of specific types.</p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="Get.html">Get</a>&nbsp;<a href="Put.html">Put</a></dt>
+<dt><a href="OSCDispatch.html">OSCDispatch</a></dt>
+<dt><a href="osc.htm">OSC support in OSW</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

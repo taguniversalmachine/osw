@@ -1,0 +1,65 @@
+<html>
+<head>
+	<meta name="Author" content="Amar Chaudhary">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="Open Sound World MIDI Sysex Output">
+<title>MidiOutput</title>
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white"
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">SysexOutput <a href="http://localhost:7775/OSW_DIR/help_patches/help_SysexOutput.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Output MIDI system-exclusive messages</p>
+<h3 class="title">Syntax</h3>
+<p>SysexOutput&nbsp;&nbsp;<i>options</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><b>-driver</b></dt>
+<dd>The name of a MIDI device to use for output.  MIDI output device names are of the form /midiOut/<i>n</i></dd>
+<dd>Type: String</dd>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>message</b></dt>
+<dd>MIDI message to output</dd>
+<dd>Type: MidiMessage</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>You can double click the SysexOutput transform to view and select from a list of available MIDI output devices.</p>
+<p>Sysem-exclusive messages are streams of bytes beginning with F0 hexidecimal and ending with F7 (also hexidecimal).  The actual messages are specific to different MIDI devices such as synthesizers, effects processors or computer soundcards.  Consult the manuals for your devices to find the actual messages supported.  To enter system-exclusive message streams, create a list (using any of the List transforms or a <a href="osw/MessageBox.html">MessageBox</a> and the <a href="raw/List2Raw">List2Raw</a> transform.</p>
+<h3 class="title">Known Issues</h3>
+MIDI Sysex output is currently available on Windows and Linux platforms.  There is currently no support for incoming system-exclusive messages.
+<h3 class="title">See Also</h3>
+<a href="MidiOutput.html">MidiOutput</a><br>
+<a href="raw/List2Raw.html">List2Raw</a><br>
+<a href="osw/MessageBox.html">MessageBox</a><br>
+<a href="making_music.htm">Notes and MIDI</a><br>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

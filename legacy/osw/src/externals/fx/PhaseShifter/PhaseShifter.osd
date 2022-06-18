@@ -1,0 +1,155 @@
+<?xml version="1.0" ?>
+<osw-external name="PhaseShifter" package="fx">
+<description>PhaseShifter (phaser) effect</description>
+<copyright>
+
+
+
+
+
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="input samples" />
+<inlet name="feedback" type="Float" default="0" description="Feedback gain" persistent="1" />
+<inlet name="lfo_freq" type="Float" default="0.25" description="Frequency of LFO function" persistent="1" />
+<inlet name="lfo_depth" type="Float" default="0.5" description="Depth of LFO function" persistent="1" />
+<outlet name="samplesOut" type="Samples" description="Output samples from effect" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">krate = UInteger(NumberOfSamples) / Float(SampleRate);
+xprevious = 0.0f;
+xphase = 0.0f;</xblock>
+<xblock name="PreConstructor">xlfo(LFO&lt;Float>::TRIANGLE),
+xallpass(STAGES)</xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">std::vector&lt;Allpass> xallpass;
+LFO&lt;Float>           xlfo;
+
+Float   krate, xphase, xprevious;
+
+void SampleRateHasChanged () &#123;
+   krate = UInteger(NumberOfSamples) / Float(SampleRate);
+&#125;
+
+void NumberOfSamplesHasChanged () &#123;
+   krate = UInteger(NumberOfSamples) / Float(SampleRate);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">#define STAGES 		6</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="do_phaser" activators="samplesIn" order="0" >
+
+
+
+xphase += lfo_freq *  krate;
+Float gain = lfo_depth * xlfo(xphase);
+for (int i = 0; i &lt; STAGES; ++i) &#123;
+   xallpass&#91;i&#93;.SetGain(gain);
+&#125;
+Samples samples(samplesIn->size());
+for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+  Float value = samplesIn&#91;i&#93; + feedback * xprevious;
+  for (int j = 0; j &lt; STAGES; ++j) &#123;
+	value = xallpass&#91;j&#93;(value);
+  &#125;
+  xprevious = value;
+  samples&#91;i&#93; = value + samplesIn&#91;i&#93;;
+&#125;
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">PhaseShifter &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>The phase shifter consists of a series of allpass filters that produce several notches in the frequency spectrum of incoming audio signals.  A low-frequency oscillator (LFO) is used to sweep the notches up and down in frequency, resulting in the chacteristic &amp;quot;phasing&amp;quot; sound.&lt;/p>
+&lt;p>More information on phase shifting can be found &lt;a href="http://www.harmony-central.com/Effects/Articles/Phase_Shifting/">here&lt;/a>.&lt;/p></xblock>
+<xblock name="Links">Allpass fx::Flanger</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">phaser phase shifter allpass</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_PhaseShifter" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="fx::PhaseShifter" name="phaseshifter0" x="216.0" y="267.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="phaseshifter0/feedback" value="0.3" />
+
+&lt;STATE name="phaseshifter0/lfo_freq" value="1" />
+
+&lt;STATE name="phaseshifter0/lfo_depth" value="0.75" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WhiteNoise" name="whitenoise0" x="216.0" y="152.0" width="80" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="216" y="337" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="0.104632" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="215" y="429" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="479.0" y="308.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="348" y="157" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="495" y="156" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="10" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox2" x="638" y="157" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox2/floatIn" value="0" />
+
+&lt;STATE name="floatbox2/max" value="1" />
+
+&lt;STATE name="floatbox2/min" value="0" />
+
+&lt;STATE name="floatbox2/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Allpass" name="allpass0" x="660" y="439" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="allpass0/gain" value="0" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="phaseshifter0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="phaseshifter0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="222 401 290 401" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="485.0 391.0 371.5 391.0 371.5 322.0 258.0 322.0" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="phaseshifter0/feedback" vertices="354 230.0 264.0 230.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="phaseshifter0/lfo_freq" vertices="501 229.5 306.0 229.5" />
+&lt;CONNECTION  outlet="floatbox2/floatOut" inlet="phaseshifter0/lfo_depth" vertices="644 230.0 348.0 230.0" />
+&lt;TITLE  x="515.0" y="287.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="410.0" y="136.0" color="#FFFFFF" text="feedback" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="549.0" y="133.0" color="#FFFFFF" text="frequency" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="693.0" y="137.0" color="#FFFFFF" text="depth" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="298.0" y="55.0" color="#FFFFFF" text="fx::PhaseShifter" fontface="Arial" fontsize="16" />
+&lt;TITLE  x="694.0" y="416.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+&lt;HYPERLINK  x="709.0" y="528.0" color="#0000FF" link="audio/phase_shifter_6_demo" fontface="MS Sans Serif" fontsize="10" />
+&lt;HYPERLINK  x="708.0" y="506.0" color="#0000FF" link="audio/phase_shifter_1_demo" fontface="MS Sans Serif" fontsize="10" />
+&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

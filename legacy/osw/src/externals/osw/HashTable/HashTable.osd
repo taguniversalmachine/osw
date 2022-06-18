@@ -1,0 +1,251 @@
+<?xml version="1.0" ?>
+<osw-external name="HashTable" package="osw">
+<description>A string-indexed table of lists</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="datasource" />
+<inlet name="lookup_index" type="String" description="Index to lookup in table" />
+<inlet name="add_index" type="String" description="Index for new entry" />
+<inlet name="add_value" type="List" description="List value of new entry" />
+<inlet name="delete_index" type="String" description="Index of entry to delete from table" />
+<inlet name="clear" type="Unit" description="clear table" />
+<outlet name="entry" type="List" description="value of requested table entry" />
+<state name="hash_string" type="String" description="The hash table as a single string" />
+<state name="stringify" type="Integer" description="dump table to string" />
+<inherited-state name="src" type="String" default="none" description="External Data Source" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog">oswSet &#36;transformPath/stringify 1
+set ds &#91;iwidgets::dialogshell .ds#auto -title &#36;transformPath&#93;
+set dsite &#91;&#36;ds childsite&#93;
+&#36;ds add OK -text "OK" -command "ParseHashtable &#92;&#91; &#36;dsite.text get 0.0 end &#92;&#93; &#36;transformPath ; destroy &#36;ds"
+&#36;ds add Cancel -text "Cancel" -command "destroy &#36;ds"
+iwidgets::scrolledtext &#36;dsite.text 
+#-width 50 -height 20
+pack &#36;dsite.text -fill both -expand yes
+&#36;dsite.text insert end &#91;oswGet &#36;transformPath/hash_string&#93;
+&#36;ds activate
+bind &#36;ds &lt;Return> &#123;&#125;</xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">
+#ifdef OSW_HASH_MAP_TRAITS
+typedef stl::hash_map&lt;string,osw::List > hashtable_type;
+#else
+typedef stl::hash_map&lt;string,osw::List,stl::hash&lt;string>,stl::equal_to&lt;string> > hashtable_type;
+#endif
+hashtable_type xtable;
+
+string GetData () const &#123;
+  ostringstream os;
+  for (hashtable_type::const_iterator p = xtable.begin();
+     p != xtable.end();
+     ++p) &#123;
+     os &lt;&lt; p->first &lt;&lt; ", " &lt;&lt; p->second &lt;&lt; ";&#92;n";
+  &#125;
+  return os.str();
+&#125;
+
+void SetData (const string &amp;adata) &#123;
+
+  int q;
+  int p = 0;
+  while (isspace(adata&#91;p&#93;)) &#123;
+    ++p;
+  &#125;
+  for (q = adata.find(',',p);
+       q != string::npos;
+       q = adata.find(',',p)) &#123;
+       cout &lt;&lt; "pos " &lt;&lt; p &lt;&lt; ' ' &lt;&lt; q &lt;&lt; endl;
+       string new_index(adata.begin()+p,adata.begin()+q);
+       cout &lt;&lt; new_index &lt;&lt; endl;
+       p = q + 1;
+       while (isspace(adata&#91;p&#93;)) &#123;
+	  ++p;
+       &#125;
+       q = adata.find(';',p);
+       string valstr(adata.begin()+p,adata.begin()+q);
+       cout &lt;&lt; new_index &lt;&lt; " = " &lt;&lt; valstr &lt;&lt; endl;
+       istringstream is(valstr);
+       List new_value;
+       is >> new_value;
+       xtable&#91;new_index&#93; = new_value;
+       cout &lt;&lt; new_value &lt;&lt; endl;
+       p = q + 1;
+       while (isspace(adata&#91;p&#93;)) &#123;
+	  ++p;
+       &#125;
+       cout &lt;&lt; "done&#92;n";
+  &#125;
+
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">proc ParseHashtable &#123;toParse transform&#125; &#123;
+  oswSet &#36;transform/clear &lt;unit>
+  set parsed &#123;&#125;
+  set newEntry 1
+  foreach token &#36;toParse &#123;
+      set token &#91;string trim &#36;token "&#92;n&#92;r&#92;t "&#93;
+      if &#123;&#36;newEntry&#125; &#123;
+	  set index &#91;string trimright &#36;token ","&#93;
+	  set value &#123;&#125;
+	  set newEntry 0
+      &#125; else &#123;
+	  if &#123;&#91;string match "*;" &#36;token&#93;&#125; &#123;
+	      lappend value &#91;string trimright &#36;token ";"&#93;
+	      oswSet &#36;transform/add_index &#36;index
+              oswSet &#36;transform/add_value &#36;value
+              set newEntry 1
+	  &#125; else &#123;
+	      lappend value &#36;token
+	  &#125;
+      &#125;
+  &#125;
+&#125;</xblock>
+<activation name="do_stringify" activators="stringify" order="" >
+
+
+
+ostringstream os;
+for (hashtable_type::iterator p = xtable.begin();
+     p != xtable.end();
+     ++p) &#123;
+   os &lt;&lt; p->first &lt;&lt; ", " &lt;&lt; p->second &lt;&lt; ";&#92;n";
+&#125;
+hash_string = os.str();
+</activation>
+<activation name="insert" activators="add_index add_value" order="" >
+
+
+
+xtable&#91;add_index&#93; = add_value;
+</activation>
+<activation name="lookup" activators="lookup_index" order="" >
+
+
+
+hashtable_type::iterator found = xtable.find(lookup_index);
+if (found != xtable.end()) &#123;
+   entry = found->second;
+&#125;
+</activation>
+<activation name="clear_table" activators="clear" order="" >
+
+
+
+xtable.erase(xtable.begin(),xtable.end());
+</activation>
+<activation name="remove_entry" activators="delete_index" order="" >
+
+
+
+xtable.erase(delete_index);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">HashTable &lt;i>name options&lt;/i></xblock>
+<xblock name="LongDescription"> The HashTable transform is a convenience for users of Max/MSP "coll" objects.  It has been largely supplanted by the blob data type and its transforms.</xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_HashTable" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="HashTable" name="hashtable0" x="123.0" y="282.0" width="147" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="123.0" y="146.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="animals" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="OptionBox" name="optionbox0" x="123.0" y="82.0" width="149" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="optionbox0/options" value="numbers animals pi months" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="320" y="118" width="105" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="messagebox0" x="457.0" y="118.0" width="124" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="messagebox0/message" value="apple orange" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox2" x="334" y="224" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox2/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox3" x="123.0" y="350.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox3/message" value="" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="hashtable0/entry" inlet="msgbox3/messageIn" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="hashtable0/lookup_index" vertices="" />
+&lt;CONNECTION  outlet="optionbox0/selectOut" inlet="msgbox0/messageIn" vertices="" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="hashtable0/add_index" vertices="326.0 189.0 167.0 189.0" />
+&lt;CONNECTION  outlet="messagebox0/messageOut" inlet="hashtable0/add_value" vertices="463.0 164.0 463.0 170.0 330.0 170.0 330.0 192.0 197.0 192.0" />
+&lt;CONNECTION  outlet="msgbox2/messageOut" inlet="hashtable0/delete_index" vertices="239.0 263.0" />
+&lt;STICKY  x="356.0" y="183.0" width="72.0" height="22.0" color="#FFFF77" text="or delete it" fontface="" fontsize="8">&lt;/STICKY>&lt;STICKY  x="366.0" y="56.0" width="126.0" height="39.0" color="#FFFF77" text="Add a new name-value
+pair to the table" fontface="" fontsize="8">&lt;/STICKY>&lt;STICKY  x="133.0" y="37.0" width="136.0" height="26.0" color="#FFFF77" text="lookup values by name" fontface="" fontsize="8">&lt;/STICKY>&lt;STICKY  x="25.0" y="272.0" width="75" height="50" color="#FFFF77" text="Double-click
+to edit
+manually" fontface="" fontsize="8">&lt;/STICKY>&lt;TITLE  x="58.0" y="23.0" color="#FFFFFF" text="HashTable" fontface="Arial" fontsize="14" />&lt;TITLE  x="58.0" y="23.0" color="#FFFFFF" text="HashTable" fontface="Arial" fontsize="14" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

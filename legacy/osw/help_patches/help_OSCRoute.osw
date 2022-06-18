@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_OSCRoute" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCRoute /fruit/pear /fruit/banana /animal/cat" name="oscroute0" x="105.0" y="297.0" width="292" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="173.0" y="222.0" width="75" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="46.0" y="381.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="239.0" y="384.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox3" x="419.0" y="384.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox3/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="OSCDispatch" name="oscdispatch0" x="113.0" y="483.0" width="76" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="55" y="110" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="/fruit/banana 3" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox4" x="235.0" y="108.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox4/message" value="/fruit/pear 4 5" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox5" x="574.0" y="107.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox5/message" value="/fruit/* 7" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox6" x="402.0" y="107.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox6/message" value="/animal/cat meow" />
+</TRANSFORM>
+<CONNECTION  outlet="oscroute0/out1" inlet="msgbox1/messageIn" vertices="111.0 356.5 52.0 356.5" />
+<CONNECTION  outlet="oscroute0/out2" inlet="msgbox2/messageIn" vertices="256.0 358.0 245.0 358.0" />
+<CONNECTION  outlet="oscroute0/out3" inlet="msgbox3/messageIn" vertices="401.0 358.0 425.0 358.0" />
+<CONNECTION  outlet="fanin0/out" inlet="oscroute0/messageIn" vertices="179.0 277.0 111.0 277.0" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanin0/in1" vertices="61.0 183.0 179.0 183.0" />
+<CONNECTION  outlet="msgbox4/messageOut" inlet="fanin0/in2" vertices="241.0 182.0 197.0 182.0" />
+<CONNECTION  outlet="msgbox5/messageOut" inlet="fanin0/in4" vertices="580.0 181.5 233.0 181.5" />
+<CONNECTION  outlet="msgbox6/messageOut" inlet="fanin0/in3" vertices="408.0 181.5 215.0 181.5" />
+<TITLE  x="124.0" y="366.0" color="#FFFFFF" text="pear" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="301.0" y="367.0" color="#FFFFFF" text="banana" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="493.0" y="369.0" color="#FFFFFF" text="cat" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="149.0" y="465.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="132.0" y="78.0" color="#FFFFFF" text="send number to banana" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="107.0" y="19.0" color="#FFFFFF" text="OSCRoute" fontface="Arial" fontsize="14" /><TITLE  x="316.0" y="81.0" color="#FFFFFF" text="send pair to pear" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="479.0" y="78.0" color="#FFFFFF" text="send string to cat" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="640.0" y="76.0" color="#FFFFFF" text="send number to both fruits" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

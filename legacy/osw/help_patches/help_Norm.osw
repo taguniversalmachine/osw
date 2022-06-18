@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Norm" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox" name="floatbox0" x="108.0" y="128.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="intbox0" x="229.0" y="127.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/floatIn" value="0" />
+
+<STATE name="intbox0/max" value="2" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="Complex" name="complex0" x="108.0" y="216.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="complex0/real" value="0" />
+
+<STATE name="complex0/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="108.0" y="279.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="(0,0)" />
+</TRANSFORM>
+<TRANSFORM  command="Complex" name="complex1" x="460" y="218" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="complex1/real" value="0" />
+
+<STATE name="complex1/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleComplex" name="doublecomplex0" x="460.0" y="289.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublecomplex0/real" value="0" />
+
+<STATE name="doublecomplex0/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Norm" name="norm0" x="108.0" y="344.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="108.0" y="428.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="0" />
+
+<STATE name="floatbox3/max" value="1" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Abs" name="abs0" x="460.0" y="352.0" width="43" height="26" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Angle" name="angle0" x="460.0" y="417.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="complex0/real" vertices="" />
+<CONNECTION  outlet="intbox0/floatOut" inlet="complex0/imag" vertices="235.0 188.0 139.0 188.0" />
+<CONNECTION  outlet="complex0/complexOut" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="norm0/in" vertices="" />
+<CONNECTION  outlet="norm0/out" inlet="floatbox3/floatIn" vertices="" />
+<TITLE  x="133" y="97" color="#FFFFFF" text="real" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="270.0" y="99.0" color="#FFFFFF" text="imag" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="335.0" y="289.0" color="#FFFFFF" text="complex representation" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="480.0" y="180.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="132.0" y="48.0" color="#FFFFFF" text="Norm" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

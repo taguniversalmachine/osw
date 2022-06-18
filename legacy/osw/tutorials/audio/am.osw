@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="am" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Sinewave" name="sinewave0" x="52.0" y="286.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="587.33" />
+</TRANSFORM>
+<TRANSFORM  command="Keyboard " name="keyboard0" x="27.0" y="47.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="keyboard0/octave" value="5" />
+</TRANSFORM>
+<TRANSFORM  command="Midi2Freq " name="midi2freq0" x="51.0" y="199.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midi2freq0/freq_ref" value="440" />
+
+<STATE name="midi2freq0/midi_ref" value="69" />
+
+<STATE name="midi2freq0/degrees" value="12" />
+</TRANSFORM>
+<TRANSFORM  command="'*" name="qmul0" x="52.0" y="384.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Square" name="square0" x="438.0" y="414.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="square0/frequency" value="652" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave1" x="284.0" y="415.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave1/freq" value="652" />
+</TRANSFORM>
+<TRANSFORM  command="Phasor " name="phasor0" x="368.0" y="414.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="phasor0/frequency" value="652" />
+</TRANSFORM>
+<TRANSFORM  command="Triangle" name="triangle0" x="594.0" y="414.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="triangle0/frequency" value="652" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="626.0" y="104.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="1" />
+
+<STATE name="hslider0/max" value="1000" />
+
+<STATE name="hslider0/resolution" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="626.0" y="224.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="652" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="OptionBox" name="optionbox0" x="433.0" y="106.0" width="149" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="optionbox0/options" value="sine saw square triangle" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="626.0" y="304.0" width="75" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="TimeMachine" name="tm0" x="283.0" y="174.0" width="60" height="59" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Switch" name="switch0" x="284.0" y="260.0" width="75" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="51.0" y="602.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="52.0" y="491.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.367315" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="132.0" y="465.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Expr $s1/2.0 + 0.5" name="expr3" x="244.0" y="486.0" width="103" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr $s1/2.0 + 0.5" name="expr4" x="438.0" y="484.0" width="120" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr $s1/2.0 + 0.5" name="expr5" x="594.0" y="484.0" width="120" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin1" x="350.0" y="584.0" width="75" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="qmul0/param1" vertices="" />
+<CONNECTION  outlet="keyboard0/noteOut" inlet="midi2freq0/midi_note" vertices="33.0 172.0 57.0 172.0" />
+<CONNECTION  outlet="midi2freq0/frequency" inlet="sinewave0/freq" vertices="57.0 260.0 117.0 260.0" />
+<CONNECTION  outlet="qmul0/result" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="square0/samplesOut" inlet="expr4/s1" vertices="" />
+<CONNECTION  outlet="sinewave1/samplesOut" inlet="expr3/s1" vertices="290.0 474.5 250.0 474.5" />
+<CONNECTION  outlet="phasor0/samplesOut" inlet="fanin1/in2" vertices="" />
+<CONNECTION  outlet="triangle0/samplesOut" inlet="expr5/s1" vertices="" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="optionbox0/indexOut" inlet="switch0/switch" vertices="586.0 199.5 363.0 199.5" />
+<CONNECTION  outlet="fanout1/out1" inlet="sinewave1/freq" vertices="632.0 377.0 349.0 377.0" />
+<CONNECTION  outlet="fanout1/out2" inlet="phasor0/frequency" vertices="650.0 376.5 397.0 376.5" />
+<CONNECTION  outlet="fanout1/out3" inlet="square0/frequency" vertices="668.0 376.5 488.0 376.5" />
+<CONNECTION  outlet="fanout1/out4" inlet="triangle0/frequency" vertices="686.0 376.5 656.0 376.5" />
+<CONNECTION  outlet="tm0/timeOut" inlet="switch0/in" vertices="289.0 251.5 290.0 251.5" />
+<CONNECTION  outlet="switch0/out1" inlet="sinewave1/timeIn" vertices="" />
+<CONNECTION  outlet="switch0/out2" inlet="phasor0/timeIn" vertices="308.0 354.5 374.0 354.5" />
+<CONNECTION  outlet="switch0/out3" inlet="square0/timeIn" vertices="326.0 354.5 444.0 354.5" />
+<CONNECTION  outlet="switch0/out4" inlet="triangle0/timeIn" vertices="344.0 354.5 600.0 354.5" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="58.0 564.0 177.0 564.0" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="138.0 548.0 114.0 548.0 114.0 476.0 90.0 476.0" />
+<CONNECTION  outlet="expr3/out" inlet="fanin1/in1" vertices="250.0 552.0 356.0 552.0" />
+<CONNECTION  outlet="expr4/out" inlet="fanin1/in3" vertices="444.0 551.5 392.0 551.5" />
+<CONNECTION  outlet="expr5/out" inlet="fanin1/in4" vertices="600.0 551.5 410.0 551.5" />
+<CONNECTION  outlet="fanin1/out" inlet="qmul0/param2" vertices="356.0 634.0 223.0 634.0 223.0 369.0 90.0 369.0" />
+<STICKY  x="678.0" y="412.0" width="110.0" height="51.0" color="#FFFF77" fontface="Helvetica" fontsize="8">All signals
+vary between 0
+and 1.</STICKY><TITLE  x="88.0" y="272.0" color="#FFFFFF" text="carrier" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="685.0" y="88.0" color="#FFFFFF" text="mod freq" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="502.0" y="90.0" color="#FFFFFF" text="mod wave" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="166.0" y="446.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="138.0" y="24.0" color="#FFFFFF" text="Amplitude Modulation" fontface="MS Sans Serif" fontsize="16" /><HYPERLINK  x="681.0" y="558.0" color="#0000FF" link="audio/fm" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="679.0" y="582.0" color="#0000FF" link="audio/step_modulated_sinewave" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<osw-external name="Slammer" package="osw">
+<description>Non-real-time Clock Source</description>
+<copyright>
+
+
+
+
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="start" type="Unit" description="Start clock" />
+<inlet name="stop" type="Unit" description="Stop clock" />
+<inlet name="reset" type="Unit" description="Reset clock" />
+<inlet name="start_time" type="Float" default="0.0" description="Start time of clock (used by reset)" persistent="1" />
+<inlet name="stop_time" type="Float" default="-1" description="Time to automatically stop clock" persistent="1" />
+<outlet name="timeOut" type="Time" description="Clock output" />
+<outlet name="clockStopped" type="Unit" description="Emitted when clock stops" />
+<state name="period" type="Double" default="0" description="Period of clock ticks (zero for default)" persistent="1" />
+<state name="internal" type="Unit" description="Internal variable - do not use" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">if (period == 0.0) &#123;
+  period = Double((UInteger) NumberOfSamples / (Float)SampleRate);
+&#125;
+internal.SetParallel();
+xtime = (Float) start_time;
+xon = false;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Boolean xon;
+Double  xtime;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="dointernal" activators="internal" order="0" >
+
+
+if (xon) &#123;
+  xtime += period;
+  if (stop_time > 0 &amp;&amp; xtime > stop_time) &#123;
+	xon = false;
+	clockStopped = clockStopped;
+  &#125; else &#123;
+    timeOut = Time(xtime);
+    internal = internal;
+  &#125;
+&#125; else &#123;
+  clockStopped = clockStopped;
+&#125;
+</activation>
+<activation name="dostop" activators="stop" order="0" >
+
+
+xon = false;
+</activation>
+<activation name="dostart" activators="start" order="0" >
+
+
+if (xon) &#123;
+   return;
+&#125;
+xon = true;
+internal = internal;
+</activation>
+<activation name="doreset" activators="reset" order="0" >
+
+
+xtime = start_time;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Slammer &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>&lt;b>Slammer&lt;/b> outputs time values separated by &lt;i>period&lt;/i> as fast as possible.  It is intended for use in processing that depends on the virtual time system (e.g., almost all signal sources) but can does not need to be done in real time.&lt;/p>
+&lt;p>Slammer starts outputting values whenever it receives a unit via its &lt;b>start&lt;/b> inlet and stops when a unit is received via the &lt;b>stop&lt;/b> inlet or the value of the inlet/parameter &lt;b>stop_time&lt;/b> has been exceeded.  When output stops, a unit is emitted via &lt;b>clockStopped&lt;/b> outlet.&lt;/p></xblock>
+<xblock name="Links">Ticker TimeMachine</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Slammer" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Slammer " name="slammer0" x="170.0" y="196.0" width="75" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="slammer0/start_time" value="0" />
+
+&lt;STATE name="slammer0/stop_time" value="-1" />
+
+&lt;STATE name="slammer0/period" value="0.00145125" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="DoubleBox " name="doublebox0" x="170.0" y="307.0" width="132" height="36" color="darkgrey" fontface="" fontsize="16">
+
+&lt;STATE name="doublebox0/max" value="1" />
+
+&lt;STATE name="doublebox0/min" value="0" />
+
+&lt;STATE name="doublebox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="188.0" y="125.0" width="28" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="110.0" y="123.0" width="31" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="green" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="421.0" y="131.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name ClockStopped" name="ClockStopped" x="243.0" y="259.0" width="154" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="TimeMachine " name="timemachine0" x="223.0" y="448.0" width="75" height="59" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Ticker" name="ticker0" x="334" y="449" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="ticker0/interval" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button2" x="243.0" y="125.0" width="28" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button2/color" value="blue" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="312" y="131" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="slammer0/timeOut" inlet="doublebox0/doubleIn" vertices="" />
+&lt;CONNECTION  outlet="slammer0/clockStopped" inlet="ClockStopped/to_print" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="slammer0/stop" vertices="" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="slammer0/start" vertices="116.0 180.0 176.0 180.0" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="slammer0/stop_time" vertices="427.0 180.0 248.0 180.0" />
+&lt;CONNECTION  outlet="button2/unitOut" inlet="slammer0/reset" vertices="249.0 180.0 212.0 180.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="slammer0/start_time" vertices="318 180.0 230.0 180.0" />
+&lt;TITLE  x="104.0" y="44.0" color="#FFFFFF" text="Slammer" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="309.0" y="406.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="127.0" y="105.0" color="#FFFFFF" text="start" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="206.0" y="105.0" color="#FFFFFF" text="stop" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="263" y="104" color="#FFFFFF" text="reset" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="355.0" y="107.0" color="#FFFFFF" text="start time" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="465.0" y="109.0" color="#FFFFFF" text="stop time" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

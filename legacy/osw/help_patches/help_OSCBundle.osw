@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_OSCBundle" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCBundle " name="oscbundle0" x="140.0" y="316.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscbundle0/host" value="localhost" />
+
+<STATE name="oscbundle0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="141.0" y="254.0" width="60" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="141.0" y="116.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="/a/b/c 1 2 3" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="170.0" y="158.0" width="163" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="/fruit/banana hello 2.718281828459" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="220.0" y="201.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="/month/january 2i" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="415.0" y="180.0" width="44" height="45" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="Print -name bundled_msg" name="bundled_msg" x="302.0" y="447.0" width="148" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OSCSend " name="oscsend0" x="41.0" y="471.0" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend0/host" value="localhost" />
+
+<STATE name="oscsend0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="OSCListen " name="osclisten0" x="302.0" y="374.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="osclisten0/port" value="7005" />
+</TRANSFORM>
+<CONNECTION  outlet="fanin0/out" inlet="oscbundle0/messageIn" vertices="147.0 302.0 146.0 302.0" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanin0/in1" vertices="" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="fanin0/in2" vertices="176.0 223.0 166.0 223.0" />
+<CONNECTION  outlet="msgbox2/messageOut" inlet="fanin0/in3" vertices="226.0 244.5 185.0 244.5" />
+<CONNECTION  outlet="button0/unitOut" inlet="oscbundle0/sendBundle" vertices="421.0 275.5 214.0 275.5" />
+<CONNECTION  outlet="osclisten0/messageOut" inlet="bundled_msg/to_print" vertices="" />
+<STICKY  x="8.0" y="128.0" width="108.0" height="106.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Click on any of the
+MessageBoxes to
+add a message to
+the OSC bundle.
+Type any message
+of your own in the
+extra box.</STICKY><STICKY  x="392.0" y="82.0" width="91.0" height="69.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">When you're 
+ready to send
+the bundle, hit
+the button</STICKY><STICKY  x="524.0" y="362.0" width="126.0" height="70.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Look at the console.
+All the messages in 
+the bundle should
+print out at once.</STICKY><TITLE  x="73.0" y="451.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="89.0" y="37.0" color="#FFFFFF" text="OSCBundle" fontface="Arial" fontsize="14" /></PATCH>
+</OSW>
+

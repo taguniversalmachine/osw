@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="lfo_filter_sweep" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Bandpass -output_coefs true" name="bandpass0" x="96.0" y="318.0" width="199" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="bandpass0/bandwidth" value="40.91" />
+
+<STATE name="bandpass0/center_freq" value="970.97" />
+</TRANSFORM>
+<TRANSFORM  command="WhiteNoise" name="whitenoise0" x="96.0" y="236.0" width="80" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="96.0" y="404.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.28855" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="99.0" y="505.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="444.0" y="244.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="40.91" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider1" x="444.0" y="178.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider1/min" value="0" />
+
+<STATE name="hslider1/max" value="100" />
+
+<STATE name="hslider1/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Biquad" name="biquad0" x="566.0" y="374.0" width="105" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="biquad0/gain" value="1" />
+
+<STATE name="biquad0/zero1" value="0" />
+
+<STATE name="biquad0/zero2" value="0" />
+
+<STATE name="biquad0/pole1" value="0" />
+
+<STATE name="biquad0/pole2" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="TwoPoleResonz" name="twopoleresonz0" x="564.0" y="433.0" width="108" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="twopoleresonz0/output_coefs" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="416.0" y="327.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="LFO" name="lfo0" x="227.0" y="181.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="lfo0/shape" value="sine" />
+
+<STATE name="lfo0/frequency" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="expr0" x="227.0" y="239.0" width="157" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr 50 + 20000 * &#36;f1</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="273.0" y="122.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="OptionBox" name="optionbox0" x="73.0" y="128.0" width="172" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="optionbox0/options" value="random sine saw square triangle pulse pulse25 abssine furry sine1_2" />
+</TRANSFORM>
+<CONNECTION  outlet="bandpass0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="whitenoise0/samplesOut" inlet="bandpass0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="102.0 473.0 174.0 473.0" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="bandpass0/bandwidth" vertices="450.0 299.0 298.0 299.0" />
+<CONNECTION  outlet="hslider1/floatOut" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="422.0 410.0 280.0 410.0 280.0 389.0 138.0 389.0" />
+<CONNECTION  outlet="lfo0/valueOut" inlet="expr0/f1" vertices="" />
+<CONNECTION  outlet="expr0/out" inlet="bandpass0/center_freq" vertices="233.0 297.0 200.0 297.0" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="lfo0/frequency" vertices="279.0 169.5 275.0 169.5" />
+<CONNECTION  outlet="optionbox0/selectOut" inlet="lfo0/shape" vertices="79.0 172.5 254.0 172.5" />
+<TITLE  x="508.0" y="160.0" color="#FFFFFF" text="bandwidth" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="137.0" y="39.0" color="#FFFFFF" text="LFO Filter Sweep" fontface="Arial" fontsize="14" />
+<TITLE  x="620.0" y="346.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="450.0" y="312.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="157.0" y="108.0" color="#FFFFFF" text="waveform" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="331.0" y="106.0" color="#FFFFFF" text="LFO Sweep Frequency" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="626.0" y="493.0" color="#0000FF" link="audio/calc_notch" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="626.0" y="516.0" color="#0000FF" link="audio/calc_bandpass" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

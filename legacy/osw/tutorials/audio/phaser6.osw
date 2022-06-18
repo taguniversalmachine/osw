@@ -1,0 +1,106 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="phaser6" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Allpass" name="allpass0" x="505.0" y="323.0" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass0/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="LFO -waveform triangle" name="lfo0" x="533.0" y="133.0" width="115" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="lfo0/shape" value="sine" />
+
+<STATE name="lfo0/frequency" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Samples -order -1" name="inlet0" x="429.0" y="61.0" width="41" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name freq" name="freq" x="595.0" y="46.0" width="33" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -name amp -type Float" name="amp" x="717.0" y="106.0" width="37" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="429.0" y="198.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Mixer" name="mixer0" x="429.0" y="679.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Samples -name out" name="out" x="429.0" y="744.0" width="28" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name feedback" name="feedback" x="892" y="86" width="67" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="506.0" y="675.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="580.0" y="710.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="+" name="add0" x="457.0" y="266.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Allpass" name="allpass1" x="505.0" y="381.0" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass1/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Allpass" name="allpass2" x="506.0" y="435.0" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass2/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Allpass" name="allpass3" x="506.0" y="493.0" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass3/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout2" x="562.0" y="265.0" width="105" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Allpass" name="allpass4" x="506.0" y="548.0" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass4/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Allpass" name="allpass5" x="506.0" y="608.0" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass5/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="fx::PhaseShifter" name="phaseshifter0" x="212.0" y="318.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="phaseshifter0/feedback" value="0" />
+
+<STATE name="phaseshifter0/lfo_freq" value="0.25" />
+
+<STATE name="phaseshifter0/lfo_depth" value="0.5" />
+</TRANSFORM>
+<TRANSFORM  name="mul0" x="562.0" y="195.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>*</COMMAND>
+</TRANSFORM>
+<CONNECTION  outlet="allpass0/samplesOut" inlet="allpass1/samplesIn" vertices="" />
+<CONNECTION  outlet="lfo0/valueOut" inlet="mul0/param1" vertices="539.0 182.5 568.0 182.5" />
+<CONNECTION  outlet="inlet0_inlet/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="freq_inlet/out" inlet="lfo0/frequency" vertices="601.0 114.5 651.0 114.5" />
+<CONNECTION  outlet="amp_inlet/out" inlet="mul0/param2" vertices="723.0 175.5 604.0 175.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="mixer0/channel0" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="add0/param1" vertices="460.0 250.5 463.0 250.5" />
+<CONNECTION  outlet="mixer0/mixed" inlet="out_outlet/in" vertices="" />
+<CONNECTION  outlet="allpass5/samplesOut" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="feedback_inlet/out" inlet="gain0/amp_scale" vertices="898.0 423.0 629.0 423.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="mixer0/channel1" vertices="512.0 727.0 484.0 727.0 484.0 664.0 456.0 664.0" />
+<CONNECTION  outlet="fanout1/out2" inlet="gain0/samplesIn" vertices="537.0 727.0 561.5 727.0 561.5 695.0 586.0 695.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="add0/param2" vertices="586.0 762.0 542.5 762.0 542.5 251.0 499.0 251.0" />
+<CONNECTION  outlet="add0/result" inlet="allpass0/samplesIn" vertices="463.0 313.0 511.0 313.0" />
+<CONNECTION  outlet="allpass1/samplesOut" inlet="allpass2/samplesIn" vertices="511.0 426.5 512.0 426.5" />
+<CONNECTION  outlet="allpass2/samplesOut" inlet="allpass3/samplesIn" vertices="" />
+<CONNECTION  outlet="allpass3/samplesOut" inlet="allpass4/samplesIn" vertices="" /
+<CONNECTION  outlet="mul0/result" inlet="fanout2/in" vertices="" />
+<CONNECTION  outlet="fanout2/out1" inlet="allpass0/gain" vertices="" />
+<CONNECTION  outlet="fanout2/out2" inlet="allpass1/gain" vertices="585.0 341.5 575.0 341.5" />
+<CONNECTION  outlet="allpass4/samplesOut" inlet="allpass5/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout2/out3" inlet="allpass2/gain" vertices="602.0 368.5 576.0 368.5" />
+<CONNECTION  outlet="fanout2/out4" inlet="allpass3/gain" vertices="619.0 397.5 576.0 397.5" />
+<CONNECTION  outlet="fanout2/out5" inlet="allpass4/gain" vertices="636.0 425.0 569.0 425.0" />
+<CONNECTION  outlet="fanout2/out6" inlet="allpass5/gain" vertices="653.0 455.0 569.0 455.0" />
+
+
+<STICKY  x="180.0" y="133.0" width="165.0" height="115.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">This patch has 
+significantly 
+different behavior
+with feedback than
+the PhaseShifter
+transform.</STICKY>
+<TITLE  x="271.0" y="49.0" color="#FFFFFF" text="6-stage phase shifter" fontface="Arial" fontsize="14" />
+<TITLE  x="271.0" y="296.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+</PATCH>
+</OSW>
+

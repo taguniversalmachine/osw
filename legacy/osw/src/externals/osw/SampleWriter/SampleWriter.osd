@@ -1,0 +1,244 @@
+<?xml version="1.0" ?>
+<osw-external name="SampleWriter" package="osw">
+<description>Outputs samples to a file</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inherit class="datasource" />
+<inlet name="onoff" type="Boolean" description="Turn sample writer on or off" />
+<state name="channels" type="Integer" default="1" description="number of audio channels" persistent="1" />
+<state name="format" type="String" default="!quots16!quot" description="Output sample format, one of s8, u8, s16, u16, s32, u32, float, double, ulaw8, ulaw16" persistent="1" />
+<inherited-state name="src" type="string" default="none" description="External Data Source" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog">
+oswLoadScript oswLoadFile.tcl
+oswSaveFileManyTypes &#36;transformPath/src  &#123;&#123;&#123;Wave File&#125; &#123;.wav&#125;&#125; &#123;&#123;AIFF File&#125; &#123;.aiff .aif&#125;&#125; &#123;&#123;Text data samples&#125; &#123;.dat&#125;&#125; &#92;
+ &#123;&#123;Raw audio files&#125; &#123;.raw&#125;&#125;&#125;</xblock>
+<xblock name="Constructor">char buffer&#91;20&#93;;
+for (int i = 0; i &lt; Integer(channels); ++i) &#123;
+    sprintf(buffer,"input%d",i);
+    xinputs.push_back(new Inlet&lt;Samples>(buffer,this,"Audio channel to write"));
+    writeSamples.AddActivator(xinputs&#91;i&#93;);
+    xinputs&#91;i&#93;->SetOrder(i);
+&#125;
+informat.fp = NULL;
+xbuffer = NULL;
+xbufferSize = 0;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">
+if (informat.fp) &#123;
+   CloseFile();
+&#125;
+if (xbuffer) &#123;
+  delete &#91;&#93; xbuffer;
+&#125;</xblock>
+<xblock name="Private">soundstream informat;
+ft_t  ft;
+long *xbuffer;
+std::vector&lt;Inlet&lt;Samples> *> xinputs;
+int xbufferSize;
+
+void SetDataFromSource() &#123;
+   if ((string) src != "") &#123;
+     OpenFile ();
+   &#125;
+&#125;
+
+void OpenFile () &#123;
+  if (informat.fp) &#123;
+     CloseFile();
+  &#125;
+      informat.info.rate      = (Float)SampleRate;
+      informat.info.size      = -1;
+      informat.info.style     = -1;
+      informat.info.channels  = (Integer)channels;
+      informat.comment   = NULL;
+      informat.swap      = 0;
+      informat.filetype  = (char *) 0;
+
+      if (informat.fp != NULL) &#123;
+ 	fclose(informat.fp);
+      &#125;
+      informat.fp        = NULL;
+      informat.filename  = "none";
+      ft = &amp;informat;
+      if ((ft->fp = fopen(src->c_str(), WRITEBINARY)) == NULL) &#123;
+	Error ("Can't open file " + string(src));
+	return;
+      &#125;
+      
+      informat.seekable  = 1;
+
+      /* If file types have not been set with -t
+	 (and the never will be -AC) set from file names. */
+      if (! informat.filetype) &#123;
+	if ((informat.filetype = strrchr(src->c_str(), LASTCHAR)) != NULL)
+	  informat.filetype++;
+	else
+	  informat.filetype = const_cast&lt;char *>(src->c_str());;
+	if ((informat.filetype = strrchr(informat.filetype, '.')) != NULL)
+	  informat.filetype++;
+	else /* Default to "auto" */
+	  informat.filetype = "auto";
+      &#125;
+      gettype(&amp;informat);
+      FillFormat(format,&amp;informat);      
+      informat.comment = informat.filename;
+      informat.h->startwrite(&amp;informat);
+
+&#125;
+
+void CloseFile () &#123;
+  informat.h->stopwrite(&amp;informat);
+  fclose(informat.fp);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">
+
+#define LASTCHAR '/'
+
+static struct &#123;
+   char  *name;
+   int   size;
+   int   style;
+&#125; sample_formats&#91;&#93; = &#123;
+  &#123;"s8",BYTE,SIGN2&#125;,
+  &#123;"u8",BYTE,UNSIGNED&#125;,
+  &#123;"s16",WORD,SIGN2&#125;,
+  &#123;"u16",WORD,UNSIGNED&#125;,
+  &#123;"s32",4,SIGN2&#125;,
+  &#123;"u32",4,UNSIGNED&#125;,
+  &#123;"float",5,SIGN2&#125;,
+  &#123;"double",6,SIGN2&#125;,
+  &#123;"ulaw8",BYTE,ULAW&#125;,
+  &#123;"ulaw16",WORD,ULAW&#125;,
+  &#123;NULL,0,0&#125;
+&#125;;
+
+extern "C" void cleanup () &#123;
+&#125;
+
+void FillFormat(const string &amp;formatStr, soundstream *s) &#123;
+
+  for (int i = 0; sample_formats&#91;i&#93;.name != NULL; ++i) &#123;
+	if (formatStr == sample_formats&#91;i&#93;.name) &#123;
+	   s->info.size = sample_formats&#91;i&#93;.size;
+	   s->info.style = sample_formats&#91;i&#93;.style;
+        &#125;
+  &#125;
+
+&#125;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="writeSamples" activators="" order="0" >
+
+
+
+if (!xbuffer || xbufferSize &lt; channels * NumberOfSamples) &#123;
+   if (xbuffer) &#123;
+     delete &#91;&#93; xbuffer;
+   &#125;
+   xbufferSize = channels * NumberOfSamples;
+   xbuffer = new long &#91;xbufferSize&#93;;
+&#125;
+
+for (int i = 0, j = 0; j &lt; NumberOfSamples; ++j, i += channels) &#123;
+   for (int k = 0; k &lt; channels; ++k) &#123;
+	xbuffer&#91;i+k&#93; = long((**xinputs&#91;k&#93;)&#91;j&#93; * 2147483648.0);
+   &#125;
+&#125;
+
+if (onoff &amp;&amp; informat.fp) &#123;
+   informat.h->write(&amp;informat,xbuffer,xbufferSize);
+&#125;
+</activation>
+<activation name="toggle" activators="onoff" order="0" >
+
+
+if (onoff) &#123;
+ if (src != "") &#123;
+  OpenFile();
+ &#125;
+&#125; else &#123;
+  if (informat.fp) &#123;
+    CloseFile();
+  &#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+&#123; g72x.c  &#125;
+&#123; sf.c  &#125;
+&#123; auto.c  &#125;
+&#123; dat.c  &#125;
+&#123; handlers.c  &#125;
+&#123; raw.c  &#125;
+&#123; wav.c  &#125;
+&#123; g723_40.c  &#125;
+&#123; g723_24.c  &#125;
+&#123; g721.c  &#125;
+&#123; misc.c  &#125;
+&#123; util.c  &#125;
+&#123; aiff.c  &#125;
+&#123; au.c  &#125;
+&#123; libst.c  &#125;
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes">st.h</xblock>
+<xblock name="Syntax">SampleWriter &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;b>SampleWriter&lt;/b> supports the following audio file formats:
+&lt;dl>
+&lt;dd>&lt;bb>.wav&lt;/bb> - Microsoft WAV file&lt;/dd>
+&lt;dd>&lt;bb>.aif,.aiff&lt;/bb> - AIFF Format&lt;/dd>
+&lt;dd>&lt;bb>.dat&lt;/bb> - Text format, 1 channel, textual floating-point numbers&lt;/dd>
+&lt;dd>&lt;bb>.sf&lt;/bb> - IRCAM Sound files&lt;/dd>
+&lt;dd>&lt;bb>.au&lt;/bb> - Sun/Java audio files&lt;/dd>
+&lt;dd>&lt;bb>.raw&lt;/bb> - Raw audio files&lt;/dd>
+&lt;/dl>
+
+&lt;b>SampleWriter&lt;/b> supports the following data formats, which can be explicitly set using the &lt;i>-format&lt;/i> option:
+&lt;dl>
+&lt;dd>&lt;bb>s8&lt;/bb>8 bit, signed&lt;/dd>
+&lt;dd>&lt;bb>u8&lt;/bb>8 bit, unsigned&lt;/dd>
+&lt;dd>&lt;bb>s16&lt;/bb>16 bit, signed&lt;/dd>
+&lt;dd>&lt;bb>u16&lt;/bb>16 bit, unsigned&lt;/dd>
+&lt;dd>&lt;bb>s32&lt;/bb>32 bit, signed&lt;/dd>
+&lt;dd>&lt;bb>u32&lt;/bb>32 bit, unsigned&lt;/dd>
+&lt;dd>&lt;bb>float&lt;/bb>single-precision floating-point&lt;/dd>
+&lt;dd>&lt;bb>double&lt;/bb>double-precision floating point&lt;/dd>
+&lt;dd>&lt;bb>ulaw8&lt;/bb>8 bit, mu-law encoded&lt;/dd>
+&lt;dd>&lt;bb>ulaw16&lt;/bb>16 bit, mu-law encoded&lt;/dd>
+&lt;/dl>
+Note that not all data formats are supported by each file format (e.g., ".dat" only supports double and ".au" supports only ulaw formats).</xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_SampleWriter" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="AudioInput 1 2" name="input0" x="151.0" y="231.0" width="76" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SampleWriter " name="samplewriter0" x="142.0" y="321.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="samplewriter0/channels" value="1" />
+
+&lt;STATE name="samplewriter0/format" value="s16" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Toggle" name="toggle0" x="107.0" y="92.0" width="40" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="107.0" y="166.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="input0/samplesOut0" inlet="samplewriter0/input0" vertices="157.0 301.5 234.0 301.5" />
+&lt;CONNECTION  outlet="toggle0/toggleOut" inlet="fanout0/in" vertices="" />
+&lt;CONNECTION  outlet="fanout0/out1" inlet="samplewriter0/onoff" vertices="113.0 260.5 148.0 260.5" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="input0/onoff" vertices="135.0 215.5 157.0 215.5" />
+&lt;STICKY  x="336.0" y="312.0" width="90.0" height="39.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+select a file&lt;/STICKY>&lt;STICKY  x="172.0" y="96.0" width="112.0" height="50.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Press button
+to turn recording
+on and off&lt;/STICKY>&lt;TITLE  x="73" y="38" color="#FFFFFF" text="SampleWriter" fontface="MS Sans Serif" fontsize="14" />&lt;TITLE  x="192.0" y="428.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;HYPERLINK  x="186" y="448" color="#0000FF" link="audio/recording" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

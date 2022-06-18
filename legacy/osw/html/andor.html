@@ -1,0 +1,46 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<h1 class="title">&amp;&amp;, ||</h1>
+<p>Logical AND and OR operators.</p>
+<h3 class="title">Syntax</h3>
+<p>&amp;&amp; <i>rval</i><br>
+|| <i>rval</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><i>rval</i></dt>
+<dd>Optional initial value to be compared to values received via the left inlet. Must be an Integer or a Boolean (<i>true</i> or <i>false</i>).</dd>
+</dl>
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>param1</b></dt><dd>The left inlet.  Any value received via this inlet is compared to the value in the right inlet <b>param2</b>, and the result is sent via the outlet <b>result</b>.</dd><dd>Type: Boolean or Integer</dd>
+<dt><b>param2</b></dt><dd>The right inlet.  The value is stored for comparison to any subsequent values received in the left inlet <b>param1</b>.</dd>
+<dd>Type: Boolean or Integer</dd>
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>result</b></dt>
+<dd>
+<dd>Type: Boolean or Integer</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>The AND and OR operators only accept Integers or Booleans as input.</p>
+
+<p>These operators output a result whever a new value is received via the left inlet <b>param1</b>, using the new value of <b>param1</b> and the most recent value of <b>param2</b>, or the optional initial argument if no value has yet been received for <b>param2</b>.  If you want to wait until both <b>param1</b> and <b>param2</b> receive new input values before computing a result, use the synchronous operators <a href="sandor.html">'&amp;&amp;</a> and <a href="sandor.html">'||</a> instead.</p>
+<p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="sandor.html">'&amp&amp, '||</a></dt>
+<dt><a href="Expr.html">Expr</a></dt>
+</dl>
+</body>
+</html>

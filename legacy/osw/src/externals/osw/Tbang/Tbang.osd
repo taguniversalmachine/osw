@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<osw-external name="Tbang" package="osw">
+<description>Pass thru input value along with a unit value</description>
+<copyright></copyright>
+<inlet name="input" type="Changeable" description="Input to pass thru" />
+<outlet name="unitOut" type="Unit" description="synchronous unit value" synchronous="1" />
+<outlet name="passThru" type="Any" description="input value passed through to output" synchronous="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="passThruNow" activators="input" order="0" >
+
+if (input->TypeOf() == typeid(Any)) &#123;
+  passThru = (State&lt;Any> &amp;)*input;
+&#125; else &#123;
+  passThru = input->MakeDatum();
+&#125;
+
+unitOut = unitOut;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Tbang &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">Tbang passes an input value of any type to its outlet &lt;b>passThru&lt;/b>.  Immediately afterwards, it emits a unit value via the outlet &lt;b>unitOut&lt;/b>.  This is useful in many instances where you might want
+to set a parameter and trigger an immediate action once the parameter has been set.</xblock>
+<xblock name="Links">Button Multitrigger FanOut Switch</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Tbang" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Tbang" name="tbang0" x="215.0" y="211.0" width="40" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="215.0" y="113.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="0" />
+
+&lt;STATE name="intbox0/max" value="100" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name T" name="T" x="151.0" y="300.0" width="88" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name bang" name="bang" x="281.0" y="303.0" width="106" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="125.0" y="426.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Switch" name="switch0" x="197.0" y="426.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="271.0" y="423.0" width="28" height="28" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Multitrigger " name="multitrigger0" x="327.0" y="426.0" width="88" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="multitrigger0/inputs" value="2" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="tbang0/unitOut" inlet="T/to_print" vertices="221.0 272.5 157.0 272.5" />
+&lt;CONNECTION  outlet="tbang0/passThru" inlet="bang/to_print" vertices="259.0 274.0 287.0 274.0" />
+&lt;CONNECTION  outlet="intbox0/intOut" inlet="tbang0/input" vertices="" />
+&lt;STICKY  x="315.0" y="202.0" width="91.0" height="53.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">A unit is always
+emitted after 
+each input value&lt;/STICKY>&lt;TITLE  x="91.0" y="36.0" color="#FFFFFF" text="Tbang" fontface="MS Sans Serif" fontsize="14" />&lt;TITLE  x="254.0" y="397.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="step_modulated_pulses" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="dust" name="dust0" x="154.0" y="197.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="121.0" y="134.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0.01" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="139.0" y="468.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="154.0" y="388.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.71145" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="480.0" y="279.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Comb" name="comb0" x="154.0" y="318.0" width="75" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="comb0/gain" value="1" />
+
+<STATE name="comb0/forward" value="0" />
+
+<STATE name="comb0/feedback" value="0.95" />
+
+<STATE name="comb0/delay" value="0.00478469" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="226.0" y="132.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0.95" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Expr 1 / $f1" name="expr0" x="344.0" y="259.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="step_modulator" name="step_modulator0" x="344.0" y="199.0" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="344.0" y="133.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="10" />
+
+<STATE name="floatbox1/max" value="200" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="460.0" y="130.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="200" />
+
+<STATE name="floatbox3/max" value="400" />
+
+<STATE name="floatbox3/min" value="100" />
+
+<STATE name="floatbox3/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox4" x="583.0" y="130.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox4/floatIn" value="50" />
+
+<STATE name="floatbox4/max" value="100" />
+
+<STATE name="floatbox4/min" value="0" />
+
+<STATE name="floatbox4/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="415.0" y="-4.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="415.0" y="51.0" width="90" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="dust0/samplesOut" inlet="comb0/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="dust0/dustiness" vertices="127.0 182.0 160.0 182.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="160.0 445.5 265.0 445.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="486.0 367.5 192.0 367.5" />
+<CONNECTION  outlet="comb0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="comb0/feedback" vertices="232.0 241.5 214.0 241.5" />
+<CONNECTION  outlet="expr0/out" inlet="comb0/delay" vertices="350.0 306.0 232.0 306.0" />
+<CONNECTION  outlet="step_modulator0/value" inlet="expr0/f1" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="step_modulator0/frequency" vertices="" />
+<CONNECTION  outlet="floatbox3/floatOut" inlet="step_modulator0/offset" vertices="466.0 181.0 396.0 181.0" />
+<CONNECTION  outlet="floatbox4/floatOut" inlet="step_modulator0/width" vertices="589.0 181.0 442.0 181.0" />
+<CONNECTION  outlet="get0/value" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="floatbox0/unitIn" vertices="421.0 110.0 214.0 110.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="floatbox2/unitIn" vertices="438.0 109.0 319.0 109.0" />
+<CONNECTION  outlet="fanout0/out3" inlet="floatbox1/unitIn" vertices="455.0 109.5 437.0 109.5" />
+<CONNECTION  outlet="fanout0/out4" inlet="floatbox3/unitIn" vertices="472.0 108.0 553.0 108.0" />
+<CONNECTION  outlet="fanout0/out5" inlet="floatbox4/unitIn" vertices="489.0 108.0 676.0 108.0" />
+<STICKY  x="29.0" y="207.0" width="101.0" height="83.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click on
+dust or 
+step_modulator
+to see how they
+are built</STICKY><TITLE  x="164.0" y="118.0" color="#FFFFFF" text="dustiness" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="514.0" y="266.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="141.0" y="47.0" color="#FFFFFF" text="Step Modulated Pulses" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="274.0" y="118.0" color="#FFFFFF" text="duration" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="393.0" y="120.0" color="#FFFFFF" text="mod freq" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="503.0" y="118.0" color="#FFFFFF" text="mod offset" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="630.0" y="116.0" color="#FFFFFF" text="mod width" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="487.0" y="462.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="487.0" y="496.0" color="#0000FF" link="audio/fm" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="495.0" y="515.0" color="#0000FF" link="audio/decaying_pulses" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="493.0" y="538.0" color="#0000FF" link="audio/step_modated_sinewave" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

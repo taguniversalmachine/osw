@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_MidiInput" Version="1.0beta3" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="MidiInput" name="midiinput1" x="126.0" y="155.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midiinput1/driver" value="unknown" />
+
+<STATE name="midiinput1/channel" value="-1" />
+
+<STATE name="midiinput1/status" value="all" />
+
+<STATE name="midiinput1/parameter" value="-1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="89.0" y="227.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="89.0" y="281.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="90.0" y="335.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="89.0" y="387.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="0" />
+
+<STATE name="intbox3/max" value="100" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="midiinput1/channelOut" inlet="intbox0/intIn" vertices="132.0 208.5 95.0 208.5" />
+<CONNECTION  outlet="midiinput1/statusOut" inlet="intbox1/intIn" vertices="152.0 235.5 95.0 235.5" />
+<CONNECTION  outlet="midiinput1/firstOut" inlet="intbox2/intIn" vertices="172.0 262.5 96.0 262.5" />
+<CONNECTION  outlet="midiinput1/secondOut" inlet="intbox3/intIn" vertices="192.0 288.5 95.0 288.5" />
+<STICKY  x="121.0" y="86.0" width="75" height="50" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+to set port,
+channel, etc.</STICKY><TITLE  x="79" y="47" color="#FFFFFF" text="MidiInput" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="49.0" y="238.0" color="#FFFFFF" text="channel" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="47.0" y="294.0" color="#FFFFFF" text="status" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="47" y="347" color="#FFFFFF" text="value 1" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="51.0" y="402.0" color="#FFFFFF" text="value 2" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

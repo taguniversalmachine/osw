@@ -1,0 +1,173 @@
+<?xml version="1.0" ?>
+<osw-external name="Delay" package="osw">
+<description>Delay samples by a specified amount of time</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" />
+<inlet name="delay" type="Float" default="0.05" description="delay time (in seconds)" />
+<inlet name="feedback" type="Float" default="0.0" description="add this much of the previous output to the current input" />
+<outlet name="samplesOut" type="Samples" />
+<state name="max" type="Integer" default="16384" description="maximum delay length in samples" persistent="1" />
+<state name="fractional" type="Boolean" default="false" description="fractional (interpolated) delay line" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xdelay.set_max(max);
+xlastoutput = 0;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">DelayLine xdelay;
+float xlastoutput;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="delayChanged" activators="delay" order="" >
+
+
+xdelay.set_delay(delay * SampleRate);
+</activation>
+<activation name="activation1" activators="samplesIn" order="" >
+
+
+
+Samples samples(samplesIn->size());
+if (fractional) &#123;
+ for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+   xlastoutput = samples&#91;i&#93; = 
+	xdelay.interpolate(samplesIn&#91;i&#93; + feedback * xlastoutput);
+ &#125; 
+&#125; else &#123;
+ for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+   xlastoutput = samples&#91;i&#93; = 
+	xdelay(samplesIn&#91;i&#93; + feedback * xlastoutput);
+ &#125;
+&#125;
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Delay &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">       Input samples are delayed by the amount of time specified by the &lt;b>-delay&lt;/b> option or subsequent changes to the &lt;b>delay&lt;/b> inlet.  The default delay is 50 milliseconds (or 0.05 seconds).</xblock>
+<xblock name="Links">       Comb</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">       delay</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Delay" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Impulse" name="impulse0" x="101.0" y="178.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Delay" name="delay0" x="101.0" y="245.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="90.0" y="108.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="0.5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="45" y="324" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="186.0" y="173.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="1" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="291.0" y="170.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="1" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="186" y="101" width="91" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/resolution" value="0.01" />
+
+&lt;STATE name="hslider0/min" value="1" />
+
+&lt;STATE name="hslider0/max" value="0.05" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider1" x="296.0" y="101.0" width="99" height="33" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider1/resolution" value="0.01" />
+
+&lt;STATE name="hslider1/min" value="1" />
+
+&lt;STATE name="hslider1/max" value="0" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="impulse0/samplesOut" inlet="delay0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="delay0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="impulse0/impulse" vertices="" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="delay0/delay" vertices="" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="delay0/feedback" vertices="" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+&lt;CONNECTION  outlet="hslider1/floatOut" inlet="floatbox1/floatIn" vertices="" />
+&lt;TITLE  x="231.0" y="79.0" color="#FFFFFF" text="Delay" fontface="" fontsize="10" />&lt;TITLE  x="339.0" y="78.0" color="#FFFFFF" text="Feedback" fontface="" fontsize="10" />&lt;TITLE  x="69.0" y="47.0" color="#FFFFFF" text="Delay" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

@@ -1,0 +1,89 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">Table <a href="http://localhost:7775/OSW_DIR/help_patches/help_Table.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Define a new table</p>
+<h3 class="title">Syntax</h3>
+<p>Table <i>options</i></p>
+<h3 class="title">Options</h3>
+<ul><dl>
+<dt><b>-name</b></dt><dd>Optional user-defined name for the table</dd>
+<dt><b>-size</b></dt><dd>Number of entries in table</dd><dd>Type: int</dd><dd>Default: 256</dd>
+<dt><b>-min</b></dt><dd>Lower bound on table-lookup function</dd><dd>Type: float</dd><dd>Default: 0.0</dd>
+<dt><b>-max</b></dt><dd>Upper bound on table-lookup function</dd><dd>Type: float</dd><dd>Default: 1.0</dd>
+<dt><b>-src</b></dt><dd>Read table values from an external file</dd><dd>Type: string</dd>
+<dt><b>-copy</b></dt><dd>Copy table values from an existing table</dd><dd>Type: string</dd>
+<dt><b>-inline</b></dt><dd>Display the table data inline with the patch window, and allow inline editing</dd><dd>Type: Boolean</dd><dd>Default: false</dd>
+</dl></ul>
+<h3 class="title">Inlets</h3>
+<ul>
+None
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+None
+</ul>
+<h3 class="title">Comments</h3>
+
+<p>A table in OSW is a collection of ordered floating-point numbers, which can be looked up either as elements in a traditional integer-indexed array, or as values in a floating-point function evenly spaced over the range between <b>min</b> and <b>max</b>.</p>
+<p>OSW includes several built-in tables:</p>
+<ul>
+<li><b>/sine</b>: the function sin2<span style='font-family:Symbol'>p</span><i>x</i> evaluated between 0 and 1 (i.e., one period of a sine function).</li>
+
+<li><b>/cosine</b>: the function cos2<span style='font-family:Symbol'>p</span><i>x</i> evaluated between 0 and 1.</li>
+
+<li><b>/exp</b>: the function <i>e</i><sup>-<span style='font-family:Symbol'>p</span><i>x</i></sup> evaluated between 0 and 1.</li>
+
+<li><b>/sinc</b>: the “sinc” function sin(<i>x</i>)/<i>x</i> evaluated between -2<span style='font-family:Symbol'>p</span> and 2<span style='font-family:Symbol'>p</span>.  Similar to previous tables, this period is normalized between 0 and 1.</li>
+</ul>
+
+<p>All of these tables have 1024 entries and are normalized to floating-point indices between 0 and 1.</p>
+
+<p>Use the Table transform to define additional tables in your application.  Initially, a table contains all zeroes when you define it.  You can manually edit the table by double-clicking the transform.  This brings up a dialog box that lets you "draw" new table values using either a line or a freehand tool:</p>
+
+<div align="center">
+<img src="tabledraw.png" width=436 height=325>
+</div>
+
+<p>You can also modify tables algorithmically using the <a href=table/Peek.html>table::Peek</a> and <a href=table/Poke.html>table::Poke</a> transforms, or store blocks of samples (e.g., from audio input) into a table using <a href=table/Record.html>table::Record</a>.</p>
+
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href=table/Peek.html>table::Peek</a></dt>
+<dt><a href=table/Poke.html>table::Poke</a></dt>
+<dt><a href=table/Record.html>table::Record</a></dt>
+<dt><a href=osw/WaveTable.html>WaveTable</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

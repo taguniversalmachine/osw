@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<osw-external name="Sequence" package="list">
+<description>Send elements of a list one at a time in response to triggers</description>
+<copyright>
+Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+</copyright>
+<inlet name="listIn" type="List" description="list to process" />
+<inlet name="next" type="Unit" description="send next list element" />
+<inlet name="reset" type="Unit" description="go back to the beginning of the list and send the first element" />
+<outlet name="elementOut" type="Any" description="next element to Process" />
+<outlet name="endOfList" type="Unit" description="emitted when the end of the list is reached" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">listIn = listIn;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">
+List::iterator xindex;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="do_reset" activators="reset" order="" >
+
+
+xindex = listIn->begin();
+if (xindex != listIn->end()) &#123;
+   next = next;
+&#125;
+</activation>
+<activation name="do_next" activators="next" order="" >
+
+
+if (xindex == listIn->end()) &#123;
+   endOfList = endOfList;
+&#125; else &#123;
+   elementOut = xindex->datum;
+   ++xindex;
+&#125;
+</activation>
+<activation name="newList" activators="listIn" order="" >
+
+
+xindex = listIn->begin();
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Sequence &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>&lt;b>list::Sequence&lt;/b> outputs the elements of a list in succession in response to events.  Whenever a unit is received via the &lt;b>next&lt;/b> inlet, the next element of the list is output. When the end of the list is reached, a unit is output via &lt;b>endOfList&lt;/b>.  New lists can be input via &lt;b>listIn&lt;/b>, and will pre-empt elements still to be output from a previously received list.&lt;/p>
+&lt;p>&lt;b>list::ForEach&lt;/b> and &lt;b>list::Sequence&lt;/b> differ in that list::Sequence requires an event to output the next element in a list, while list::ForEach outputs all elements in succession without intervening input events.  list::ForEach is more likely to be used in situations where a list is to be modified, while list::Sequence is more useful for outputing elements from a list as timed or user-driven events.&lt;/p></xblock>
+<xblock name="Links">ForEach</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Sequence" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="65" y="317" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Ticker -interval 1.0" name="ticker0" x="195.0" y="66.0" width="130" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="ticker0/interval" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Sequence" name="sequence0" x="93.0" y="132.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="19.0" y="65.0" width="143" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="cows goats pigs sheep" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="93.0" y="204.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="365.0" y="65.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="ticker0/tick" inlet="sequence0/next" vertices="" />
+&lt;CONNECTION  outlet="sequence0/elementOut" inlet="msgbox1/messageIn" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="sequence0/listIn" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="sequence0/reset" vertices="" />
+&lt;TITLE  x="378.0" y="43.0" color="#FFFFFF" text="reset" fontface="" fontsize="10" />&lt;TITLE  x="87.0" y="30.0" color="#FFFFFF" text="list::Sequence" fontface="Arial" fontsize="18" />&lt;TITLE  x="134.0" y="290.0" color="#FFFFFF" text="Turn on Audio Device to start Ticker" fontface="" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

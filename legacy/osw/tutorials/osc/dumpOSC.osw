@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="dumpOSC" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCListen" name="osclisten0" x="74.0" y="108.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="osclisten0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="Print -name dumpOSC" name="dumpOSC" x="74.0" y="244.0" width="117" height="26" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="osclisten0/messageOut" inlet="dumpOSC/to_print" vertices="" />
+<STICKY  x="165.0" y="90.0" width="139.0" height="54.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Port is 7005.
+Double-click OSCListen
+to change port and host</STICKY><TITLE  x="117.0" y="41.0" color="#FFFFFF" text="dumpOSC" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="90" y="328" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="93.0" y="348.0" color="#0000FF" link="osc/sendOSC" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

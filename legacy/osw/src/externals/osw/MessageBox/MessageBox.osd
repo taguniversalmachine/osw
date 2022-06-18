@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<osw-external name="MessageBox" package="osw">
+<description>Send a message of any type to a transform</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="interactivedraw" />
+<inlet name="messageIn" type="Changeable" description="change message" />
+<inlet name="sendnow" type="Changeable" description="send message now" />
+<outlet name="messageOut" type="Any" />
+<state name="message" type="String" default="!quot!quot" persistent="1" />
+<state name="parsed" type="Any" description="Parsed message" />
+<state name="sendInternal" type="Unit" description="Send using the transforms own button" />
+<inherited-state name="widget" type="String" default="none" description="Tk Widget Name" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<xblock name="drawCodeTcl">oswLoadScript enhentry.tcl
+HideName
+frame &#36;drawingSpace.b -bg darkRed -relief raised -bd 2 -width 20 -height 20
+enhentry &#36;drawingSpace.msg -command &#91;list oswSet &#36;transform/message&#93;
+&#36;drawingSpace.msg configure  -value &#91;oswGet &#36;transform/message&#93;
+pack &#36;drawingSpace.b -side left -fill both -expand yes
+pack &#36;drawingSpace.msg -side left -fill both -expand yes
+bind &#36;drawingSpace.b &lt;Button-1> &#91;list &#36;drawingSpace.msg HitReturn&#93;
+bind &#36;drawingSpace.b &lt;Button-1> +&#91;list oswSet &#36;transform/sendInternal 0&#93;
+bind &#36;drawingSpace.b &lt;Button-1> +&#91;list &#36;drawingSpace.b configure -bg red -relief sunken&#93; 
+bind &#36;drawingSpace.b &lt;ButtonRelease-1> &#91;list &#36;drawingSpace.b configure -bg darkred -relief raised&#93;</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="sendMessageInternal" activators="sendInternal" order="" >
+
+
+
+messageOut = parsed;
+</activation>
+<activation name="newMessageTyped" activators="message" order="" >
+
+
+
+istringstream s(message->c_str());
+List l;
+s >> l;
+if (l.size() == 1) &#123;
+   parsed = l.nth(0);
+&#125; else &#123;
+   parsed = new Datum&lt;List>(l);
+&#125;
+SetWidgetProperty (widget + ".msg","-value",&amp;message);
+</activation>
+<activation name="newMessageIn" activators="messageIn" order="" >
+
+
+
+messageOut = parsed = messageIn->MakeDatum();
+
+ostringstream s;
+s.width(0);
+s &lt;&lt; boolalpha &lt;&lt; parsed &lt;&lt; '&#92;0';
+message.SetWithoutActivating(s.str());
+SetWidgetProperty (widget + ".msg","-value",&amp;parsed);
+</activation>
+<activation name="sendMessageNow" activators="sendnow" order="" >
+
+
+
+messageOut = parsed;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">MessageBox &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">A MessageBox can be used to display or enter a value of any type.  Multiple values in a MessageBox are interpreted as a List.  The value of a MessageBox can be transmitted by pressing the button on the transform or sending a value to &lt;b>unitIn&lt;/b>.
+&lt;p>
+The output of a MessageBox is a List if there are multiple elements (words, numbers, etc.) to the message.  If the message only has one element, the output is a value of the corresponding type.  To output a single-element Lists, enclose the element in curly-braces ("&#123; &#125;").</xblock>
+<xblock name="Links">Button</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">widget, message, list</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch"></xblock>
+</osw-external>

@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="list_cons_expr" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Expr [$i1,2*$i1,2+$i1]" name="expr0" x="143.0" y="221.0" width="142" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="143.0" y="161.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="143.0" y="296.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="" />
+</TRANSFORM>
+<CONNECTION  outlet="expr0/out" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="expr0/i1" vertices="" />
+<STICKY  x="318.0" y="128.0" width="120.0" height="66.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use expressions to
+construct lists from
+other expressions.
+It's easier than Pack!</STICKY><TITLE  x="182.0" y="41.0" color="#FFFFFF" text="Constructing Lists from Expressions" fontface="MS Sans Serif" fontsize="16" /><HYPERLINK  x="205" y="375" color="#0000FF" link="list/list_arithmetic" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="202.0" y="395.0" color="#0000FF" link="list/list_cons_simple" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="201.0" y="415.0" color="#0000FF" link="list/index_expr" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

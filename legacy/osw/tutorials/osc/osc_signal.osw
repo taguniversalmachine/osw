@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="osc_signal" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Sinewave" name="sinewave0" x="81.0" y="148.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Pack" name="pack0" x="81.0" y="223.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Prepend /signal_receiver" name="prepend0" x="81.0" y="281.0" width="154" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OSCSend -port 7707" name="oscsend0" x="81.0" y="340.0" width="118" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend0/host" value="localhost" />
+</TRANSFORM>
+<TRANSFORM  command="Get /signal_receiver" name="get0" x="396.0" y="169.0" width="130" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="396.0" y="231.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="578.0" y="178.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="405.0" y="318.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="pack0/in1" vertices="" />
+<CONNECTION  outlet="pack0/listOut" inlet="prepend0/listIn" vertices="" />
+<CONNECTION  outlet="prepend0/listOut" inlet="oscsend0/messageIn" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="402.0 291.5 480.0 291.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="584.0 261.0 509.0 261.0 509.0 216.0 434.0 216.0" />
+<TITLE  x="450.0" y="141.0" color="#FFFFFF" text="signal server" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="141.0" y="119.0" color="#FFFFFF" text="signal client" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="126.0" y="35.0" color="#FFFFFF" text="Routing Signals via OSC" fontface="MS Sans Serif" fontsize="14" /><TITLE  x="206.0" y="433.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="147.0" y="467.0" color="#0000FF" link="osc/osc_server" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="274" y="464" color="#0000FF" link="osc/autoserver" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

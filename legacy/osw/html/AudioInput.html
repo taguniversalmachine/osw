@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+
+<h1 class="title">AudioInput <a href="http://localhost:7775/OSW_DIR/help_patches/help_AudioInput.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Input signals from audio devices</p>
+<h3 class="title">Syntax</h3>
+<p>AudioInput&nbsp;&nbsp;<i>channels</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><i>channels</i></dt>
+<dd>One or more numbers specifying which audio input channels will be played.  Each number will cause a corresponding channel outlet to be created.  If no arguments are specified, two outlets corresponding to channels 1 and 2 of the default audio input device will be created.</dd>
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>onoff</b></dt><dd>A true (or 1) turns enables audio input.  A false (or 0) disables audio input.</dd><dd>Type: Boolean</dd>
+
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><i>channel outlets</i></dt>
+<dd>One or more outlets corresponding to the audio input channels being used.  By default, there are two outlets for audio channels 1 and 2.</dd>
+<dd>Type: Samples</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>You can specify any number of channels in any order, although the actual number of channels will vary depending on the available audio hardware.  By default, AudioInput uses two channels, corresponding to channels 1 and 2 on the default audio input device. This is equivalent to an AudioInput created with an "AudioInput 1 2" command.</p>
+<p>To turn an AudioInput transform on or off, you can either use the provided button, or connect a Boolean input (e.g., a <a href="osw/Toggle.html">Toggle</a> transform) to the <b>onoff</b> inlet.</p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="AudioOutput.html">AudioOutput</a></dt>
+<dt><a href="Toggle.html">Toggle</a></dt>
+<dt><a href="http://localhost:7775/OSW_DIR/tutorials">Recording Tutorial Patch</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+
+</body>
+</html>

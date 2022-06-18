@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="simple_fm" Version="1.1beta2" WindowSize="200 230" Background="#ffffff">
+<TRANSFORM  command="Sinewave" name="sinewave0" x="156.0" y="303.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="380.379" />
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="155.0" y="373.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.41" />
+</TRANSFORM>
+<TRANSFORM  command="SampleGet " name="sampleget0" x="215.0" y="137.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sampleget0/index" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave1" x="215.0" y="68.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave1/freq" value="10" />
+</TRANSFORM>
+<TRANSFORM  command="* " name="mul0" x="215.0" y="193.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="+" name="add1" x="215.0" y="247.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="364.0" y="48.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="10" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider1" x="362.0" y="124.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider1/min" value="0" />
+
+<STATE name="hslider1/max" value="50" />
+
+<STATE name="hslider1/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider2" x="364.0" y="191.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider2/min" value="220" />
+
+<STATE name="hslider2/max" value="660" />
+
+<STATE name="hslider2/resolution" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider3" x="366" y="296" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider3/min" value="0" />
+
+<STATE name="hslider3/max" value="1" />
+
+<STATE name="hslider3/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="157.0" y="456.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="gain0/samplesIn" vertices="162.0 362.0 161.0 362.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="161.0 431.5 283.0 431.5" />
+<CONNECTION  outlet="sampleget0/sampleValue" inlet="mul0/param1" vertices="" />
+<CONNECTION  outlet="sinewave1/samplesOut" inlet="sampleget0/samplesIn" vertices="" />
+<CONNECTION  outlet="mul0/result" inlet="add1/param1" vertices="" />
+<CONNECTION  outlet="add1/result" inlet="sinewave0/freq" vertices="" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="sinewave1/freq" vertices="370.0 104.0 325.0 104.0 325.0 53.0 280.0 53.0" />
+<CONNECTION  outlet="hslider1/floatOut" inlet="mul0/param2" vertices="368.0 179.0 253.0 179.0" />
+<CONNECTION  outlet="hslider2/floatOut" inlet="add1/param2" vertices="370.0 239.5 253.0 239.5" />
+<CONNECTION  outlet="hslider3/floatOut" inlet="gain0/amp_scale" vertices="372 355.0 193.0 355.0" />
+<TITLE  x="551.0" y="66.0" color="#FFFFFF" text="modulator frequency" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="574.0" y="140.0" color="#FFFFFF" text="modulator depth (amplitude)" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="542.0" y="207.0" color="#FFFFFF" text="carrier frequency" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="546.0" y="313.0" color="#FFFFFF" text="carrier amplitude" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="88.0" y="25.0" color="#FFFFFF" text="Simple FM" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="499.0" y="399.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="501.0" y="435.0" color="#0000FF" link="audio/fm" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="502.0" y="458.0" color="#0000FF" link="audio/am" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

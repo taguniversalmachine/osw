@@ -1,0 +1,179 @@
+<?xml version="1.0" ?>
+<osw-external name="ToResonances" package="sdif">
+<description>Get resonances from an SDIF RES stream</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inlet name="stream" type="String" description="Name of SDIF stream" />
+<outlet name="resonances" type="Resonances" description="Resonances from SDIF stream" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xstream_data = new State&lt;SDIF_Stream *>("xstream_data",this,"",NULL);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">delete xstream_data;</xblock>
+<xblock name="Private">State&lt;SDIF_Stream *>  *xstream_data;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="streamtores" activators="stream" order="" >
+if (stream != "") &#123;
+  *xstream_data = GetSDIFStreamByName(stream,GetPatch());
+  if ((SDIF_Stream *)(*xstream_data) == NULL) &#123;
+    Error ("bad name " + stream);
+  &#125;
+&#125;
+if ((SDIF_Stream *)(*xstream_data) != NULL) &#123;
+   SDIF_Frame *frame0 = (**xstream_data)->first;
+   if (frame0 != NULL) &#123;
+     if (SDIF_Char4Eq(frame0->header.frameType,
+                      "1RES")) &#123;
+       int num_res = frame0->matrices->header.rowCount;
+       Resonances newResonances(num_res);
+       float *resMatrix = 
+          (float *)(frame0->matrices->data);
+       float *freq = resMatrix;
+       float *amp = resMatrix + 1;
+       float *decay = resMatrix + 2;
+       for (int i = 0; i &lt; num_res; ++i) &#123;
+         newResonances.freq&#91;i&#93; = *freq;
+         newResonances.amp&#91;i&#93; = *amp;
+         newResonances.decay&#91;i&#93; = *decay;
+         freq += frame0->matrices->header.columnCount;
+         amp += frame0->matrices->header.columnCount;
+         decay += frame0->matrices->header.columnCount;
+       &#125;
+       resonances = newResonances;
+     &#125; else &#123;
+       Error ("not a resonance (1RES) stream.");
+     &#125;
+   &#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">sdif::ToResonances &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_ToResonances" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="SDIFBuffer -name cbass" name="cbass" x="282.0" y="70.0" width="142" height="25" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA src="cbass.res.sdif" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="165.0" y="164.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="cbass/1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="sdif::ToResonances " name="toresonances0" x="165.0" y="219.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get0" x="163.0" y="109.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="cnmat::Resonators " name="resonators0" x="107.0" y="300.0" width="118" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="24.0" y="153.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="1" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Impulse " name="impulse0" x="24.0" y="212.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="26.0" y="80.0" width="50" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="94.0" y="427.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="214.0" y="359.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="0.00176568" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="307.0" y="274.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="toresonances0/stream" vertices="" />
+&lt;CONNECTION  outlet="toresonances0/resonances" inlet="resonators0/resonances" vertices="" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="169.0 154.0 319.0 154.0" />
+&lt;CONNECTION  outlet="resonators0/samplesOut" inlet="gain0/samplesIn" vertices="113.0 347.0 220.0 347.0" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="impulse0/impulse" vertices="30.0 199.0 86.0 199.0" />
+&lt;CONNECTION  outlet="impulse0/samplesOut" inlet="resonators0/samplesIn" vertices="30.0 273.5 113.0 273.5" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="floatbox0/unitIn" vertices="32.0 137.5 117.0 137.5" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="313.0 350.5 252.0 350.5" />
+&lt;STICKY  x="332.0" y="138.0" width="84.0" height="50.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Specify an
+SDIF Buffer
+and stream ID&lt;/STICKY>&lt;STICKY  x="309.0" y="213.0" width="174.0" height="32.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Convert an SDIF Resonance
+stream to a Resonances data type&lt;/STICKY>&lt;TITLE  x="124.0" y="32.0" color="#FFFFFF" text="sdif::ToResonances" fontface="Arial" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+<xblock name="HelpPatchSupportFiles">cbass.res.sdif</xblock>
+</osw-external>
+
+
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<osw-external name="TextIn" package="osw">
+<description>Text file input</description>
+<copyright></copyright>
+<inlet name="fileIn" type="String" description="Name of file to read" persistent="1" />
+<inlet name="next" type="Unit" description="Read next line" />
+<inlet name="all" type="Unit" description="Read entire file at once" />
+<inlet name="reset" type="Unit" description="Return to beginning of file" />
+<outlet name="lineOut" type="String" description="Line of text from file" synchronous="1" />
+<outlet name="eof" type="Unit" description="End-of-file reached" synchronous="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xfp = NULL;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">if (xfp) &#123;
+   fclose(xfp);
+&#125;</xblock>
+<xblock name="Private">FILE  *xfp;
+char  xbuffer&#91;512&#93;;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="readAll" activators="all" order="0" >
+
+
+if (xfp) &#123;
+   fseek(xfp,0L,SEEK_SET);
+   while (!feof(xfp)) &#123;
+	fgets(xbuffer,512,xfp);
+	lineOut = xbuffer;
+   &#125;
+   eof = eof;
+&#125;
+</activation>
+<activation name="go_back" activators="reset" order="0" >
+
+
+if (xfp) &#123;
+  fseek(xfp,0L,SEEK_SET);
+&#125;
+</activation>
+<activation name="fileChanged" activators="fileIn" order="0" >
+
+
+if (xfp) &#123;
+  fclose(xfp);
+&#125;
+xfp = fopen(fileIn->c_str(),"r");
+if (!xfp) &#123;
+  Error("Could not open file " + fileIn);
+&#125;
+</activation>
+<activation name="nextLine" activators="next" order="0" >
+
+
+if (xfp) &#123;
+  if (fgets(xbuffer,512,xfp)) &#123;
+	lineOut = xbuffer;
+  &#125; else &#123;
+  	eof = eof;
+  &#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">TextIn &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">TextIn reads text files line by line.  You can process all the lines at once using the "all" inlet, or read
+them one at a time using the "next" inlet.  The "next" inlet is useful if you want to synchronize file
+reading to another event (e.g., from a Ticker transform).</xblock>
+<xblock name="Links">TextOut FilePicker Ticker</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_TextIn" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="TextIn" name="textin0" x="174.0" y="218.0" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="textin0/fileIn" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print0" x="175.0" y="309.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="201.0" y="131.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="285.0" y="130.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FilePicker " name="filepicker0" x="101.0" y="133.0" width="44" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="filepicker0/save" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="TextOut" name="textout0" x="165.0" y="430.0" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="textout0/fileIn" value="" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="textin0/lineOut" inlet="print0/to_print" vertices="180.0 281.0 181.0 281.0" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="textin0/next" vertices="207.0 195.5 199.0 195.5" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="textin0/all" vertices="291.0 195.0 218.0 195.0" />
+&lt;CONNECTION  outlet="filepicker0/fileOut" inlet="textin0/fileIn" vertices="107.0 196.5 180.0 196.5" />
+&lt;STICKY  x="273.0" y="279.0" width="117.0" height="63.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">If you can't find a
+text file, you can use
+the README that
+came with OSW.&lt;/STICKY>&lt;TITLE  x="121" y="65" color="#FFFFFF" text="TextIn" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="218.0" y="107.0" color="#FFFFFF" text="Read one line" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="300.0" y="109.0" color="#FFFFFF" text="Entire file" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="202.0" y="402.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

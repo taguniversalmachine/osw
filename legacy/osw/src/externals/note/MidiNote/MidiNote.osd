@@ -1,0 +1,199 @@
+<?xml version="1.0" ?>
+<osw-external name="MidiNote" package="note">
+<description>Play notes using MIDI</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inlet name="beginNote" type="Note" description="begin playing note" />
+<inlet name="endNote" type="Note" description="stop playing note" />
+<outlet name="midiOut" type="MidiMessage" description="MIDI messages" />
+<state name="velocity" type="Integer" default="64" description="default velocity" persistent="1" />
+<state name="channel" type="Integer" default="0" description="channel for MIDI messages" persistent="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="note_off" activators="endNote" order="" >
+
+midiOut = MidiMessage(channel,0x8,Extract&lt;int>(endNote->pitch()),0);
+</activation>
+<activation name="note_on" activators="beginNote" order="" >
+
+int note_velocity;
+Untyped found;
+if (found = beginNote->get("velocity")) &#123;
+   note_velocity = Extract&lt;int>(found);
+&#125; else if (found = beginNote->get("volume")) &#123;
+   note_velocity = 127 * Extract&lt;float>(found);
+&#125; else &#123;
+   note_velocity = velocity;
+&#125;
+
+midiOut = MidiMessage(channel,0x9,Extract&lt;int>(beginNote->pitch()),note_velocity);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">MidiNote &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_MidiNote" Version="1.1beta4" WindowSize="200 230" Background="SystemButtonFace">
+&lt;COPYRIGHT>
+
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+&lt;/COPYRIGHT>
+&lt;TRANSFORM  command="Notes" name="notes0" x="118.0" y="154.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="156.0" y="89.0" width="163" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="c4 s e ef4 e e f4 s e fs4 s s g4 s s" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="PlayScore " name="playscore0" x="118.0" y="218.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="playscore0/tempo" value="100" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiNote " name="midinote0" x="118.0" y="285.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="midinote0/velocity" value="64" />
+
+&lt;STATE name="midinote0/channel" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="229.0" y="316.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiOutput" name="midioutput0" x="118.0" y="349.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="midioutput0/driver" value="/midiOut/0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="OnOffAmp " name="onoffamp0" x="187.0" y="447.0" width="64" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="onoffamp0/on" value="0.5" />
+
+&lt;STATE name="onoffamp0/off" value="0" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="notes0/scoreOut" inlet="playscore0/score" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="notes0/listIn" vertices="" />
+&lt;CONNECTION  outlet="playscore0/beginNote" inlet="midinote0/beginNote" vertices="" />
+&lt;CONNECTION  outlet="playscore0/endNote" inlet="midinote0/endNote" vertices="158.0 269.0 186.0 269.0" />
+&lt;CONNECTION  outlet="midinote0/midiOut" inlet="midioutput0/message" vertices="" />
+&lt;STICKY  x="162.0" y="44.0" width="161.0" height="19.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Hit the button to play the score&lt;/STICKY>&lt;STICKY  x="234.0" y="240.0" width="122.0" height="45.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use the audio output to 
+start the clock.&lt;/STICKY>&lt;TITLE  x="88.0" y="25.0" color="#FFFFFF" text="MidiNote" fontface="MS Sans Serif" fontsize="14" />&lt;TITLE  x="218.0" y="429.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

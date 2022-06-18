@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">FanOut <a href="http://localhost:7775/OSW_DIR/help_patches/help_FanOut.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Route a source to several destinations.</p>
+<h3 class="title">Syntax</h3>
+<p>FanOut <i>options</i></p>
+<h3 class="title">Options</h3>
+<ul><dl>
+<dt><b>-outputs</b></dt><dd>Number of initial outlets.</dd><dd>Type: Integer</dd><dd>Default: 2</dd>
+</dl></ul>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>in</b></dt>
+<dd>The source data to be routed.</dd>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dt><b>out1</b> ... <b>out</b><i>n</i></dt>
+<dd>Outlets for the routed data.</dd>
+<dd>Type: depends on the type connected to <b>in</b>.</dd>
+</ul>
+<h3 class="title">Comments</h3>
+<p>FanOut is required when you want connect the output of one transform to multiple inlets on other transforms:</p>
+<div align="center">
+<img src="./details_files/fanout.png" align="center" width=257 height=197>
+</div>
+<p>The <b>-outputs</b> option can used to specify the number of outlets from the FanOut (the default is 2).  However, if all the outlets of a FanOut are connected, an additional outlet is automatically added, as in the figure above where both of the original outlets have been connected to other transforms.  Thus it is not necessary to know in advance how many connections are required, and more connections can be easily added at any time.</p>
+
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="FanIn.html">FanIn</a></dt>
+<dt><a href="Switch.html">Switch</a></dt>
+
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

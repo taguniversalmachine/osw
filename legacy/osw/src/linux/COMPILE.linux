@@ -1,0 +1,83 @@
+COMPILING AND INSTALLING THE SOURCE VERSION OF OSW FOR LINUX
+
+0.  REQUIREMENTS
+
+This source version of OSW should compile on Linux.
+The following additional software is required:
+
+*  gcc 3.2 or higher
+*  Tcl/Tk 8.3 and Itcl
+
+
+1.  INSTALLING REQUIRED PACKAGES
+
+1.1.  DOWNLOADING AND INSTALLING TCL/TK
+
+If you installed from a major distribution, such RedHat, Debian or SuSE, 
+you probably already have Tcl/Tk and Itcl installed.  
+  
+If you still need to install them, there are binary distributions, RPMs,
+Debian packages and  source versions available.  You can download source or 
+binary versions from the Tcl Developer Xchange (www.scriptics.com).
+
+1.2.  GCC 3.2
+
+If your version of GCC is older than 3.2, it is recommended that you 
+upgrade either from sources or a binary package.  When upgrading, make
+sure that you have full C++ support enabled.
+
+OSW uses advanced features of C++ that are best supported in version 3.2.
+
+2.  Run configure
+
+In the osw/src/linux directory (that is presumably where you are now), run
+the standard "configure" script by typing "./configure".  If you want to 
+enable the Advanced Linux Sound Architecture (ALSA), type:
+
+  ./configure --enable-alsa
+
+If you do not enable ALSA, the default OSS audio drivers will be used.  
+Run "./configure --help" if you want to examine other configuration options
+available, such as alternative installation directories. (The default 
+installation goes into /usr/local/bin and /usr/local/lib.)
+
+Assuming all goes well, you should now have a Makefile in your
+osw/src/linux directory.
+
+3.  COMPILE AND INSTALL THE CORE SYSTEM
+
+You are now ready to compile OSW.  If you haven't done so already, open
+a command prompt window and change to this directory (osw/src/win).  
+To build the core system, type:
+
+  make all
+
+The compilation may take a while, depending on CPU speed and available
+memory.  Because OSW makes extensive use of advanced C++ features, it
+often compiles slower than some other applications.  If your processor speed
+is less than about 700MHz, treat yourself to a snack, or maybe catch up
+on some reading.
+
+When the compilation is done, you will want to install OSW by typing:
+
+  make install
+
+This will copy the newly compiled binaries plus all the support files
+(scripts, documentation, data files, etc.) to the location you specified
+in System.mak.  Make sure you have write access to the install directory,
+or run the installatiion as root.
+
+4.  COMPILE THE EXTERNALS
+
+Not quite done yet!  You still have to make all the external transforms.
+From the command prompt, type:
+
+  make externals
+
+This will start a series of compilations, and pop up several instances of
+the "Externalizer", the graphical tool for building OSW externals.  During
+this build process, the Externalizer windows are fully automated, so you
+do not need to do anything.
+
+This step also installs the externals, so once its complete you're ready
+to go.  Simply type "osw" or "oswbin", and have fun!

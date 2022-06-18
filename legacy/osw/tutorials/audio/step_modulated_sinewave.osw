@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="step_modulated_sinewave" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="step_modulator" name="step_modulator1" x="345.0" y="193.0" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="345.0" y="127.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="10" />
+
+<STATE name="floatbox0/max" value="200" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="461.0" y="124.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="300" />
+
+<STATE name="floatbox1/max" value="400" />
+
+<STATE name="floatbox1/min" value="100" />
+
+<STATE name="floatbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="583.0" y="124.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="50" />
+
+<STATE name="floatbox2/max" value="100" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="163.0" y="315.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="0.00316456" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="158" y="457" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="221.0" y="394.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.8" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="523" y="240" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="472.0" y="7.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="472.0" y="59.0" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="step_modulator1/value" inlet="sinewave0/freq" vertices="351.0 271.5 228.0 271.5" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="step_modulator1/frequency" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="step_modulator1/offset" vertices="467.0 175.0 397.0 175.0" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="step_modulator1/width" vertices="589.0 175.0 443.0 175.0" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="gain0/samplesIn" vertices="169.0 378.5 227.0 378.5" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="227.0 443.0 284 443.0" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="529 351.0 259.0 351.0" />
+<CONNECTION  outlet="get0/value" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="floatbox0/unitIn" vertices="478.0 110.5 438.0 110.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="floatbox1/unitIn" vertices="497.0 109.0 554.0 109.0" />
+<CONNECTION  outlet="fanout0/out3" inlet="floatbox2/unitIn" vertices="516.0 109.0 676.0 109.0" />
+<STICKY  x="245.0" y="171.0" width="84.0" height="62.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+to see how
+modulator is
+built</STICKY><TITLE  x="392.0" y="115.0" color="#FFFFFF" text="mod freq" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="507.0" y="115.0" color="#FFFFFF" text="mod offset" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="629.0" y="113.0" color="#FFFFFF" text="mod width" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="211.0" y="37.0" color="#FFFFFF" text="Step-Modulated Sinewave" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="559.0" y="225.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="439.0" y="409.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="440" y="436" color="#0000FF" link="audio/fm" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="445.0" y="455.0" color="#0000FF" link="audio/step_modulated_pulses" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

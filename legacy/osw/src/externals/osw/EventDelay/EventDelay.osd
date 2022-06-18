@@ -1,0 +1,161 @@
+<?xml version="1.0" ?>
+<osw-external name="EventDelay" package="osw">
+<description>Delay events by a specified amount of time</description>
+<copyright>
+
+
+
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="eventsIn" type="Changeable" />
+<inlet name="delay" type="Float" default="1.0" description="delay time (in seconds)" />
+<inlet name="timeIn" type="Time" description="optional virtual time source" />
+<outlet name="eventsOut" type="Any" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xdelta = xoldTime = lastTimeReceived = 0.0;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">stl::deque&lt;Any> xqueue;
+stl::deque&lt;float> delayqueue;
+double xoldTime, xdelta, lastTimeReceived;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">#include &lt;iostream></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="enqueue" activators="eventsIn" order="0" >
+
+
+if (xqueue.empty())
+&#123;
+	delayqueue.push_back(delay);
+&#125;
+else
+&#123;
+	delayqueue.push_back(timeIn - lastTimeReceived);
+&#125;
+
+lastTimeReceived = timeIn;
+if (eventsIn->TypeOf() == typeid(Any)) &#123;
+  xqueue.push_back(((State&lt;Any> &amp;)*eventsIn)->GetDatum());
+&#125; else &#123;
+  xqueue.push_back(eventsIn->MakeDatum());
+&#125;
+</activation>
+<activation name="popqueue" activators="timeIn" order="0" >
+
+
+xdelta += (timeIn - xoldTime);
+xoldTime = timeIn;
+if (xdelta >= delayqueue.front()) &#123;
+	xdelta = 0.0;
+	if (!xqueue.empty()) &#123;
+		Any result = xqueue.front();
+		xqueue.pop_front();
+		delayqueue.pop_front();
+		eventsOut = result;
+	&#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">EventDelay &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">       Input events are delayed by the amount of time specified by the &lt;b>-delay&lt;/b> option or subsequent changes to the &lt;b>delay&lt;/b> inlet.  The default delay is one second.</xblock>
+<xblock name="Links">Pipe</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">       delay</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="EventDelay" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Ticker -interval 0.1" name="ticker1" x="142.0" y="67.0" width="112" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Counter" name="counter0" x="147.0" y="127.0" width="47" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="counter0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="147.0" y="190.0" width="106" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="699" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Expr sin(&#36;f1/10)" name="expr2" x="147.0" y="252.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="146.0" y="313.0" width="110" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="-1" />
+
+&lt;STATE name="hslider0/max" value="1" />
+
+&lt;STATE name="hslider0/resolution" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider1" x="141.0" y="451.0" width="110" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider1/min" value="-1" />
+
+&lt;STATE name="hslider1/max" value="1" />
+
+&lt;STATE name="hslider1/resolution" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="EventDelay" name="eventdelay0" x="157.0" y="401.0" width="62" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="476.0" y="404.0" width="125" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="450" y="58" width="172" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="aoeueeueeeeeeeeeeeee" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="EventDelay" name="eventdelay1" x="460.0" y="149.0" width="62" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="450.0" y="222.0" width="172" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="aoeueeueeeeeeeeeeeee" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="587.0" y="119.0" width="106" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="1" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox2" x="327" y="342" width="106" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox2/floatIn" value="2" />
+
+&lt;STATE name="floatbox2/max" value="10" />
+
+&lt;STATE name="floatbox2/min" value="0" />
+
+&lt;STATE name="floatbox2/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="ticker1/tick" inlet="counter0/next" vertices="148.0 113.5 153.0 113.5" />
+&lt;CONNECTION  outlet="counter0/intOut" inlet="floatbox0/floatIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="expr2/f1" vertices="" />
+&lt;CONNECTION  outlet="expr2/out" inlet="hslider0/floatIn" vertices="153.0 299.0 152.0 299.0" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="eventdelay0/eventsIn" vertices="152.0 376.5 163.0 376.5" />
+&lt;CONNECTION  outlet="eventdelay0/eventsOut" inlet="hslider1/floatIn" vertices="163.0 442.5 147.0 442.5" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="eventdelay1/eventsIn" vertices="456.0 121.5 466.0 121.5" />
+&lt;CONNECTION  outlet="eventdelay1/eventsOut" inlet="msgbox1/messageIn" vertices="466.0 202.0 456.0 202.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="eventdelay1/delay" vertices="593.0 170.0 544.5 170.0 544.5 134.0 496.0 134.0" />
+&lt;CONNECTION  outlet="floatbox2/floatOut" inlet="eventdelay0/delay" vertices="333 389.5 193.0 389.5" />
+&lt;STICKY  x="648.0" y="403.0" width="252.0" height="38.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Be sure to turn on the AudioOutput to start the clock&lt;/STICKY>&lt;STICKY  x="149.0" y="517.0" width="298.0" height="36.0" color="#FFFF77" fontface="Helvetica" fontsize="8">The event stream is delayed by 2 seconds,
+but the spacing remains the same.&lt;/STICKY>&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

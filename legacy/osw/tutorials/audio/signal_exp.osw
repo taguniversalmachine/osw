@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="sig_exp" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Sinewave" name="sinewave0" x="232" y="256" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  name="x1" x="243" y="373" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>^</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="Scope" name="scope0" x="324.0" y="591.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="1" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="378.0" y="262.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="1" />
+
+<STATE name="floatbox0/max" value="25" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="174.0" y="666.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="spectralscope0" x="618" y="587" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>SpectralScope</COMMAND>
+
+<STATE name="spectralscope0/interval" value="0.1" />
+
+<STATE name="spectralscope0/zoom" value="10" />
+
+<STATE name="spectralscope0/vertical_zoom" value="5" />
+
+<STATE name="spectralscope0/background" value="black" />
+
+<STATE name="spectralscope0/foreground" value="blue" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="243.0" y="449.0" width="60" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Fft" name="fft0" x="617" y="506" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="fft0/window" value="rectangle" />
+
+<STATE name="fft0/fftsize" value="512" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="378.0" y="181.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="1" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="x1/param1" vertices="238 340 249 340" />
+<CONNECTION  outlet="x1/result" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="x1/param2" vertices="384.0 335.5 285.0 335.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="out0/mix" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="268.0 538.5 330.0 538.5" />
+<CONNECTION  outlet="fanout0/out3" inlet="fft0/samplesIn" vertices="287.0 496.0 623.0 496.0" />
+<CONNECTION  outlet="fft0/spectrumOut" inlet="spectralscope0/spectrumIn" vertices="623 565 624 565" />
+<CONNECTION  outlet="intbox0/intOut" inlet="floatbox0/floatIn" vertices="" />
+</PATCH>
+</OSW>
+

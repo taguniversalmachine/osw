@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<osw-external name="Triangle" package="osw">
+<description>Triangle wave</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inlet name="timeIn" type="Time" description="Virtual time source" />
+<inlet name="frequency" type="Float" default="440" description="Frequency (in Hz)" persistent="1" />
+<outlet name="samplesOut" type="Samples" description="Output waveform" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">phase = 0;
+dphase = int(frequency);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">int phase,dphase;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation2" activators="frequency" order="0" >
+
+dphase = int(frequency);
+</activation>
+<activation name="activation1" activators="timeIn" order="0" >
+
+Samples samples(NumberOfSamples);
+int iSampleRate = timeIn->sample_rate;
+for (int i = 0; i &lt; NumberOfSamples; ++i) &#123;
+   float saw = float(phase) * timeIn->sampling_interval;
+   samples&#91;i&#93; = 4.0f * (fabs(saw - 0.5f) - 0.25f);
+   phase += dphase;
+   phase %= iSampleRate;
+&#125;
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Triangle &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;b>Triangle&lt;/b> generates a triangle waveform at a given frequency.</xblock>
+<xblock name="Links">Phasor Sinewave Square</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Triangle" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="165" y="390" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Triangle " name="triangle0" x="184.0" y="187.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="triangle0/frequency" value="20" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="184.0" y="289.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="246.0" y="96.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="20" />
+
+&lt;STATE name="hslider0/max" value="800" />
+
+&lt;STATE name="hslider0/resolution" value="2" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="304.0" y="192.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Phasor " name="phasor0" x="429.0" y="399.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="phasor0/frequency" value="440" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="triangle0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="190.0 357.0 291.0 357.0" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="triangle0/frequency" vertices="" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="310.0 274.5 222.0 274.5" />
+&lt;TITLE  x="299.0" y="77.0" color="#FFFFFF" text="frequency" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="339.0" y="172.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="455.0" y="363.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="200.0" y="50.0" color="#FFFFFF" text="Triangle" fontface="MS Sans Serif" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

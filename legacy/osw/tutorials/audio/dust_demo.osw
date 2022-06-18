@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="dust_demo" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="dust" name="dust0" x="152.0" y="197.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="152.0" y="132.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="140.0" y="397.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="152.0" y="285.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="295.0" y="199.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="dust0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="dust0/dustiness" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="158.0 358.5 266.0 358.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="301.0 276.0 190.0 276.0" />
+<STICKY  x="42.0" y="186.0" width="91.0" height="53.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click on
+dust to see how
+it was built</STICKY><TITLE  x="194.0" y="112.0" color="#FFFFFF" text="dustiness" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="319" y="161" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="142.0" y="47.0" color="#FFFFFF" text="Dust Demo" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

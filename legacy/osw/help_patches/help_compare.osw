@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_compare" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="IntBox" name="intbox0" x="42" y="113" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="167.0" y="112.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command=";gt;" name="gt0" x="42.0" y="179.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Toggle" name="toggle0" x="42.0" y="238.0" width="36" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command=";gt;=" name="gteq0" x="312.0" y="181.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="312.0" y="113.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="448.0" y="111.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Toggle" name="toggle1" x="312.0" y="242.0" width="36" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="41" y="329" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="180.0" y="329.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="0" />
+
+<STATE name="floatbox3/max" value="1" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command=";lt;" name="lt0" x="41.0" y="395.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="41.0" y="460.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="1" />
+
+<STATE name="intbox3/max" value="100" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="==" name="eqeq0" x="613.0" y="258.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="';gt;" name="qgt0" x="614.0" y="314.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="intbox0/intOut" inlet="gt0/param1" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="gt0/param2" vertices="173.0 162.0 80.0 162.0" />
+<CONNECTION  outlet="gt0/result" inlet="toggle0/toggle" vertices="" />
+<CONNECTION  outlet="gteq0/result" inlet="toggle1/toggle" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="gteq0/param1" vertices="" />
+<CONNECTION  outlet="intbox2/intOut" inlet="gteq0/param2" vertices="454.0 162.5 350.0 162.5" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="lt0/param1" vertices="" />
+<CONNECTION  outlet="floatbox3/floatOut" inlet="lt0/param2" vertices="186.0 378.5 79.0 378.5" />
+<CONNECTION  outlet="lt0/result" inlet="intbox3/intIn" vertices="" />
+<STICKY  x="374.0" y="196.0" width="106.0" height="58.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Toggles are useful
+for viewing boolean
+values</STICKY>
+<STICKY  x="118.0" y="195.0" width="106.0" height="65.0" color="#00ffff" fontface="MS Sans Serif" fontsize="8">Emits output when
+values are received
+via left (active)
+inlet</STICKY>
+<STICKY  x="328.0" y="361.0" width="145.0" height="59.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Open this tutorial patch 
+for  more about using the
+comparison operators
+with signals.</STICKY>
+<TITLE  x="634.0" y="229.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="194.0" y="45.0" color="#FFFFFF" fontface="MS Sans Serif" fontsize="14" >&lt; &lt;= =&gt; &gt; (comparison operators)</TITLE>
+<HYPERLINK  x="390.0" y="447.0" color="#0000FF" link="audio/compare_signal" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

@@ -1,0 +1,397 @@
+<?xml version="1.0" ?>
+<osw-external name="LinesEditor" package="osw">
+<description>Breakpoint Function Editor</description>
+<copyright>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</copyright>
+<inherit class="interactivedraw" />
+<inherit class="datasource" />
+<inlet name="sendNow" type="Unit" description="Send breakpoints now" />
+<outlet name="linesOut" type="List" description="List of breakpoints" />
+<state name="x_scale" type="Float" default="1" description="x-axis scale of function" persistent="1" />
+<state name="y_scale" type="Float" default="1.0" description="y-axis scale of function" persistent="1" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<inherited-state name="widget" type="string" default="none" description="Tk Widget Name" />
+<inherited-state name="src" type="string" default="none" description="External Data Source" />
+<xblock name="drawCodeTcl">HideName
+LinesEditor &#36;drawingSpace &#36;transform</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">
+
+
+    string GetData () const &#123;
+      ostringstream os;
+      os &lt;&lt; linesOut;
+      return os.str();
+    &#125;
+
+    void SetData (const string &amp;adata) &#123;
+      DataSource::SetData(adata);
+      string data = adata;
+      int spacer = data.size()-1;
+      while (isspace(data&#91;spacer&#93;)) &#123;
+	--spacer;
+      &#125;
+      data.erase(spacer+1,string::npos);
+      spacer = 0;
+      while (isspace(data&#91;spacer&#93;)) &#123;
+  	++spacer;
+      &#125;
+      data.erase(0,spacer);
+      cout &lt;&lt; data &lt;&lt; endl;
+      istringstream is(data);
+      List xlist;
+      is >> xlist;
+      linesOut.SetWithoutActivating(xlist);
+      cout &lt;&lt; linesOut &lt;&lt; endl;
+      oswTclEvalStringOnTheEdge(("ResetPoints "+widget+".canvas &#123;" + data + "&#125;").c_str());
+    &#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">
+
+proc AddPoint &#123;canvas x y&#125; &#123;
+    global LineEditPoints
+    if &#123;&#36;::_inpointpopup&#125; &#123;
+	set ::_inpointpopup 0
+        return
+    &#125;
+    set points &#36;LineEditPoints(&#36;canvas)
+    set length &#91;llength &#36;points&#93;
+    set insertpt -1
+    for &#123;set i 0&#125; &#123;&#36;i &lt; &#36;length&#125; &#123;incr i&#125; &#123;
+        set x1 &#91;lindex &#91;lindex &#36;points &#36;i&#93; 0&#93;
+        set x2 &#91;lindex &#91;lindex &#36;points &#91;expr &#36;i + 1&#93;&#93; 0&#93;
+        if &#123;&#36;x > &#36;x1 &amp;&amp; &#36;x &lt; &#36;x2&#125; &#123;
+            set insertpt &#36;i
+            incr insertpt
+            break
+        &#125;
+    &#125;
+    if &#123;&#36;insertpt >= 0&#125; &#123;
+        set LineEditPoints(&#36;canvas) &#91;linsert &#36;points &#36;insertpt &#91;list &#36;x &#36;y&#93;&#93;
+    &#125; else &#123;
+        set LineEditPoints(&#36;canvas) &#91;linsert &#36;points end &#91;list &#36;x &#36;y&#93;&#93;
+    &#125;
+    DrawPoints &#36;canvas
+&#125;
+
+proc EnterPoint &#123;canvas tag x1 y1 rootx rooty&#125; &#123;
+    bind &#36;canvas &lt;1> &#123;&#125;
+    bind &#36;canvas &lt;3> &#123;&#125;
+    &#36;canvas bind &#36;tag &lt;B1-Motion> "MovePoint &#36;canvas &#36;tag %x %y"
+    &#36;canvas bind &#36;tag &lt;ButtonRelease-1> "EndMovePoint &#36;canvas &#36;tag &#36;x1 &#36;y1 %x %y"
+    &#36;canvas bind &#36;tag &lt;3> "PointPopup &#36;canvas &#36;tag &#36;x1 &#36;y1 &#36;rootx &#36;rooty" 
+&#125;
+
+proc LeavePoint &#123;canvas tag&#125; &#123;
+    &#36;canvas bind &#36;tag &lt;B1-Motion> &#123;&#125;
+    &#36;canvas bind &#36;tag &lt;ButtonRelease-1> &#123;&#125;
+    &#36;canvas bind &#36;tag &lt;3> &#123;&#125;
+    bind &#36;canvas &lt;1> "AddPoint &#36;canvas %x %y"
+    bind &#36;canvas &lt;3> "LinesEditorPopup &#36;canvas %X %Y"
+    
+&#125;
+
+proc MovePoint &#123;canvas tag x y&#125; &#123;
+    &#36;canvas coords &#36;tag &#91;expr &#36;x - 5&#93; &#91;expr &#36;y - 5&#93; &#92;
+                &#91;expr &#36;x + 5&#93; &#91;expr &#36;y + 5&#93;
+&#125;
+
+proc EndMovePoint &#123;canvas tag oldx oldy x y&#125; &#123;
+    global LineEditPoints
+    set i 0
+    set points &#36;LineEditPoints(&#36;canvas)
+    set length &#91;llength &#36;points&#93;
+    for &#123;&#125; &#123;&#36;i &lt; &#36;length&#125; &#123;incr i&#125; &#123;
+        set pt &#91;lindex &#36;points &#36;i&#93;
+        if &#123;&#36;pt == &#91;list &#36;oldx &#36;oldy&#93;&#125; &#123;
+            break
+        &#125;
+    &#125;
+    set LineEditPoints(&#36;canvas) &#91;lreplace &#36;points &#36;i &#36;i &#91;list &#36;x &#36;y&#93;&#93;
+    set LineEditPoints(&#36;canvas) &#91;lsort -integer -index 0 &#36;LineEditPoints(&#36;canvas)&#93;
+    DrawPoints &#36;canvas
+&#125;
+
+set _inpointpopup 0
+
+proc PointPopup &#123;canvas tag x y rootx rooty&#125; &#123;
+  set ::_inpointpopup 1
+  &#36;canvas.pointpopup entryconfigure 1 -command "RemovePoint &#36;canvas &#36;tag &#36;x &#36;y"
+  tk_popup &#36;canvas.pointpopup &#36;rootx &#36;rooty
+&#125;
+
+proc RemovePoint &#123;canvas tag x y&#125; &#123;
+  &#36;canvas delete tag
+    global LineEditPoints
+    set i 0
+    set points &#36;LineEditPoints(&#36;canvas)
+    set length &#91;llength &#36;points&#93;
+    for &#123;&#125; &#123;&#36;i &lt; &#36;length&#125; &#123;incr i&#125; &#123;
+        set pt &#91;lindex &#36;points &#36;i&#93;
+        if &#123;&#36;pt == &#91;list &#36;x &#36;y&#93;&#125; &#123;
+            break
+        &#125;
+    &#125;
+    ldelete points &#91;lindex &#36;points &#36;i&#93;
+    set LineEditPoints(&#36;canvas) &#36;points 
+    DrawPoints &#36;canvas
+&#125;
+
+proc DrawPoints &#123;canvas&#125; &#123;
+    global LineEditPoints
+    global LineEditMap
+
+    &#36;canvas delete all
+    set points &#36;LineEditPoints(&#36;canvas)
+    eval &#36;canvas create line &#91;eval concat &#36;points&#93; -fill "#00FFFF"
+    foreach pt &#36;points &#123;
+        set x1 &#91;lindex &#36;pt 0&#93;
+        set y1 &#91;lindex &#36;pt 1&#93;
+        set tag &#91;&#36;canvas create rectangle &#91;expr &#36;x1 - 5&#93; &#91;expr &#36;y1 - 5&#93; &#92;
+                &#91;expr &#36;x1 + 5&#93; &#91;expr &#36;y1 + 5&#93; &#92;
+                -fill "#00FFFF"&#93;
+        &#36;canvas bind &#36;tag &lt;Enter> "&#36;canvas itemconfigure &#36;tag -fill red ; EnterPoint &#36;canvas &#36;tag &#36;x1 &#36;y1 %X %Y; break"
+        &#36;canvas bind &#36;tag &lt;Leave> "&#36;canvas itemconfigure &#36;tag -fill &#92;"#00FFFF&#92;" ; LeavePoint &#36;canvas &#36;tag; break"
+    &#125;
+    UpdatePoints &#36;canvas &#36;LineEditMap(&#36;canvas)
+&#125;
+
+proc UpdatePoints &#123;canvas transform&#125; &#123;
+    global LineEditPoints
+    global lescale_&#36;canvas
+    global leyscale_&#36;canvas
+    set normalizedPoints &#123;&#125;
+    foreach pt &#36;LineEditPoints(&#36;canvas) &#123;
+        set x &#91;expr &#91;lindex &#36;pt 0&#93; / 300.0 * &#91;set lescale_&#36;canvas&#93;&#93;
+        if &#123;&#36;x &lt; 0&#125; &#123;
+	  set x 0
+        &#125;
+        set y &#91;expr (200 - &#91;lindex &#36;pt 1&#93;) / 200.0 * &#91;set leyscale_&#36;canvas&#93;&#93;
+        lappend normalizedPoints &#36;x &#36;y
+    &#125;
+    oswSet &#36;transform/linesOut &#36;normalizedPoints
+    oswSet &#36;transform/sendNow 1
+&#125;
+
+proc ResetPoints &#123;canvas newpoints&#125; &#123;
+    global LineEditPoints
+    global lescale_&#36;canvas
+    global leyscale_&#36;canvas
+    set resetPoints &#123;&#125;
+    set LineEditPoints(&#36;canvas) &#123;&#125;
+    for &#123;set i 0&#125; &#123;&#36;i &lt; &#91;llength &#36;newpoints&#93;&#125; &#123;incr i&#125; &#123;
+        set x &#91;expr &#91;lindex &#36;newpoints &#36;i&#93; * 300.0 / &#91;set lescale_&#36;canvas&#93;&#93;
+        incr i
+        set y &#91;expr 200 - &#91;lindex &#36;newpoints &#36;i&#93; * 200.0 / &#91;set leyscale_&#36;canvas&#93;&#93;
+        lappend resetPoints &#91;list &#36;x &#36;y&#93;
+    &#125;
+   set LineEditPoints(&#36;canvas) &#36;resetPoints
+   puts &#36;LineEditPoints(&#36;canvas)
+   DrawPoints &#36;canvas
+&#125;
+
+proc SetLineEditorXScale &#123;transform value&#125; &#123;
+  oswSet &#36;transform/x_scale &#36;value
+&#125;
+
+proc SetLineEditorYScale &#123;transform value&#125; &#123;
+  oswSet &#36;transform/y_scale &#36;value
+&#125;
+
+proc LinesEditorPopup &#123;w x y&#125; &#123;
+   if &#123;&#36;::_inpointpopup&#125; &#123;
+    set ::_inpointpopup 0
+   &#125; else &#123;
+     tk_popup &#36;w.popup &#36;x &#36;y
+   &#125;
+&#125;
+
+proc LinesEditorClear &#123;canvas&#125; &#123;
+   global LineEditPoints
+   set LineEditPoints(&#36;canvas) &#123;&#123;0 100&#125; &#123;300 100&#125;&#125;
+   DrawPoints &#36;canvas
+&#125;
+
+proc LinesEditor &#123;w transform args&#125; &#123;
+    global LineEditPoints
+    global LineEditMap 
+    global lescale_&#36;w.canvas
+    global leyscale_&#36;w.canvas
+
+    canvas &#36;w.canvas -width 300 -height 200 -background black
+    grid &#36;w.canvas -row 0 -column 0 -sticky nsew
+    scale &#36;w.width -orient horizontal -from 1.0 -to 60.0 -label "x axis" -resolution 0.1 -background black -foreground "#00FFFF" -variable lescale_&#36;w.canvas -command "SetLineEditorXScale &#36;transform"
+    grid &#36;w.width -row 1 -column 0 -sticky ew
+    set lescale_&#36;w.canvas &#91;oswGet &#36;transform/x_scale&#93;
+ 
+    scale &#36;w.height -orient vertical -from 10.0 -to 0.1 -label "y axis" -resolution 0.1 -background black -foreground "#00FFFF" -variable leyscale_&#36;w.canvas -command "SetLineEditorYScale &#36;transform"
+    grid &#36;w.height -row 0 -column 1 -rowspan 2 -sticky ns
+    set leyscale_&#36;w.canvas &#91;oswGet &#36;transform/y_scale&#93;
+
+    if &#123;&#91;llength &#36;args&#93; == 0&#125; &#123;
+      set LineEditPoints(&#36;w.canvas) &#123;&#123;0 100&#125; &#123;300 100&#125;&#125;
+    &#125; else &#123;
+      puts &#36;args
+      ResetPoints &#36;w.canvas &#36;args
+    &#125;
+    menu &#36;w.canvas.popup
+    &#36;w.canvas.popup add command -label "Clear" -command "LinesEditorClear &#36;w.canvas"
+    menu &#36;w.canvas.pointpopup
+    &#36;w.canvas.pointpopup add command -label "Delete Point"
+    bind &#36;w.canvas &lt;1> "AddPoint &#36;w.canvas %x %y %X %Y"
+    bind &#36;w.canvas &lt;3> "LinesEditorPopup &#36;w.canvas %X %Y"
+    set LineEditMap(&#36;w.canvas) &#36;transform
+    DrawPoints &#36;w.canvas
+&#125;</xblock>
+<activation name="y_scale_changed" activators="y_scale" order="0" >
+
+
+
+ostringstream os;
+os &lt;&lt; y_scale;
+oswTclEvalStringOnTheEdge(("set ::leyscale_"+widget+".canvas "+os.str()).c_str());
+</activation>
+<activation name="sendNowNow" activators="sendNow" order="0" >
+
+
+
+linesOut = linesOut;
+</activation>
+<activation name="x_scale_changes" activators="x_scale" order="0" >
+
+
+ostringstream os;
+os &lt;&lt; x_scale;
+oswTclEvalStringOnTheEdge(("set ::lescale_"+widget+".canvas "+os.str()).c_str());
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">LinesEditor &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>LinesEditor creates an in-patch breakpoint-function editor suitable for linear envelopes and other applications.  Its output is a list that is compatible with the Lines transform.&lt;/p>
+&lt;p>New points can be inserted by clicking in the main editor window and existing points can be moved by selecting and dragging them.  Points can be deleted by right-clicking and then selecting the appropriate menu item.  Scrollbars below and next to the main window can be used to scale the x and y axes, respectively.&lt;/p></xblock>
+<xblock name="Links">Lines</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_LinesEdit" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="TimeMachine" name="tm0" x="177.0" y="81.0" width="60" height="62" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="215.0" y="11.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Lines" name="lines0" x="177.0" y="324.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="19.0" y="417.0" width="125" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="OneShot -at 0.0" name="oneshot0" x="277.0" y="225.0" width="87" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="177.0" y="189.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MSlider" name="mslider0" x="290.0" y="394.0" width="104" height="123" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="mslider0/min" value="0" />
+
+&lt;STATE name="mslider0/width" value="100" />
+
+&lt;STATE name="mslider0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout1" x="177.0" y="392.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain -amp_scale 0" name="gain0" x="38.0" y="336.0" width="97" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WhiteNoise" name="whitenoise0" x="38.0" y="76.0" width="82" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="LinesEditor " name="lineseditor0" x="387.0" y="84.0" width="373" height="270" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA>
+		0.00333333 0.00500000 0.196667 0.400000 0.463333 0.200000 0.716667 0.375000 0.996667 0.00000 
+	&lt;/DATA>
+
+&lt;STATE name="lineseditor0/x_scale" value="3.5" />
+
+&lt;STATE name="lineseditor0/y_scale" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="tm0/timeOut" inlet="fanout0/in" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="tm0/zero" vertices="" />
+&lt;CONNECTION  outlet="lines0/floatOut" inlet="fanout1/in" vertices="" />
+&lt;CONNECTION  outlet="oneshot0/tick" inlet="lineseditor0/sendNow" vertices="283.0 273.0 338.0 273.0 338.0 69.0 393.0 69.0" />
+&lt;CONNECTION  outlet="fanout0/out1" inlet="lines0/timeIn" vertices="" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="oneshot0/timeIn" vertices="205.0 238.0 244.0 238.0 244.0 210.0 283.0 210.0" />
+&lt;CONNECTION  outlet="fanout1/out1" inlet="gain0/amp_scale" vertices="183.0 441.0 161.0 441.0 161.0 321.0 139.0 321.0" />
+&lt;CONNECTION  outlet="fanout1/out2" inlet="mslider0/floatIn" vertices="205.0 441.0 250.5 441.0 250.5 379.0 296.0 379.0" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="44.0 393.0 148.0 393.0" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="lineseditor0/linesOut" inlet="lines0/line" vertices="393.0 379.0 305.5 379.0 305.5 309.0 218.0 309.0" />
+&lt;STICKY  x="259.0" y="10.0" width="174.0" height="43.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Click this button to
+"trigger" the envelope.&lt;/STICKY>&lt;TITLE  x="84.0" y="26.0" color="#FFFFFF" text="LinesEditor" fontface="MS Sans Serif" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

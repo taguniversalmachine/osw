@@ -1,0 +1,122 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">Math functions</h1>
+<p>OSW includes several basic and advanced math functions, which are described below.  Each function accepts numerical types (Integers, Floats, Doubles, Complex and DoubleComplex) as well as audio samples, unless otherwise indicated.  When audio samples are used, the result is the same as evaluating the function on each sample individually.  Use the supplied help patches to see how a particular function can be used in numerical or signal contexts.  (<i>Note: in order to use the linked help patches, OSW must already be running.</i>)</p>
+<h3 class="title">Abs <a href="http://localhost:7775/OSW_DIR/help_patches/help_Abs.osw"><font size="-1">[Help Patch]</font></a></h3>
+The absolute value of a number.  For Ints, Floats and Doubles, this is the non-negative version of the number, and for Complex numbers it is the radius (or square root of the norm).
+<h3 class="title">Acos <a href="http://localhost:7775/OSW_DIR/help_patches/help_Acos.osw"><font size="-1">[Help Patch]</font></a></h3>
+The arccosine, or inverse cosine function.
+<h3 class="title">Acosh <a href="http://localhost:7775/OSW_DIR/help_patches/help_Acosh.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse hyperbolic cosine function.
+<h3 class="title">Acot <a href="http://localhost:7775/OSW_DIR/help_patches/help_Acot.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse cotangent function.
+<h3 class="title">Acoth <a href="http://localhost:7775/OSW_DIR/help_patches/help_Acoth.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse hyperbolic cotangent function.
+<h3 class="title">Acsc <a href="http://localhost:7775/OSW_DIR/help_patches/help_Acsc.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse cosecent function.
+<h3 class="title">Acsc <a href="http://localhost:7775/OSW_DIR/help_patches/help_Acsch.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse hyperbolic cosecent function.
+<h3 class="title">Asec <a href="http://localhost:7775/OSW_DIR/help_patches/help_Asec.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse secant function.
+<h3 class="title">Asech <a href="http://localhost:7775/OSW_DIR/help_patches/help_Asech.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse hyperbolic secant function.
+<h3 class="title">Asin  <a href="http://localhost:7775/OSW_DIR/help_patches/help_Asin.osw"><font size="-1">[Help Patch]</font></a></h3>
+The arcsine, or inverse sine function.
+<h3 class="title">Asinh  <a href="http://localhost:7775/OSW_DIR/help_patches/help_Asinh.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse hyperbolic sine function.
+<h3 class="title">Atan <a href="http://localhost:7775/OSW_DIR/help_patches/help_Atan.osw"><font size="-1">[Help Patch]</font></a></h3>
+The arctangent, or inverse tangent function.
+<h3 class="title">Atanh <a href="http://localhost:7775/OSW_DIR/help_patches/help_Atanh.osw"><font size="-1">[Help Patch]</font></a></h3>
+The inverse hyperbolic tangent function.
+<h3 class="title">Ceil <a href="http://localhost:7775/OSW_DIR/help_patches/help_Ceil.osw"><font size="-1">[Help Patch]</font></a></h3>
+The smallest Integer larger than the input value.  This function only works with Floats, Doubles, and floating-point audio samples. (It has no mathematical meaning for the other types.)
+<h3 class="title">Cos <a href="http://localhost:7775/OSW_DIR/help_patches/help_Cos.osw"><font size="-1">[Help Patch]</font></a></h3>
+The cosine function.
+<h3 class="title">Cosh <a href="http://localhost:7775/OSW_DIR/help_patches/help_Cosh.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic cosine function (<i>e<sup>x</sup>+e<sup>-x</sup></i>)/2.
+<h3 class="title">Cot <a href="http://localhost:7775/OSW_DIR/help_patches/help_Cot.osw"><font size="-1">[Help Patch]</font></a></h3>
+The cotangent (1/tan) function.
+<h3 class="title">Coth <a href="http://localhost:7775/OSW_DIR/help_patches/help_Coth.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic cotangent function.
+<h3 class="title">Csc <a href="http://localhost:7775/OSW_DIR/help_patches/help_Cot.osw"><font size="-1">[Help Patch]</font></a></h3>
+The cosecant (1/sin) function.
+<h3 class="title">Csch <a href="http://localhost:7775/OSW_DIR/help_patches/help_Coth.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic cosecant function.
+<h3 class="title">Exp <a href="http://localhost:7775/OSW_DIR/help_patches/help_Exp.osw"><font size="-1">[Help Patch]</font></a></h3>
+The natural inverse logarithm (i.e., <i>e<sup>x</sup></i>&nbsp;).
+<h3 class="title">Fact <a href="http://localhost:7775/OSW_DIR/help_patches/help_Fact.osw"><font size="-1">[Help Patch]</font></a></h3>
+The factorial function for integers.  For the factorial function of real-valued numbers, see <a href="#Gamma">Gamma</a>.
+<h3 class="title">Floor <a href="http://localhost:7775/OSW_DIR/help_patches/help_Floor.osw"><font size="-1">[Help Patch]</font></a></h3>
+The greatlest Integer less than or equal to the input value.  This function only works with Floats, Doubles, and floating-point audio samples. (It has no mathematical meaning for the other types.)
+<h3 class="title">Frac <a href="http://localhost:7775/OSW_DIR/help_patches/help_Frac.osw"><font size="-1">[Help Patch]</font></a></h3>
+Returns the fractional part of a floating-point number.  For example, an input of 2.718281828459 would yield a result of 0.718281828459.  This function only works with Floats, Doubles, and floating-point audio samples.
+<h3 class="title">Gamma <a href="http://localhost:7775/OSW_DIR/help_patches/help_Gamma.osw"><font size="-1">[Help Patch]</font></a></h3>
+The gamma function, which is similar to the factorial function on real-valued numbers: <tt>gamma(x+1) = x!</tt>
+<h3 class="title">Gcd <a href="http://localhost:7775/OSW_DIR/help_patches/help_Gcd.osw"><font size="-1">[Help Patch]</font></a></h3>
+The greatest-common divisor of two numbers. The greatest-common divisor of two numbers <i>a</i> and <i>b</i> is the largest number <i>g</i> that evenly divides both <i>a</i> and <i>b</i> (i.e., <i>a</i>/<i>g</i> and <i>b</i>/<i>g</i> are both integers.)
+<h3 class="title">Log <a href="http://localhost:7775/OSW_DIR/help_patches/help_Log.osw"><font size="-1">[Help Patch]</font></a></h3>
+The natural (base <i>e</i>) logarithm of a number.
+<h3 class="title">Log10 <a href="http://localhost:7775/OSW_DIR/help_patches/help_Log10.osw"><font size="-1">[Help Patch]</font></a></h3>
+The base 10 logarithm of a number.
+<h3 class="title">Sec <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sec.osw"><font size="-1">[Help Patch]</font></a></h3>
+The secant (1/cos) function.
+<h3 class="title">Sech <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sech.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic secant function.
+<h3 class="title">Sgn <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sgn.osw"><font size="-1">[Help Patch]</font></a></h3>
+This function returns 1 if the number is positive, -1 if the number is negative, or zero if the number is zero.  This function works with Integers, Floats and Doubles, as well as integer and floating-point audio samples.  It has no meaning on Complex numbers and therefore does not accept them as input.
+<h3 class="title">Sin <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sin.osw"><font size="-1">[Help Patch]</font></a></h3>
+The sine function
+<h3 class="title">Sinc <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sin.osw"><font size="-1">[Help Patch]</font></a></h3>
+The sinc function: sin(<i>x</i>)/<i>x</i>
+<h3 class="title">Sinh <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sinh.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic sine function (<i>e<sup>x</sup>-e<sup>-x</sup></i>)/2.
+<h3 class="title">Sinhc <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sin.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic sinc function: sinh(<i>x</i>)/<i>x</i>
+<h3 class="title">Sqrt  <a href="http://localhost:7775/OSW_DIR/help_patches/help_Sqrt.osw"><font size="-1">[Help Patch]</font></a></h3>
+The square root function
+<h3 class="title">Tan <a href="http://localhost:7775/OSW_DIR/help_patches/help_Tan.osw"><font size="-1">[Help Patch]</font></a></h3>
+The tangent function
+<h3 class="title">Tanh <a href="http://localhost:7775/OSW_DIR/help_patches/help_Tanh.osw"><font size="-1">[Help Patch]</font></a></h3>
+The hyperbolic tangent function (<i>e<sup>x</sup>-e<sup>-x</sup></i>)/(<i>e<sup>x</sup>+e<sup>-x</sup></i>)
+<hr width=300 align="center">
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="details.html">OSW Programming Details</a></dt>
+<dt><a href="complex.html">Complex number functions</a></dt>
+<dt><a href="Expr.html">Expr</a></dt>
+<dt><a href="osw/Random.html">Random</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

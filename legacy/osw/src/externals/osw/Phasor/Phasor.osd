@@ -1,0 +1,176 @@
+<?xml version="1.0" ?>
+<osw-external name="Phasor" package="osw">
+<description>Sawtooth wave.</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="timeIn" type="Time" description="Requires a time input" />
+<inlet name="frequency" type="Float" default="440.0" description="frequency of phasor (sawtooth)" persistent="1" />
+<inlet name="phaseIn" type="Float" default="0" description="Manually set phase between 0 (beginning of period) and 1 (end of period)" />
+<outlet name="samplesOut" type="Samples" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl">HideName 
+label &#36;drawingSpace.icon -image   &#91;oswLoadBitmap bitmap phasor.xbm&#93;
+&#36;drawingSpace configure -bg &#91;&#36;drawingSpace.icon cget -bg&#93;
+label &#36;drawingSpace.name -text &#91;file tail &#36;transform&#93;   -bg &#91;&#36;drawingSpace cget -bg&#93;  
+pack &#36;drawingSpace.icon &#36;drawingSpace.name -side top</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">
+
+phase = 0;
+dphase = int(frequency);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">
+Float phase;
+Float dphase;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation2" activators="frequency" order="0" >
+
+
+
+
+
+
+
+
+
+
+dphase = frequency;
+</activation>
+<activation name="activation3" activators="phaseIn" order="0" >
+
+
+
+
+
+
+phase = phaseIn * SampleRate;
+</activation>
+<activation name="activation1" activators="timeIn" order="" >
+
+
+
+
+
+
+
+
+
+
+Samples samples(NumberOfSamples);
+Float fSampleRate = timeIn->sample_rate;
+for (int i = 0; i &lt; NumberOfSamples; ++i) &#123;
+   samples&#91;i&#93; = phase * timeIn->sampling_interval;
+   phase += dphase;
+   if (phase > fSampleRate) &#123;
+      phase = fmod(phase,fSampleRate);
+   &#125;
+&#125;
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Phasor &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">      The Phasor generates a sawtooth wave at the selected frequency, with amplitude varying between 0 and 1.   A Phasor can also be used as a source of phase values for the WaveTable (hence the name).</xblock>
+<xblock name="Links">      WaveTable</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">      sawtooth, phase, generator, oscillator</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Phasor" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Phasor" name="phasor0" x="63.0" y="88.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="63.0" y="200.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="0.31565" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="155.0" y="85.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="0.0" y="274.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WaveTable " name="wavetable0" x="7.0" y="405.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="wavetable0/table" value="/sine" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="phasor0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="" />
+&lt;STICKY  x="166.0" y="220.0" width="92.0" height="109.0" color="#FFFF77" text="Phasors sound
+pretty hideous.
+They are best
+used as a phase
+source for
+WaveTables, etc.
+
+" fontface="" fontsize="8">&lt;/STICKY>&lt;TITLE  x="41.0" y="30.0" color="#FFFFFF" text="Phasor" fontface="Arial" fontsize="18" />&lt;TITLE  x="36.0" y="377.0" color="#FFFFFF" text="See Also" fontface="" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

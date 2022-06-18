@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="19_tone" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Midi2Freq  -midi_ref 69 -freq_ref 261.626 -degrees 19.0" name="midi2freq1" x="133.0" y="189.0" width="328" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Keyboard " name="keyboard0" x="201.0" y="45.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="keyboard0/octave" value="5" />
+</TRANSFORM>
+<TRANSFORM  command="Square " name="square0" x="83.0" y="318.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="square0/frequency" value="195.998" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="133.0" y="246.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="182.0" y="302.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="TimeMachine " name="timemachine0" x="276.0" y="286.0" width="75" height="59" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Lines" name="lines0" x="276" y="394" width="40" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="83" y="416" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="83" y="488" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MidiInput -status noteon" name="midiinput1" x="28.0" y="96.0" width="154" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midiinput1/driver" value="unknown" />
+
+<STATE name="midiinput1/channel" value="-1" />
+
+<STATE name="midiinput1/parameter" value="-1" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="21.0" y="176.0" width="45" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="List" name="list0" x="427" y="298" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		0.00000 0.500000 1.00000 0.00000 
+	</DATA>
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="427.0" y="245.0" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="midi2freq1/frequency" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="keyboard0/noteOut" inlet="fanin0/in2" vertices="207.0 159.5 48.0 159.5" />
+<CONNECTION  outlet="square0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="square0/frequency" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="button0/trigger" vertices="161.0 291.0 188.0 291.0" />
+<CONNECTION  outlet="button0/unitOut" inlet="timemachine0/zero" vertices="188.0 361.0 259.0 361.0 259.0 271.0 330.0 271.0" />
+<CONNECTION  outlet="timemachine0/timeOut" inlet="lines0/timeIn" vertices="" />
+<CONNECTION  outlet="lines0/floatOut" inlet="gain0/amp_scale" vertices="282.0 443.0 201.5 443.0 201.5 401 121 401" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="89.0 469.0 209 469.0" />
+<CONNECTION  outlet="midiinput1/firstOut" inlet="fanin0/in1" vertices="134.0 153.0 27.0 153.0" />
+<CONNECTION  outlet="fanin0/out" inlet="midi2freq1/midi_note" vertices="27.0 225.0 83.0 225.0 83.0 174.0 139.0 174.0" />
+<CONNECTION  outlet="list0/listOut" inlet="lines0/line" vertices="433 363 320 363" />
+<CONNECTION  outlet="get0/value" inlet="list0/unitIn" vertices="" />
+<STICKY  x="36.0" y="39.0" width="139.0" height="48.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use the keyboard to the
+right or an external 
+device</STICKY><TITLE  x="208.0" y="17.0" color="#FFFFFF" text="19 Tone Scale" fontface="MS Sans Serif" fontsize="14" /></PATCH>
+</OSW>
+

@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+<osw-external name="PanHandler" package="osw">
+<description>Multi-channel vector panning</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="signal to pan" />
+<inlet name="azimuth" type="Float" description="Direction of signal in XY plane, in degrees" />
+<inlet name="power" type="Float" description="Power of signal" />
+<state name="num_channels" type="Integer" default="2" description="Number of output channels" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">char buffer&#91;32&#93;;
+for (int i = 0; i &lt; num_channels; ++i) &#123;
+   sprintf (buffer,"out%d",i+1);
+   samplesOut.push_back(new Outlet&lt;Samples>(buffer,this,"Output channel"));
+   sparesomechange.AddEffect(samplesOut&#91;i&#93;);
+&#125;
+SetupDefaultAngles();
+angle = 0;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">for (int i = 0; i &lt; num_channels; ++i) &#123;
+   if (samplesOut&#91;i&#93;) &#123;
+	delete samplesOut&#91;i&#93;;
+   &#125;
+&#125;</xblock>
+<xblock name="Private">std::vector&lt;Outlet&lt;Samples> *> samplesOut;
+
+Float angle;
+std::vector&lt;Float> angles;
+std::vector&lt;Float> oneovertan;
+
+void SetupDefaultAngles () &#123;
+   if (num_channels == 2) &#123;
+	angles.push_back(-0.25f * float(M_PI));
+	angles.push_back(0.25f * float(M_PI));
+	angles.push_back(1.75f * float(M_PI));
+   &#125; else if (num_channels == 4) &#123;
+	angles.push_back(-0.25f * float(M_PI));
+	angles.push_back(0.25f * float(M_PI));
+	angles.push_back(0.75f * float(M_PI));
+	angles.push_back(1.25f * float(M_PI));
+	angles.push_back(1.75f * float(M_PI));
+   &#125; else &#123;
+	for (int i = 0; i &lt; num_channels + 1; ++i) &#123;
+		angles.push_back(i*2.0f*float(M_PI) / (int)num_channels);
+	&#125;
+   &#125;
+   for (int i = 0; i &lt; num_channels ; ++i) &#123;
+	oneovertan.push_back(1.0f/tan((angles&#91;i+1&#93; - angles&#91;i&#93;) * 0.5f));
+   &#125;
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="sparesomechange" activators="samplesIn" order="0" >
+
+
+
+if (num_channels == 1) &#123;
+#ifdef OSW_NEEDS_MATHF_FUNCTIONS
+  *(samplesOut&#91;0&#93;) = sqrt(power) * samplesIn;
+#else 
+  *(samplesOut&#91;0&#93;) = sqrtf(power) * samplesIn;
+#endif
+&#125; else &#123;
+  int i;
+  for (i = 0; i &lt; num_channels; ++i) &#123;
+    if (angle &lt; angles&#91;i+1&#93;) &#123;
+      break;
+    &#125;
+  &#125;
+  i %= num_channels;
+  Float g1, g2;
+  Float phi = angles&#91;i+1&#93; - angle;
+  Float k = tan(phi) * oneovertan&#91;i&#93;;
+  if (power &lt; 0.0001f) &#123;
+   g1 = g2 = 0.0f;
+  &#125; else &#123;
+   if (k == 1.0f) &#123;
+	g2 = 0.0f;
+	g1 = sqrt(power);
+   &#125; else &#123;
+	Float t;
+	g2 = sqrt(power / (1.0f + k * k));
+	t = power - g2 * g2;
+	g1 = t > 0.0f ? sqrt(t) : 0.0f;
+   &#125;
+   *(samplesOut&#91;i&#93;) = g1 * samplesIn;
+   *(samplesOut&#91;(i+1)%num_channels&#93;) = g2 * samplesIn;
+
+   for (int j = 0; j &lt; num_channels; ++j) &#123;
+	if (i != j &amp;&amp; j != ((i + 1) % num_channels)) &#123;
+		*(samplesOut&#91;j&#93;) = 0.0f;
+	&#125;	
+   &#125;
+  &#125;
+&#125;
+</activation>
+<activation name="azimuth_changed" activators="azimuth" order="0" >
+
+
+angle = azimuth * 2.0f * 3.1415926535f / 360.0f;
+angle = fmod(angle,2.0f * 3.1415926535f);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">PanHandler &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch"></xblock>
+</osw-external>

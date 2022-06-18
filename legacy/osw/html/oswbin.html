@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>OSW Manual oswbin command-line mode</title>
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="white">
+<div align="Center"><b><font face="Helvetica, Arial, sans-serif"><big><big>
+11. Server mode (oswbin)</big></big></font></b><br>
+<br>
+<br>
+</div>
+
+<p>OSW can be run without its user interface as a <i>server</i>.  In this mode, users do not interact directly with the OSW application, but instead control it from other applications (including other instances of OSW) via <a href="osc.htm">OpenSound Control</a> messages.  As desribed in <a href="osc2.html">Appendix A</a> and the <a href="http://localhost:7775/OSW_DIR/tutorials/osc/invisible_patch.osw">invisible_patch</a> tutorial, OSC messages can be used to build and execute patches running in the server.</p>
+
+<p>To run the OSW server, type <b>oswbin</b> at a command-line prompt.  This will start OSW with the usual initialization for MIDI and audio devices, but instead of bring up the user interface, it will say &quot;Watch and Wait&quot; and then wait for incoming OSC messages.</p>
+
+<p><b>oswbin</b> has several command-line options for initialization (e.g., setting up audio drivers).  Some of these options differ according to platform.  To get a list of command-line options, type:</p>
+
+<pre>
+     oswbin --help
+</pre>
+
+<p>For more information on the uses and advantages of running OSW in server mode, refer to <a href="osc2.html">Appendix A</a>.</p>
+
+</body>
+</html>

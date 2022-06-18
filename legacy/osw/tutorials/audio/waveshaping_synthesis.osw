@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="waveshaping_synthesis" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="WaveTable " name="wavetable0" x="167.0" y="189.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="wavetable0/table" value="/sinc" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="167.0" y="116.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="161.0" y="347.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="167.0" y="274.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.37375" />
+</TRANSFORM>
+<TRANSFORM  command="Table -name table0" name="table0" x="428.0" y="148.0" width="118" height="24" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 
+	</DATA>
+
+<STATE name="table0/size" value="256" />
+
+<STATE name="table0/min" value="0" />
+
+<STATE name="table0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="380.0" y="223.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="wavetable0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="wavetable0/phases" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="173.0 327.5 287.0 327.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="386.0 306.0 295.5 306.0 295.5 259.0 205.0 259.0" />
+<STICKY  x="258.0" y="139.0" width="100.0" height="78.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+select a table,
+/sine, /sinc or
+your own via
+table0</STICKY><STICKY  x="438.0" y="78.0" width="97.0" height="51.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+edit user
+wave table</STICKY><TITLE  x="159.0" y="44.0" color="#FFFFFF" text="Waveshaping Synthesis" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

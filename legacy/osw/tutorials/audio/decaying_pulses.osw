@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="decaying_pulses" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="dust" name="dust0" x="154.0" y="197.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="121.0" y="134.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0.01" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="139.0" y="468.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="154.0" y="388.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.1623" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="480.0" y="279.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Comb" name="comb0" x="154.0" y="318.0" width="75" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="comb0/gain" value="1" />
+
+<STATE name="comb0/forward" value="0" />
+
+<STATE name="comb0/feedback" value="0.5" />
+
+<STATE name="comb0/delay" value="0.0025" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="226.0" y="132.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0.75" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="363" y="132" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="200" />
+
+<STATE name="floatbox3/max" value="1" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Expr 1 / $f1" name="expr0" x="362" y="197" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="386.0" y="5.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="386" y="56" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="dust0/samplesOut" inlet="comb0/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="dust0/dustiness" vertices="127.0 182.0 160.0 182.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="160.0 445.5 265.0 445.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="486.0 367.5 192.0 367.5" />
+<CONNECTION  outlet="comb0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="comb0/feedback" vertices="232.0 241.5 214.0 241.5" />
+<CONNECTION  outlet="floatbox3/floatOut" inlet="expr0/f1" vertices="369 181 368 181" />
+<CONNECTION  outlet="expr0/out" inlet="comb0/delay" vertices="368 275.0 232.0 275.0" />
+<CONNECTION  outlet="get0/value" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="floatbox0/unitIn" vertices="392 112.5 214.0 112.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="floatbox2/unitIn" vertices="411 111.5 319.0 111.5" />
+<CONNECTION  outlet="fanout0/out3" inlet="floatbox3/floatIn" vertices="430 111.5 369.0 111.5" />
+<STICKY  x="42.0" y="186.0" width="91.0" height="53.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click on
+dust to see how
+it was built</STICKY><TITLE  x="168.0" y="121.0" color="#FFFFFF" text="dustiness" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="521.0" y="255.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="142.0" y="47.0" color="#FFFFFF" text="Decaying Pulses" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="276.0" y="121.0" color="#FFFFFF" text="duration" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="408.0" y="122.0" color="#FFFFFF" text="frequency" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

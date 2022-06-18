@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="flanger1" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="LFO" name="lfo0" x="422.0" y="218.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="lfo0/shape" value="sine" />
+
+<STATE name="lfo0/frequency" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Delay" name="delay0" x="408" y="332" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="delay0/max" value="32768" />
+
+<STATE name="delay0/fractional" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Samples" name="inlet0" x="293.0" y="126.0" width="41" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name freq" name="freq" x="370.0" y="122.0" width="33" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name amp" name="amp" x="431.0" y="48.0" width="37" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type String -name waveform" name="waveform" x="502" y="120" width="68" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Integer -name feedback" name="feedback" x="592.0" y="119.0" width="67" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="293" y="235" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Mixer" name="mixer0" x="294" y="428" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Samples -name out" name="out" x="294.0" y="522.0" width="28" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 0.01" name="mul1" x="431" y="131" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="*" name="mul0" x="422.0" y="275.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="lfo0/valueOut" inlet="mul0/param1" vertices="" />
+<CONNECTION  outlet="delay0/samplesOut" inlet="mixer0/channel1" vertices="414.0 398.5 321 398.5" />
+<CONNECTION  outlet="inlet0_inlet/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="freq_inlet/out" inlet="lfo0/frequency" vertices="376.0 195.0 470.0 195.0" />
+<CONNECTION  outlet="amp_inlet/out" inlet="mul1/param1" vertices="" />
+<CONNECTION  outlet="waveform_inlet/out" inlet="lfo0/shape" vertices="508 194.0 449.0 194.0" />
+<CONNECTION  outlet="feedback_inlet/out" inlet="delay0/feedback" vertices="598.0 250.5 456.0 250.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="mixer0/channel0" vertices="299 350.0 300.0 350.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="delay0/samplesIn" vertices="324 302.0 414.0 302.0" />
+<CONNECTION  outlet="mixer0/mixed" inlet="out_outlet/in" vertices="" />
+<CONNECTION  outlet="mul1/result" inlet="mul0/param2" vertices="437.0 221.5 464.0 221.5" />
+<CONNECTION  outlet="mul0/result" inlet="delay0/delay" vertices="428.0 322.0 435 322.0" />
+<TITLE  x="324.0" y="49.0" color="#FFFFFF" text="flanger" fontface="Arial" fontsize="14" />
+</PATCH>
+</OSW>
+

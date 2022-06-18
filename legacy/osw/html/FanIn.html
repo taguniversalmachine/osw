@@ -1,0 +1,74 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">FanIn <a href="http://localhost:7775/OSW_DIR/help_patches/help_FanIn.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Route several sources to a single destination.</p>
+<h3 class="title">Syntax</h3>
+<p>FanIn <i>options</i></p>
+<h3 class="title">Options</h3>
+<ul><dl>
+<dt><b>-inputs</b></dt><dd>Number of initial inlets.</dd><dd>Type: Integer</dd><dd>Default: 2</dd>
+</dl></ul>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>in1</b> ... <b>in</b><i>n</i></dt>
+<dd>Inlets for the source data.</dd>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>out</b></dt>
+<dd>All incoming data is routed to this outlet</dd>
+<dd>Type: depends on the type of the connections to the inlets.</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>FanIn is required when you want connect several sources of input data to the a single inlet on a transform.</p>
+<div align="center">
+<img src="./details_files/fanin.png" align="center" width=231 height=216>
+</div>
+<p>The <b>-inputs</b> option can used to specify the number of inlets from the FanIn (the default is 2).  However, if all the inlets of a FanIn are connected, an additional inlet is automatically added, as in the figure above where both of the original inlets have been connected to other transforms.  Thus it is not necessary to know in advance how many connections are required, and more connections can be easily added at any time.</p>
+<p>If data arrives at two inlets simultaneously, they are routed to the outlet sequentially in an indeterminate order.  Audio samples arriving on different inlets of a FanIn will <i>not</i> be mixed.  To mix incoming audio samples into a single stream, use a <a href="osw/Mixer.html">Mixer</a> or a <a href="sadd.html">'+ operator</a> instead of a FanIn.</p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="FanOut.html">FanOut</a></dt>
+<dt><a href="osw/Mixer.html">Mixer</a></dt>
+<dt><a href="sadd.html">'+</a></dt>
+
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

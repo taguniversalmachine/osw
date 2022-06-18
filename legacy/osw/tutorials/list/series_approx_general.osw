@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="series_approx_general" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="sum" name="sum0" x="122.0" y="444.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Map" name="map0" x="122.0" y="291.0" width="73" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="expr1" x="239.0" y="358.0" width="115" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr &#36;f1^(-&#36;i1)</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="list::Range -from 0 -to 10" name="range0" x="122.0" y="221.0" width="192" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="range0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="122.0" y="528.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="1" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="122.0" y="152.0" width="32" height="36" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="248.0" y="154.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="422.0" y="158.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="422.0" y="227.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="expr2" x="469.0" y="354.0" width="178" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr 1 / (1 - (1 / &#36;f1))</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="469.0" y="526.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="289.0" y="675.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="0.0" />
+
+<STATE name="floatbox3/max" value="1" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  name="expr4" x="289.0" y="618.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr -(&#36;f1 - &#36;f2)</COMMAND>
+</TRANSFORM>
+<CONNECTION  outlet="sum0/result" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="map0/listOut" inlet="sum0/listIn" vertices="" />
+<CONNECTION  outlet="map0/elementOut" inlet="expr1/i1" vertices="199.0 343.0 358.0 343.0" />
+<CONNECTION  outlet="expr1/out" inlet="map0/elementIn" vertices="245.0 410.0 222.0 410.0 222.0 276.0 199.0 276.0" />
+<CONNECTION  outlet="range0/listOut" inlet="map0/listIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="expr4/f1" vertices="128.0 591.0 295.0 591.0" />
+<CONNECTION  outlet="button0/unitOut" inlet="range0/send" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="range0/to" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="expr1/f1" vertices="428.0 311.0 245.0 311.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="expr2/f1" vertices="453.0 309.0 475.0 309.0" />
+<CONNECTION  outlet="expr2/out" inlet="floatbox2/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="expr4/f2" vertices="475.0 590.0 422.0 590.0" />
+<CONNECTION  outlet="expr4/out" inlet="floatbox3/floatIn" vertices="" />
+<TITLE  x="304.0" y="129.0" color="#FFFFFF" text="# of terms" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="139.0" y="121.0" color="#FFFFFF" text="run" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="296.0" y="51.0" color="#FFFFFF" text="generalized series 1 + 1/b^1 + 1/b^2 + ... 1/bn" fontface="Arial" fontsize="12" />
+<TITLE  x="477.0" y="135.0" color="#FFFFFF" text="base" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="102.0" y="544.0" color="#FFFFFF" text="sum" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="426.0" y="543.0" color="#FFFFFF" text="closed form" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="257.0" y="690.0" color="#FFFFFF" text="error" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="671.0" y="218.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="671.0" y="239.0" color="#0000FF" link="list/series_approx_1" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

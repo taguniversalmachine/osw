@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<osw-external name="String" package="osw">
+<description>Create and manage a string constant</description>
+<copyright>
+
+
+
+
+
+
+
+</copyright>
+<inlet name="unitIn" type="unit" description="Emit the string" />
+<outlet name="stringOut" type="string" description="Outputs the string" />
+<state name="string_value" type="String" description="current_value of the string" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">if (argc > 0) &#123;
+  string s;
+  for (int i = 0; i &lt; argc; ++i) &#123;
+   if (i > 0) &#123;
+     s += " ";
+   &#125;
+   if (argv&#91;i&#93;&#91;0&#93; == '&#36;') &#123;
+     BaseState *state = 
+	dynamic_cast&lt;BaseState *>
+	(Nameable::Find(argv&#91;i&#93;+1,GetPatch()));
+     if (state != NULL) &#123;
+	ostringstream os;
+	os &lt;&lt; *state;
+	s += os.str();
+     &#125;
+   &#125; else &#123;
+     s += argv&#91;i&#93;;
+   &#125;
+  &#125;
+  string_value.SetWithoutActivating(s);
+&#125;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="send_string" activators="unitIn" order="" >
+
+
+
+stringOut = string_value;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">String &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>String creates a string constant based on the concatenation of its arguments (with space characters inserted as separators).  When a unit value is received via its input, String emits the string constant via its output.&lt;/p></xblock>
+<xblock name="Links">  List Sprint MessageBox</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_String" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="String This is a string" name="string0" x="196.0" y="263.0" width="148" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="string0/string_value" value="This is a string" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="196.0" y="196.0" width="31" height="33" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List" name="list0" x="482.0" y="262.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="196.0" y="336.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Sprint" name="sprint0" x="482.0" y="323.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="string0/stringOut" inlet="msgbox0/messageIn" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="string0/unitIn" vertices="" />
+&lt;STICKY  x="291.0" y="138.0" width="131.0" height="36.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">String concatenates its
+arguments into a string.&lt;/STICKY>&lt;STICKY  x="92.0" y="252.0" width="75" height="50" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+to change
+string&lt;/STICKY>&lt;TITLE  x="505.0" y="238.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="72.0" y="36.0" color="#FFFFFF" text="String" fontface="MS Sans Serif" fontsize="14" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

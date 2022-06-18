@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_OSCDispatch" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCDispatch " name="oscdispatch0" x="109.0" y="222.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="365.0" y="342.0" width="88" height="23" color="#8080ff" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="7" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="364.0" y="393.0" width="88" height="23" color="#8080ff" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="7" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Get /foo" name="get0" x="119.0" y="344.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="119.0" y="405.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="OSCDispatch " name="oscdispatch1" x="351.0" y="226.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OSCRoute" name="oscroute0" x="308.0" y="472.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="109.0" y="165.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="/foo 3.14159" />
+</TRANSFORM>
+<TRANSFORM  command="OSCCommunicator " name="osccommunicator0" x="183.0" y="471.0" width="106" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="351.0" y="169.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="/*/intbox*/intIn 8" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="109.0" y="278.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox3" x="351.0" y="279.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox3/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox4" x="576.0" y="174.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox4/message" value="/bar 1 5" />
+</TRANSFORM>
+<TRANSFORM  command="OSCDispatch " name="oscdispatch2" x="576.0" y="238.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox5" x="576.0" y="301.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox5/message" value="" />
+</TRANSFORM>
+<CONNECTION  outlet="oscdispatch0/messageOut" inlet="msgbox2/messageIn" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="oscdispatch1/messageOut" inlet="msgbox3/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="oscdispatch0/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="oscdispatch1/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox4/messageOut" inlet="oscdispatch2/messageIn" vertices="" />
+<CONNECTION  outlet="oscdispatch2/messageOut" inlet="msgbox5/messageIn" vertices="" />
+<STICKY  x="365.0" y="79.0" width="130.0" height="60.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">The OSC packet will
+be dispatched to any
+inlets that match the
+address pattern</STICKY><TITLE  x="197.0" y="128.0" color="#FFFFFF" text="Dispatch an OSC packet to a Get variable" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="112.0" y="32.0" color="#FFFFFF" text="OSCDispatch" fontface="Arial" fontsize="16" /><TITLE  x="286.0" y="448.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="62.0" y="296.0" color="#FFFFFF" text="return messages" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="301.0" y="521.0" color="#0000FF" link="http://cnmat.cnmat.berkeley.edu/OSC" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

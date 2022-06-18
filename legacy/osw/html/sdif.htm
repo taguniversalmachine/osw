@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>OSW Manual Sound Description Interchange Format (SDIF)</title>
+</head>
+
+<link href="css/text.css" rel="stylesheet" type="text/css" />
+
+<body bgcolor="white">
+
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+
+<div align="Center">
+
+<h1 class="title">8. Sound Description Interchange Format (SDIF)</h1>
+
+<br>
+<br>
+</div>
+<p>The Sound Description Interchange Format (SDIF) is a standard for storing and sharing sounds in a variety of representations.  Much more detail, including a full list of representations currently supported by SDIF, can be found at the <a href="http://www.cnmat.berkeley.edu/SDIF">SDIF Home Page</a>.  OSW currently supports a subset SDIF formats:
+<ul>
+<li>Sinusoidal tracks a la McAulay and Quatieri [<a href="bibliography.html#McA1986">1986</a>].  These are models that describe a set of sinusoids with time-varying amplitude, frequency and phase.  They are used in additive synthesis.</li>
+<li>Pseudo-harmonic sinusoidal tracks.</li>
+<li>Fundamental frequency (i.e., pitch) and amplitude trajectories.</li>
+<li>Resonant filter coefficients for resonance modeling.</li>
+<li><i>STFT / phase vocoder support will be added soon.</i></li>
+</ul>
+
+<p>To load an SDIF file into your OSW patches, use the <a class="transform" href="sdif/SDIFBuffer.html">SDIFBuffer</a> transform.  This transform works much like <a class="transform" href="osw/SampleBuffer.html">SampleBuffer</a> in that you can load a new file by double-clicking and have other transforms access the buffer by the name assigned to the tranform.</p>
+<center><img src="sdif_files/sdifbuffer.png" width=180 height=45></center>
+<p>Once you have created an SDIFBuffer, you can double-click it to load an SDIF file into the buffer:</p>
+<center><img src="sdif_files/sdif_file_dialog.png" width=457 height=378></center>
+<p>If you double-click on an SDIFBuffer after a file has been selected (i.e., because you just selected a file, or you opened a patch that contained a pre-loaded SDIFBuffe), you will be presented with a list of <i>streams</i> contained in the SDIF file:</p>
+<center><img src="sdif_files/sdif_streams.png" width=259 height=250></center>
+<p>In the above example, the SDIFBuffer has loaded three streams from a file. Each stream has an ID number and a type.  Stream 0 is of type 1FQ0, indicating that it contains time-varying pitch (and amplitude) estimates.  The second stream (1) is of type 1STF, and contains time-varying spectra (e.g., STFT or phase-vocoder representations).  The final stream is of type 1TRC and contains a sinusoidal model.  You can use the &quot;Load New File...&quot; button if you want to load a different file into the SDIFBuffer.</p>
+<p>Now that we have loaded some SDIF streams, what can we do with them?  You can access streams using one of the transforms <a class="transform" href="sdif/ToPitch.html">sdif::ToPitch</a>, <a class="transform" href="sdif/ToSinusoids.html">sdif::ToSinusoids</a>, or <a class="transform" href="sdif/ToResonances.html">sdif::ToResonances</a> to access streams of type 1FQ0, 1TRC/1HRM or 1RES, respectively.  Using our earlier example, let's try to use the sinusoidal models from stream 2.  Create a <a class="transform" href="sdif/ToSinusoids.html">sdif::ToSinusoids</a> transform and connect a <a class="transform" href="osw/MessageBox.html">MessageBox</a> to its <b>stream</b> inlet:</p>
+<center><img src="sdif_files/to_sinusoids.png" width=220 height=169></center>
+<p>Type the name of the SDIFBuffer followed by a forward slash and the stream ID, as illustrated above. Once you click the <span class="transform">MessageBox</span> button, the <span class="transform">sdif::ToSinusoids</span> transform will be able to access the stream.  Note that SDIF stream names are like any other names in OSW, such as inlets, outlets, tables, etc.  Thus, you could access SDIF streams from other patches using absolute path names (beginning with a '/') or relative path names from the current patch.</p>
+<p>The output of <span class="transform">sdif::ToSinusoids</span> is a sinusoidal data type that can be connected to an <span class="transform"><a href="cnmat/AddSynth.html">AddSynth</a></span> transform to perform additive synthesis, or one of several other transforms that modify sinusoidal models.  The <span class="transform">sdif::ToSinusoids</span> transform also contains a time inlet, allowing you to <a href="time.htm">control time</a> (e.g., speed up or slow down the progression of the model) via a TimeMachine transform.  See the help patch for <span class="transform"><a href="cnmat/AddSynth.html">AddSynth</a></span> to see how you can control sinusoidal models in real time.</p>
+<p>Refer to the help pages and help patches for  <span class="transform"><a href="sdif/ToPitch.html">sdif::ToPitch</a></span> and <span class="transform"><a href="sdif/ToResonances.html">sdif::ToResonances</a></span> for more information on how to use these types of SDIF streams in OSW.</p>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+
+</body>
+</html>

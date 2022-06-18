@@ -1,0 +1,503 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link href="css/text.css" rel="stylesheet" type="text/css" />
+</head>
+<body bgcolor=white lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<div class=Section1>
+<div align="Center">
+<h1 class="title">3. Programming Details</h1>
+<br>
+<br>
+</div>
+</div>
+
+<p class=MsoNormal>In the section, we look at some of the programming features
+of OSW in greater detail. </p>
+
+<h3 class="title">3.1. Classes vs. Instances</h3>
+
+<p class=MsoNormal>In “<a href="getting_started.html">Getting Started</a>,” we saw how transforms are specified
+using both a <i>class name</i> for the type of transform being created and an <i>instance
+name</i> that uniquely labels the transform.OSW automatically creates an instance name unless you specify one with
+the “-name” option. Although you will
+probably let OSW name your transforms most of the time, there are cases where
+giving your transforms special names comes in handy, such as when you want one
+transform to refer to another. Suppose
+you were doing synthesis using a custom wavetable: you would add a <a href="Table.html"><span class="transform">Table</span></a>
+transform to your patch, and a <a href="osw/WaveTable.html"><span class="transform">WaveTable</span></a> transform which takes the name of the
+table transform as an argument. By
+default the Table would be given a name like “table0” or “table1,” but you
+might want to give a more descriptive name that you could use for
+reference. Similarly, when you create a
+<span class="transform"><a href="osw/SampleBuffer.html">SampleBuffer</a></span>, you will probably want to give it a name descriptive of the sound
+it stores and use the more descriptive name when referring to the buffer from
+<span class="transform"><a href="osw/SamplePlayer.html">SamplePlayer</a></span> transforms.</p>
+
+<h3 class="title">3.2. Active vs. Passive Inlets</h3>
+
+<p class=MsoNormal>You might notice that some transform inlets have a green
+triangle, while others have a gray triangle:</p>
+<div align="center"><img width=119 height=89 src="./details_files/image001.png"></div>
+
+<p class=MsoNormal>The green signifies that the inlet is <i>active</i> and will
+cause new data to be produced by one or more outlets. Passing the mouse over an active inlet will cause all such
+outlets to flash a similar green triangle. Gray inlets are passive and do not produce output, although they may be
+used during computation triggered by active inlets.</p>
+
+<p class=MsoNormal>Open the “<a href="http://localhost:7775/OSW_DIR/tutorials/control/activepassive.osw">activepassive</a>” tutorial patch [<i>Note: you must have OSW running in order to access help or tutorial patches from this document.</i>]. Notice that the left inlet of the
+multiplication operator is active, while the right inlet is passive. Change the values of the number boxes
+connected the inlets and see what happens.</p>
+
+<h3 class="title">3.3. FanOut and FanIn</h3>
+
+<p class=MsoNormal>If you haven’t already done so, click on an outlet that
+already has a connection: you get a new connection that can drag, but the old
+one disappears. Likewise, try dragging
+a new connection onto an already connected inlet: once again, the old
+connection is broken. This is not a
+bug, but an important feature of OSW that enhances its efficiency and
+flexibility (and also makes it easier for both humans and computers to
+interpret patches). One of the few
+unbreakable rules in OSW programming is <i>there can be at most one connection
+leaving any outlet or entering any inlet</i>. If you want to connect an outlet to several inlets, use a <span class="transform"><a href="FanOut.html">FanOut</a></span>
+transform. FanOut takes an option <span style='font-family:Arial'>–outputs <i>n</i></span> where <i>n</i> is the
+initial number of outputs you want from the FanOut (the default is 2). Likewise, if you want to connect several
+outlets to one inlet, use a <span class="transform"><a href="FanIn.html">FanIn</a></span> transform. Like FanOut, FanIn takes an option <span style='font-family:Arial'>–inputs
+<i>n</i></span> where <i>n</i> is the initial number of inputs you want into the FanIn
+(once again, the default is 2).</p>
+
+<div align="center">
+<img src="./details_files/fanout.png" align="center" width=257 height=197>
+&nbsp;&nbsp;
+<img src="./details_files/fanin.png" align="center" width=231 height=216>
+</div>
+
+<p class=MsoNormal>Suppose you don’t know the number of branches you want out
+of a Fanout or into a Fanin. Fortunately, you don’t have to. When a Fanout or Fanin runs out of outlets or inlets, respectively, a
+new one is automatically added for your convenience.</p>
+
+<h3 class="title">3.4. Data Types</h3>
+
+<p class=MsoNormal>An important feature of OSW is its powerful type
+system. Inlets and outlets of
+transforms are “strongly-typed,” meaning that they can only accept certain
+types of data. If you were wondering
+why some inlets, outlets and connections have different colors, it is to help
+you distinguish between certain data types. If you attempt to connect an outlet and inlet whose types are
+incompatible you will get a rude warning message.</p>
+
+<p class=MsoNormal>OSW includes a large number of built-in data types,
+including integer and floating-point numbers, strings, boolean (true/false)
+values, lists and audio samples.  However, OSW can handle almost any kind of data type, provided there are transforms to manipulate it. </p>
+
+<h3 class="title"><i>3.4.1. Specifying Data Types in Arguments</i></h3>
+
+<p class=MsoNormal>Arguments to transforms often require specific types. Consider the command to instantiate a <span
+style='font-family:Arial'><a href="osw/Sinewave.html">Sinewave</a></span> transform whose name is “joe” and
+whose initial frequency is 256.1 (Middle C):</p>
+
+<p class=MsoNormal>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b><span style='font-family:Arial'>Sinewave –name joe –freq
+256.1<o:p></o:p></span></b></p>
+
+<p class=MsoNormal>The “-name” parameter required a string argument,
+“joe”, and the “-freq” argument required a floating-point argument, 256.1.<span
+style="mso-spacerun: yes">  </span>OSW recognizes many types of arguments in
+commands:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Integers:<span
+     style="mso-spacerun: yes">  </span><span style='font-family:Arial'>13</span></li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Floating-point
+     numbers: <span style='font-family:Arial'>3.14159</span></li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Double-precision
+     floating-point numbers: <span style='font-family:Arial'>3.14159d</span></li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Strings:
+     <span style='font-family:Arial'>foo </span>or <span style='font-family:
+     Arial'>“foo”</span></li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Booleans:<span
+     style="mso-spacerun: yes">  </span><span style='font-family:Arial'>true </span>or
+     <span style='font-family:Arial'>false</span></li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Units:
+     <span style='font-family:Arial'>unit <span style="mso-spacerun:
+     yes"> </span></span>(units are valueless data used to trigger events)</li>
+ <li class=MsoNormal style='mso-list:l1 level1 lfo3;tab-stops:list .5in'>Lists:<span
+     style='font-family:Arial'> { </span><i>list
+     elements</i><span style='font-family:Arial'> }</span> (where <i>list elements</i> can be of any argument
+     type, including other lists)</li>
+</ul>
+
+<p class=MsoNormal>Transforms that require the user to enter data (e.g., 
+<span style='font-family:Arial'><a href="osw/MessageBox.html">MessageBox</a></span>) use the same representations
+as command arguments.</p>
+
+<h3 class="title">3.5. Arithmetic</h3>
+
+<p class=MsoNormal>OSW includes several transforms for doing basic arithmetic,
+including the basic binary operators: addition (+), subtraction (-),
+multiplication (*), division (/) and modulus (or remainder) (%)- as well as the
+basic relational operators (==,!=,&lt;,&gt;,&lt;=,=&gt;).<span
+style="mso-spacerun: yes">  </span>The transforms for each of these operators
+works on many types, including Integers, Floats, Samples and (in some
+cases) frequency-domain spectra. OSW
+automatically determines the function and result type of an arithmetic operator
+depending on what you connect to it.<span style="mso-spacerun: yes">  
+</span>For example, if both arguments are numerical types, then the output is
+also a number.</p>
+<div align="center">
+<img src="./details_files/add.png" width=258 height=214>
+</div>
+
+<p class=MsoNormal>Note that arithmetic operators accept an optional
+argument. This is the default second
+argument of the operator if nothing is connected to the right inlet.</p>
+<div align="center">
+<img src="./details_files/addhalf.png" width=126 height=204>
+</div>
+
+<p class=MsoNormal>If either or both of the operator’s inlets are of Samples
+types, than the output is also Samples.<span style="mso-spacerun: yes"> 
+</span>For example, the multiply operator can act as an amplifier with the left
+inlet accepting Samples and the right inlet accepting a (floating-point)
+number:</p>
+<div align="center">
+<img src="./details_files/amp.png" width=242 height=273>
+</div>
+
+<p class=MsoNormal>Or both inlets of the multiplication can be Samples,
+creating a “ring modulator:”</p>
+
+<div align="center">
+<img src="./details_files/ringmod.png" width=344 height=403>
+</div>
+
+
+<p class=MsoNormal>Notice that the amplifier uses the normal version of the multiply operator <span class="transform">*</span> that has one active and one passive inlet, while the ring modulator uses a different version <span class="transform">'*</span> (i.e., an asterisk preceded by an apostrophe) with two active inlets.  In these examples the distinction between active and passive inlets (as discussed in section 3.2 and the <a href="http://localhost:7775/OSW_DIR/tutorials/control/activepassive.osw">activepassive</a> tutoral) is very important.  For the amplifier, we did not want to wait
+for the value of right inlet to change since the user might be quite happy
+using the current value, so we used the normal “non-blocking” version. Each of the arithmetic and relational operators have both a non-blocking and a blocking version. To use the blocking version, simply precede the operator symbol with an apostrophe (').</p>
+
+
+<p class=MsoNormal>See the <a href="transformgrp.html#arithmetic">arithmetic operators</a> help page for additional details.</p>
+
+<h3 class="title">3.6. Math Functions</h3>
+
+<p class=MsoNormal>OSW includes most of the standard math functions for
+trigonometry, logarithms/exponentiation, etc.<span style="mso-spacerun: yes"> 
+</span>Like the arithmetic operators, there is one transform for each function
+that accepts both numeric and sample types and does the right thing in each
+case. See the <a href="math.html">math functions help page</a>
+for more details.</p>
+
+<h3 class="title">3.7. Expressions</h3>
+
+<p class=MsoNormal>The math function and arithmetic transforms can be connected
+to form complex mathematical expressions.<span style="mso-spacerun: yes"> 
+</span>However, this can be quite tedious for expressions with many
+operators. The <span style='font-family:
+Arial'><a href="Expr.html">Expr</a></span> transform allows such expressions to be written more
+succinctly and intuitively. In the
+following example, the same expression is implemented first using primitives and
+then using <span style='font-family:Arial'>Expr</span>:</p>
+
+<div align="center">
+<img src="./details_files/mathexpr.png" width=540 height=330>
+</div>
+
+<p class=MsoNormal>Variables in an <span class="transform">Expr</span> expression are specified as <i>$name</i>
+elements. The first letter of <i>name</i>
+is used to determine the type (e.g., “i” for Integers, “f” for Floats, “d” for Doubles, “s” for Samples).<span
+style="mso-spacerun: yes">  </span>An inlet of the appropriate type is created
+for each variable.</p>
+
+<h3 class="title">3.8. Data Structures</h3>
+
+<p class=MsoNormal>You can do a lot in OSW just using numbers, strings and
+audio samples. But it’s often more
+convenient to manipulate larger, more complex structures.</p>
+
+<a name="list" />
+<h3 class="title"><i>3.8.1. Lists</i></h3>
+
+<p class=MsoNormal>Lists are ordered sequences of values. You can create a List using a <a href="osw/MessageBox.html"><span class="transform">MessageBox</span></a>
+transform:</p>
+
+<div align="center">
+<img src="./details_files/messagebox.png" width=209 height=70>
+</div>
+
+<p class=MsoNormal>Anytime you place more than one item in a MessageBox, it
+outputs the items as a List. In fact,
+in the “Hello World” example, you actually created a List consisting of the two
+Strings “Hello” and “World”. (If you
+want to put multiple words in a single String, place them inside quotes.) Lists can also be created with the <span class="transform"><a href="List.html">List</a></span> and
+<span class="transform"><a href="Pack.html">Pack</a></span> transforms.</p>
+
+<div align="center">
+<img src="./details_files/list.png" width=148 height=145>
+<hr width="200">
+<img src="./details_files/pack.png" width=332 height=199>
+</div>
+
+<p class=MsoNormal>There are no restrictions on what you can put in a
+List. You are free to make Lists with
+items of different types, including other Lists:</p>
+
+<div align="center">
+<img src="./details_files/listoflists.png" width=147 height=80>
+</div>
+
+
+<p class=MsoNormal>This List consists of the strings ‘a’, ‘b’, and ‘c’ followed
+by a sub-list of the integers 1, 2 and 3.<span style="mso-spacerun: yes">  
+</span>You can have a List with many sub-lists, or sub-lists of sub-lists, etc.</p>
+
+<p class=MsoNormal>There are many transforms for operating on Lists. See the List tutorials for examples.</p>
+
+<p class=MsoNormal>One caveat about Lists: Since they can contain elements of
+any type, list-manipulation transforms often deal w/ <a href="#variant">dynamic or variant types</a>, which are discussed a later section. </p>
+
+<a name="blob" />
+<h3 class="title"><i>3.8.2. Blobs</i></h3>
+
+<p class=MsoNormal>Lists are quite versatile and easy to use, but they do have
+their limitations. Suppose you wanted
+to store the pitch, volume and duration of a note. You could easily create a List where the first element is the
+pitch, the second is the volume, and the third is the duration, but you would
+have to remember to always use the same order when constructing the Lists or
+selecting elements. Also, suppose you
+did not want to always specify or use the volume parameter. The duration is now the second element instead of the third, and you
+need to change all your patches accordingly.  The ordering of elements is not as important as
+the “meaning” of each element. </p>
+
+<p class=MsoNormal>In situations like
+this, a <i>Blob</i> is probably more useful than a List. A Blob is an unordered data structure with
+one or more property-value pairs. You
+can create a Blob using the <span class="transform"><a href="blob/MakeBlob.html">MakeBlob<a/></span> transform.</p>
+
+<div align="center">
+<img src="./details_files/makeblob.png" width=118 height=70>
+</div>
+
+<p class=MsoNormal>Double-clicking a MakeBlob transform  brings up a text window in which you can enter your properties. The name of the
+property comes first, followed by a colon (users of Max collections can use a
+comma instead), the value or list of values and finally a semicolon. The following example defines a Blob with
+three properties:</p>
+
+<div align="center">
+<img src="./details_files/blobentry.png" width=218 height=212>
+</div>
+
+<p class=MsoNormal>Use the <span style='font-family:Arial,Helvetica'><a href="blob/Get.html">blob::Get</a></span> transform to retrieve the value associated
+with a given property:</p>
+
+<div align="center">
+<img src="./details_files/blobget.png" width=310 height=306>
+</div>
+
+<p class=MsoNormal>The <span style='font-family:Arial,Helvetica'><a href="blob/Set.html">blob::Set</a></span> transform can be used to change the value
+associated with a property, or add a new property if it doesn’t already exist in the Blob.</p>
+
+<div align="center">
+<img src="./details_files/blobset.png" width=488 height=453>
+</div>
+
+<p>Open the help patch for <span style='font-family:Arial,Helvetica'><a href="blob/Set.html">blob::Set</a></span> to try out this example.  Note that any changes you make to a Blob using <span style='font-family:Arial,Helvetica'>blob::Set</span> do not change the original property definitions in the <span style='font-family:Arial,Helvetica'>MakeBlob</span> transform (you can double-click it to confirm this).  The changes only effect transforms downstream from the <span style='font-family:Arial,Helvetica'>blob::Set</span>.</p>
+
+<p class=MsoNormal>Blobs are extremely
+versatile, allowing you to create your own data types in patches. Blobs also form the basis for specifying
+notes and scores in OSW (see the section on <a href="making_music.htm">making
+music</a> for more information).</p>
+
+<h3 class="title"><i>3.8.3. Tables</i></h3>
+
+<p class=MsoNormal>Tables store pairs of floating-point numbers.The first number in each pair is an index
+that can be used to look up the value of the second number .The indices in a table are usually evenly
+spaced over a range (e.g., from 0 to 1). For example, a table could contain 100 indices 0,0.01,0.02,… up to
+0.99. Tables can also be viewed as
+function approximations over a range: the lookup value at an index is the value
+of the function evaluated at the index. If a user attempts to lookup a value between two indices, the table will
+linearly interpolate between the values for the two indices (transforms that
+use tables can apply custom interpolation functions or turn it off
+altogether. [<i>Note: most transforms currently opt for the latter</i>]).</p>
+
+<p class=MsoNormal>Common uses of tables are wavetable synthesis using <span class="transform"><a href="osw/WaveTable.html">WaveTable</a></span> transform and windowing functions for FFT’s. OSW includes several built-in tables for these applications:</p>
+<ul>
+<li><b>/sine</b>: one
+period of a sine function (between 0 and 2<span style='font-family:Symbol;
+mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Symbol'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Symbol'>p</span></span>)</li>
+
+<li><b>/cosine</b>: one period of a cosine function (between 0 and 2<span style='font-family:
+Symbol;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:"Times New Roman";
+mso-char-type:symbol;mso-symbol-font-family:Symbol'><span style='mso-char-type:
+symbol;mso-symbol-font-family:Symbol'>p</span></span>)</li>
+
+<li><b>/exp</b>: the function <i>e<sup>-x</sup> </i>evaluated between 0 and <span
+style='font-family:Symbol;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:
+"Times New Roman";mso-char-type:symbol;mso-symbol-font-family:Symbol'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Symbol'>p</span></span></li>
+
+<li><b>/sinc</b>:<span style="mso-spacerun: yes"> 
+</span>the “sinc” function sin(<i>x</i>)/<i>x</i> evaluated between -<span
+style='font-family:Symbol;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:
+"Times New Roman";mso-char-type:symbol;mso-symbol-font-family:Symbol'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Symbol'>p</span></span> and <span
+style='font-family:Symbol;mso-ascii-font-family:"Times New Roman";mso-hansi-font-family:
+"Times New Roman";mso-char-type:symbol;mso-symbol-font-family:Symbol'><span
+style='mso-char-type:symbol;mso-symbol-font-family:Symbol'>p</span></span> </li>
+</ul>
+
+<p class=MsoNormal>Users can also create their own tables using the 
+<span class="transform"><a href="Table.html">Table</a></span>
+transform.</p>
+
+<h3 class="title"><i>3.8.4. Hash tables</i></h3>
+
+<p class=MsoNormal>Hash tables are arrays of name-value pairs. If you think that sounds suspiciously like a Blob,
+you’re absolutely right. However, they do serve different purposes. Blobs are usually small and are passed from one transform to another like most data in OSW. Hash tables, on the other hand, cannot be
+passed between transforms. A hash table
+exists as a static structure within a <a href="osw/HashTable.html"><span class="transform">HashTable</span></a> table transform, which can be
+used to access or modify individual elements. The main uses of hash tables are for implementing large data structures
+or when compatibility with Max coll objects is needed. See the <a href="osw/HashTable.html"><span class="transform">HashTable</span></a> transform for more
+information.</p>
+
+<h3 class="title"><i>3.8.5. Custom Data Types</i></h3>
+
+<p class=MsoNormal>Many transforms operate on specialized data types. For example, the <a href="osw/Fft.html">FFT</a> transform outputs a
+“Spectrum” data type representing a frequency-domain spectrum. <span class="transform"><a href="MidiOutput.html">The MidiOutput</a></span> transform accepts data of
+type “MidiMessage” that wraps the channel, status and values of a MIDI message
+into one convenient (or inconvenient) box. These data types help you to write complex operations without having to
+worry about the underlying implementation. Plus, since they usually can’t be connected to anything but the
+transforms that are designed to use them, it prevents lots of potentially bad
+situations.</p>
+
+<p class=MsoNormal>You can always find out if a transform uses a special type
+by moving the mouse over its inlets and outlets or reading its help page. </p>
+
+<a name="variant">
+<h3 class="title">3.9. Variant Types and Dynamic Types</h3>
+
+<p>Some transforms include an outlet of type called <i>any</i>. Such outlets can be connected to any inlet. Every
+time a new data value is sent from the outlet to the connected inlet, the type
+of the data must be checked to ensure that it is compatible with the inlet. If
+it not, an error occurs and the data is not processed by the receiving transform.  The most common examples of variant types are
+free variables used with <a href="#putget">Put and Get</a> and transforms that access elements of <a href="#list">Lists</a> or <a href="#blob">Blobs</a>.
+<!-- 
+The use of <i>any</i> is inefficient and undermines type checking, so it
+is not widely used.</p>
+-->
+
+<p class=MsoNormal>Some transforms include <i>dynamically typed inlets</i>. Dynamic-typed inlets are assigned a type at connection time.  If the inlet is reconnected to an outlet of a different type, then its type will change accordingly. The <a href="FanIn.html"><span class="transform">FanIn</span></a> and <a href="FanOut.html"><span class="transform">FanOut</span></a> transforms as well as the
+<a href="transformgrp.html#arithmetic">basic arithmetic operators</a> have dynamic-typed inlets. Notice that when you
+connect something to dynamic-typed inlets, the types of the outlets may change,
+and any connections from the outlets might disappear if they are no longer
+valid with the new type.</p>
+
+<p>The difference between dynamic type and variant type is subtle but significant.  Dynamic-typed inlets change their type to match connected outlets, while variant-type outlets maintain a single type <i>any</i> that does not change but can be connected to inlets of many different types.</p>
+
+<p class=MsoNormal>Be careful when connecting a variant-type outlet to a dynamic-type inlet! A dynamic inlet infers its
+type from its connection, but it cannot do that if the connection is a variant
+type. This could be a problem, for
+example, in an arithmetic operator which needs to know its input types to
+perform the right function. It is
+therefore a good practice to use the <a href="osw/TypeFilter.html"><span class="transform">TypeFilter</span></a> transform when connecting a
+variant-type outlet to a dynamic-typed inlet.</p>
+
+<h3 class="title">3.10. Conditional Execution</h3>
+
+<p class=MsoNormal>OSW provides several ways to direct the flow of execution in
+patches. The simplest method is to use the <a href="Switch.html"><span class="transform">Switch</span></a> transform. <span class="transform">Switch</span> looks a lot like a <span class="transform">FanOut</span> with an extra inlet. However, instead of sending its input to all the outputs, <span class="transform">Switch</span> directs
+the input only to the selected output, as determined by the number sent to the
+second inlet.  In the following example, the value of the slider is directed to the right outlet of the <span class="transform">Switch</span>.  Changing the value of the integer box to 0 would redirect the output of the slider to the left outlet.</p>
+
+<div align="center">
+<img src="./details_files/switch.png" width=330 height=288>
+</div>
+
+<p class=MsoNormal>Output can also be conditionally directed using the <span
+style='font-family:Arial,Helvetica'><a href="If.html">If</a></span> transform. <span style='font-family:Arial,Helvetica'>If</span> takes three expressions that
+use the same syntax as <span style='font-family:Arial,Helvetica'><a href="Expr.html">Expr</a></span>. If the
+first expression is true, then the second expression is
+evaluated and the result is output via the left inlet. If the first expression evaluates to false, the the third expression is evaluated and the result is output via the right inlet.  The above example can be modified to use <face="Arial,Helvetica">If</span> as follows:</p>
+
+<div align="center">
+<img src="./details_files/if.png" width=297 height=284>
+</div>
+
+By using the same expression after both the <i>then</i> and <i>else</i> clauses, the same input can be directed to either output, just as in the the <span class="transform">Switch</span> example.  However, with the <span class="transform">If</span> transform, you can make the test and output expressions as complex as you want.
+
+<a name="putget" />
+<h3 class="title">3.11. Put and Get</h3>
+
+<p class=MsoNormal>Most of the time, values are transmitted from transform to 
+  another via explicit connections between them, as we've seen in every example 
+  up to this point. OSW also includes a mechanism for transmitting and broadcasting 
+  values without connections using the special transforms <a href="Put.html"><span class="transform">Put</span></a> 
+  and <a href="Get.html"><span class="transform">Get</span></a>. See the 
+  <a href="http://localhost:7775/OSW_DIR/help_patches/help_Put.osw">Put and Get 
+  help patch</a> for more information and examples. Put and Get can save a lot 
+  of tedious wiring, but their use sometimes makes patches harder to follow, so 
+  use them wisely.
+<p class=MsoNormal>Oftentimes it is necessary to perform some initialization steps 
+  every time a patch is loaded. In OSW, you can trigger these actions by using 
+  the implicit &quot;load&quot; variable that is set for each patch when it is loaded. A transform 
+  specified as &quot;Get load&quot; will output a unit when your patch is finished 
+  loading.</p>
+<h3 class="title">3.12. Subpatches and User-defined Transforms</h3>
+
+<p class=MsoNormal>Eventually you may find that your patches are getting too complex (and big!) for you to manage easily, or you may find yourself copying the same section of your patch to use in several places. In OSW, you can easily deal with these problems by creating your own "subpatches" that can be used within the current patch or in other patches just like normal OSW transforms. In fact, OSW provides a few facilities for creating user-defined transforms.</p>
+<p>The most direct way to encapsulate your program's logic in your own transforms is to use the <a href="Patch.html"><span class="transform">Patch</span></a> transform. First create a transform using the 'Patch' command. You will notice that Patch currently has no inlets or outlets.</p>
+<div align="center"><img src="details_files/subpatch1.png"/> </div>
+<p>Now double click on the Patch transform to bring up a new patch window. The name of this new subpatch is /&lt;parent patch name&gt;/&lt;subpatch name&gt;. You can add and connect transforms in this subpatch just as you would normally, but there are two special transforms you can use in a subpatch: <a class="transform" href="Inlet.html">Inlet</a> and <a class="transform" href="Outlet.html">Outlet</a>. These are the transforms you use to create inlets and outlets for your subpatch. The type of these inlets and outlets is determined by the type option, and you can specify the name that you see in the parent patch for each inlet or outlet with the name option. For example, if you want an outlet called 'stringOut' of type String, you would create it with the command 'Outlet -name stringOut -type String'. It is imperative that you correctly specify the type for Inlets and Outlets so that you can connect to them in both your subpatch and your parent patch.</p>
+<div align="center"><img src="details_files/subpatch3.png" align="middle"/><img src="right_arrow.png" align="middle"/><img src="details_files/subpatch2.png" align="middle"/></div>
+<p>The <a href="Patch.html"><span class="transform">Patch</span></a> is an excellent way to encapsulate your OSW programming in a single patch, but what if you would like to use that same subpatch in other patches? Fortunately, OSW has a very simple mechanism to provide this functionality. You create a patch as you normally would, except that you can use the inlets and outlets in the manner described above. After saving this patch, you can use it like any other transform by typing the patch's file name (without the ".osw" extension) as the command. You can use relative or absolute paths when specifying the file name. For example, if you create a patch called 'PlusOne' in the '/OSWPatches' directory (UNIX) or the 'C:\OSWPatches' directory (Windows) to use in other patches, you could create the transform representing PlusOne with the command '/OSWPatches/PlusOne' (UNIX) or 'C:\OSWPatches\PlusOne' (Windows). Again, you must designate the correct type for your Inlet and Outlet transforms in order to ensure correct type checking.</p>
+<p>There is one very special transform that you can use to access the patch that you are currently in: <a href="This.html"><span class="transform">This</span></a>. The This transform will have inlets and outlets corresponding to the Inlet and Outlet transforms in the current patch. <a href="This.html"><span class="transform">This</span></a> can be used to create <i>recursive</i> transforms, or transforms that use copies of themselves in their computation. While recursion is an extremely useful programming paradigm, it may take some time and practice to effectively use it in your own patches. Browse the tutorial patches for examples of recursive programs. Also keep in mind that while recursion can be used to solve problems that are very difficult to solve by other means, it can significantly affect the processing time for your patch. If there is a simple <i>iterative</i> solution to the problem at hand, you may want to use this approach instead.</p>
+<p>Finally, you can create your own transforms using the C++ programming language and the externalizer tool in the OSW distribution. You must have a C++ compiler installed on your computer and correctly configured. Using the externalizer, you can create transforms that are efficient and have access to the underlying data structures used in OSW. This method may also be used when there are no reasonable solutions to a given problem that you can express in normal OSW patches. While this is the most versatile way of creating your own transforms, it is also the most difficult and requires some knowledge of C++. See the externalizer user guide for more details.</p>
+<h3 class="title">3.13. Packages</h3>
+
+<p class=MsoNormal>You might be wondering why some of the transforms in the
+previous sections had such funny-looking names, like “list::Map.” The “list::” represents the name of a <i>package</i>. Packages are nothing more than a convenient
+way of grouping transforms (such as “all the transforms that operate on Lists”
+or “all the transforms written by Joe Schmoe, Jr.”). Packages also allow different transforms to have the same class
+name (e.g., we could also have “foo::Map”) without interfering with each
+other. You can always leave off a
+package name and OSW will try and find the first transform class that fits the
+name, but if you want to be specific and avoid name clashes, use package names.</p>
+
+
+</div>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+
+</html>

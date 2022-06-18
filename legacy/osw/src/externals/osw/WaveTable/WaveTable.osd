@@ -1,0 +1,176 @@
+<?xml version="1.0" ?>
+<osw-external name="WaveTable" package="osw">
+<description>Wavetable synthesizer</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="phases" type="Samples" description="Phase values for wavetable" />
+<outlet name="samplesOut" type="Samples" />
+<state name="table" type="String" default="!quot/sine!quot" description="Table to use." persistent="1" />
+<state name="data" type="FloatTable" description="Actual table data" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xvalid = false;
+Table&lt;float> *temp = GetTable(table,GetContainer());
+if (temp == NULL) &#123;
+    Error ("could not find table " + (string)table);
+&#125; else &#123;
+    data = *temp;
+    xvalid = true;
+&#125;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">bool xvalid;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">#define M_PIf          (3.14159265358979323846f)</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="tableChanged" activators="table" order="" >
+
+
+
+
+
+xvalid = false;
+Table&lt;float> *temp = GetTable(table,GetContainer());
+if (temp == NULL) &#123;
+    Error ("could not find table " + table);
+&#125; else &#123;
+    data = *temp;
+    xvalid = true;
+&#125;
+</activation>
+<activation name="activation1" activators="phases" order="" >
+
+
+
+
+
+if (!xvalid) &#123;
+   samplesOut = Samples(NumberOfSamples,0.0f);
+&#125; else &#123;
+   Samples samples(phases->size(),0.0f);	
+    for (int i = 0; i &lt; phases->size(); ++i) &#123;
+          samples&#91;i&#93; = data(phases&#91;i&#93;);
+    &#125;
+   samplesOut = samples;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">WaveTable &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">      The wavetable synthesizer looks up phase values in a table corresponding to one cycle of the waveform.  Using the output of a Phasor as phase values synthesizes the wavetable sound at a given frequency (specified as an input to the Phasor).  The combination of a Phasor and Wavetable transforms corresponds to traditional wavetable synthesis.  Other signals can be used as phase input for more complex synthesis (such as FM).</xblock>
+<xblock name="Links"> Phasor</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">      table, wavetable, phase, synthesis</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_WaveTable" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Phasor" name="phasor0" x="80.0" y="90.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="phasor0/frequency" value="440" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="wavetable0" x="80.0" y="237.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>WaveTable&lt;/COMMAND>
+
+&lt;STATE name="wavetable0/table" value="/sine" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="36.0" y="372.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="switch0" x="80.0" y="166.0" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>Switch&lt;/COMMAND>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Table -name mytable -inline True" name="mytable" x="385.0" y="180.0" width="260" height="266" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA>
+		0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+	&lt;/DATA>
+
+&lt;STATE name="mytable/size" value="256" />
+
+&lt;STATE name="mytable/min" value="0" />
+
+&lt;STATE name="mytable/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WaveTable -table mytable" name="wavetable1" x="175.0" y="242.0" width="154" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="fanin0" x="156.0" y="310.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>FanIn&lt;/COMMAND>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="OptionBox" name="optionbox0" x="202.0" y="92.0" width="149" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="optionbox0/options" value="sinewave custom" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="phasor0/samplesOut" inlet="switch0/in" vertices="" />
+&lt;CONNECTION  outlet="wavetable0/samplesOut" inlet="fanin0/in1" vertices="86.0 291.0 162.0 291.0" />
+&lt;CONNECTION  outlet="switch0/out1" inlet="wavetable0/phases" vertices="" />
+&lt;CONNECTION  outlet="switch0/out2" inlet="wavetable1/phases" vertices="114.0 222.5 181.0 222.5" />
+&lt;CONNECTION  outlet="wavetable1/samplesOut" inlet="fanin0/in2" vertices="181.0 293.5 187.0 293.5" />
+&lt;CONNECTION  outlet="fanin0/out" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="optionbox0/indexOut" inlet="switch0/switch" vertices="355.0 145.5 143.0 145.5" />
+&lt;STICKY  x="377.0" y="84.0" width="140.0" height="66.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Switch between the
+default and custom
+wavetables&lt;/STICKY>
+&lt;TITLE  x="100.0" y="38.0" color="#FFFFFF" text="WaveTable" fontface="Arial" fontsize="18" />
+&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

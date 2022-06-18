@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="swiss_cheese" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="IntBox" name="intbox0" x="416.0" y="132.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="255" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="* 0x1010101" name="mul0" x="416.0" y="204.0" width="87" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="416.0" y="266.0" width="114" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="-1" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="122.0" y="186.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  name="?amp0" x="152.0" y="342.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>?&amp;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="152.0" y="501.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.695235" />
+</TRANSFORM>
+<TRANSFORM  command="ToIntegerSamples" name="tointegersamples0" x="122.0" y="264.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="tointegersamples0/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FromIntegerSamples" name="fromintegersamples0" x="152.0" y="406.0" width="143" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="fromintegersamples0/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="85.0" y="592.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="402.0" y="400.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="255.0" y="522.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Scope" name="scope0" x="360.0" y="520.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="10" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<CONNECTION  outlet="intbox0/intOut" inlet="mul0/param1" vertices="" />
+<CONNECTION  outlet="mul0/result" inlet="intbox1/intIn" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="?amp0/param2" vertices="422.0 322.5 194.0 322.5" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="tointegersamples0/samplesIn" vertices="" />
+<CONNECTION  outlet="?amp0/result" inlet="fromintegersamples0/integerSamplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="fanout0/in" vertices="158.0 553.0 209.5 553.0 209.5 507.0 261.0 507.0" />
+<CONNECTION  outlet="tointegersamples0/integerSamplesOut" inlet="?amp0/param1" vertices="128.0 321.5 158.0 321.5" />
+<CONNECTION  outlet="fromintegersamples0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="408.0 484.5 194.0 484.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="out0/mix" vertices="261.0 575.5 160.0 575.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="286.0 574.0 326.0 574.0 326.0 505.0 366.0 505.0" />
+<STICKY  x="539.0" y="120.0" width="135.0" height="42.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">0 all bits off
+255 all bits on</STICKY>
+<TITLE  x="455.0" y="105.0" color="#FFFFFF" text="bit mask" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="327.0" y="51.0" color="#FFFFFF" text="" fontface="Arial" fontsize="12" />
+</PATCH>
+</OSW>
+

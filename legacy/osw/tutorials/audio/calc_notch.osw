@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="calc_notch" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  name="expr4" x="165.0" y="238.0" width="178" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr 2 * &#36;f1 *  pi / &#36;f2</COMMAND>
+</TRANSFORM>
+<TRANSFORM  name="expr2" x="165.0" y="349.0" width="430" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr sin(&#36;f1) * sinh(0.3465735902799 * &#36;f2 * &#36;f1 / sin(&#36;f1))</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="+ 1" name="add0" x="227.0" y="474.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="165.0" y="409.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="expr3" x="165.0" y="528.0" width="395" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr &#91;1/&#36;f2,-2*cos(&#36;f3)/&#36;f2,1/&#36;f2,2*cos(&#36;f3)/&#36;f2,(&#36;f1 - 1)/&#36;f2&#93;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="165.0" y="295.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="165.0" y="180.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="7684" />
+
+<STATE name="floatbox0/max" value="22050" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="593.0" y="165.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FrequencyResponse" name="frequencyresponse0" x="165.0" y="658.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="frequencyresponse0/zoom" value="1" />
+
+<STATE name="frequencyresponse0/vertical_zoom" value="1" />
+
+<STATE name="frequencyresponse0/background" value="black" />
+
+<STATE name="frequencyresponse0/foreground" value="green" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="341.0" y="159.0" width="170" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="44100" />
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="441.0" y="109.0" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Biquad" name="biquad0" x="623.0" y="613.0" width="105" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="biquad0/gain" value="1" />
+
+<STATE name="biquad0/zero1" value="0" />
+
+<STATE name="biquad0/zero2" value="0" />
+
+<STATE name="biquad0/pole1" value="0" />
+
+<STATE name="biquad0/pole2" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="WhiteNoise" name="whitenoise0" x="623.0" y="527.0" width="80" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout2" x="165.0" y="587.0" width="60" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="621.0" y="740.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="623.0" y="679.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.277329" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="793.0" y="589.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Print" name="print0" x="423" y="671" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider1" x="165.0" y="115.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider1/min" value="0" />
+
+<STATE name="hslider1/max" value="22050" />
+
+<STATE name="hslider1/resolution" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="expr4/out" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="expr2/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="add0/result" inlet="expr3/f2" vertices="233.0 519.5 367.0 519.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="expr3/f1" vertices="171.0 487.0 563.0 487.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="add0/param1" vertices="196.0 460.0 233.0 460.0" />
+<CONNECTION  outlet="expr3/out" inlet="fanout2/in" vertices="" />
+<CONNECTION  outlet="fanout1/out1" inlet="expr2/f1" vertices="" />
+<CONNECTION  outlet="fanout1/out2" inlet="expr3/f3" vertices="196.0 430.0 367.0 430.0" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="expr4/f1" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="expr2/f2" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="expr4/f2" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="447.0 152.5 515.0 152.5" />
+<CONNECTION  outlet="biquad0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="whitenoise0/samplesOut" inlet="biquad0/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout2/out1" inlet="frequencyresponse0/listIn" vertices="" />
+<CONNECTION  outlet="fanout2/out2" inlet="biquad0/coefs" vertices="190.0 639.0 460.5 639.0 460.5 598.0 731.0 598.0" />
+<CONNECTION  outlet="fanout2/out3" inlet="print0/to_print" vertices="209.0 647.5 429.0 647.5" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="629.0 728.0 696.0 728.0" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="799.0 668.0 665.0 668.0" />
+<CONNECTION  outlet="hslider1/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<TITLE  x="209.0" y="47.0" color="#FFFFFF" text="Calculate Notch Filter Coefficients" fontface="Arial" fontsize="12" />
+<TITLE  x="227.0" y="96.0" color="#FFFFFF" text="frequency" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="642.0" y="139.0" color="#FFFFFF" text="bandwidth" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="375.0" y="134.0" color="#FFFFFF" text="sample rate" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="825.0" y="562.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="785.0" y="379.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="785.0" y="398.0" color="#0000FF" link="audio/calc_bandpass" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="785.0" y="422.0" color="#0000FF" link="http://www.harmony-central.com/Computer/Programming/Audio-EQ-Cookbook.txt" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

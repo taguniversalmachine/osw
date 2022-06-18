@@ -1,0 +1,317 @@
+<?xml version="1.0" ?>
+<osw-external name="WacomRouter" package="cnmat">
+<description>Routes incoming messages to different variables according tool and attribute</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inlet name="x" type="Integer" description="x position" />
+<inlet name="y" type="Integer" description="y position" />
+<inlet name="z" type="Integer" description="z axis" />
+<inlet name="pressure" type="Integer" description="pointer pressure" />
+<inlet name="tangent_pressure" type="Integer" description="Tangent (barrel) pressure" />
+<inlet name="buttons" type="Integer" description="buttons pressed" />
+<inlet name="azimuth" type="Integer" description="tilt azimuth" />
+<inlet name="altitude" type="Integer" description="tilt altitude" />
+<inlet name="twist" type="Integer" description="rotation of puck" />
+<inlet name="cursor" type="Integer" description="cursor (pointer) being used for this message" />
+<inlet name="cursor_type" type="Integer" description="Type of tool being used" />
+<state name="maxtools" type="Integer" default="5" description="maximum number of tools to route" persistent="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">for (int i = 0; i &lt; int(maxtools); ++i) &#123;
+   CreateOrFindTool(i);
+&#125;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">struct ToolStates &#123;
+   Container *container;
+   struct &#123;
+	   BaseState *x,*y,*pressure,*tangent_pressure;
+ 	   BaseState *azimuth,*altitude,*buttons;
+   &#125; pen;
+   struct &#123;
+	   BaseState *x,*y,*pressure;
+ 	   BaseState *azimuth,*altitude,*buttons;
+   &#125; eraser;
+   struct &#123;
+ 	   BaseState *x,*y,*z,*twist,*buttons;
+   &#125; puck;
+&#125;;
+
+stl::vector&lt;ToolStates>  tools;
+
+BaseState *CreateOrFindState(const string &amp;aname,Container *acontainer) &#123;
+   BaseState *found = dynamic_cast&lt;BaseState *>
+      (Nameable::Find(aname,acontainer));
+   if (found) &#123;
+      return found;
+   &#125; else &#123;
+      found = new State&lt;int>(aname,acontainer); 
+      return found;
+  &#125;
+&#125;
+
+Container *CreateOrFindTool (int i) &#123;
+  if (i &lt; tools.size()) &#123;
+     return tools&#91;i&#93;.container;
+  &#125; else &#123;
+     tools.push_back(ToolStates());
+     char buf&#91;10&#93;;
+     sprintf(buf,"%d",i);
+     Container *mainToolContainer = new Container(buf,WacomRouterContainer);
+     tools&#91;i&#93;.container = mainToolContainer;
+     Container *pen = new Container("pen",mainToolContainer);
+     tools&#91;i&#93;.pen.x = CreateOrFindState("x",pen);
+     tools&#91;i&#93;.pen.y = CreateOrFindState("y",pen);
+     tools&#91;i&#93;.pen.altitude = CreateOrFindState("altitude",pen);
+     tools&#91;i&#93;.pen.azimuth = CreateOrFindState("azimuth",pen);
+     tools&#91;i&#93;.pen.buttons = CreateOrFindState("buttons",pen);
+     tools&#91;i&#93;.pen.pressure = CreateOrFindState("pressure",pen);
+     tools&#91;i&#93;.pen.tangent_pressure = CreateOrFindState("tangent_pressure",pen);
+     Container *eraser = new Container("eraser",mainToolContainer);
+     tools&#91;i&#93;.eraser.x = CreateOrFindState("x",eraser);
+     tools&#91;i&#93;.eraser.y = CreateOrFindState("y",eraser);
+     tools&#91;i&#93;.eraser.altitude = CreateOrFindState("altitude",eraser);
+     tools&#91;i&#93;.eraser.azimuth = CreateOrFindState("azimuth",eraser);
+     tools&#91;i&#93;.eraser.buttons = CreateOrFindState("buttons",eraser);
+     tools&#91;i&#93;.eraser.pressure = CreateOrFindState("pressure",eraser);
+     Container *puck = new Container("puck",mainToolContainer);
+     tools&#91;i&#93;.puck.x = CreateOrFindState("x",puck);
+     tools&#91;i&#93;.puck.y = CreateOrFindState("y",puck);
+     tools&#91;i&#93;.puck.z = CreateOrFindState("z",puck);
+     tools&#91;i&#93;.puck.buttons = CreateOrFindState("buttons",puck);
+     tools&#91;i&#93;.puck.twist = CreateOrFindState("twist",puck);
+     return tools&#91;i&#93;.container;
+  &#125;
+&#125;</xblock>
+<xblock name="Initialize">osw::WacomRouterContainer = new osw::Container("wacom",NULL);</xblock>
+<xblock name="Global">
+Container *WacomRouterContainer;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="altitude x tangent_pressure pressure y cursor azimuth z cursor_type twist buttons" order="0" >
+
+switch (cursor_type) &#123;
+
+   case 4 :
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.x = x;
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.y = y;
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.buttons = buttons;
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.pressure = pressure;
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.azimuth = azimuth;
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.altitude = altitude;
+     *(State&lt;int> *)tools&#91;cursor&#93;.pen.tangent_pressure = tangent_pressure;
+     break;
+   case 12 :
+     *(State&lt;int> *)tools&#91;cursor&#93;.eraser.x = x;
+     *(State&lt;int> *)tools&#91;cursor&#93;.eraser.y = y;
+     *(State&lt;int> *)tools&#91;cursor&#93;.eraser.buttons = buttons;
+     *(State&lt;int> *)tools&#91;cursor&#93;.eraser.pressure = pressure;
+     *(State&lt;int> *)tools&#91;cursor&#93;.eraser.azimuth = azimuth;
+     *(State&lt;int> *)tools&#91;cursor&#93;.eraser.altitude = altitude;
+     break;
+   case 8 :
+     *(State&lt;int> *)tools&#91;cursor&#93;.puck.x = x;
+     *(State&lt;int> *)tools&#91;cursor&#93;.puck.y = y;
+     *(State&lt;int> *)tools&#91;cursor&#93;.puck.z = z;
+     *(State&lt;int> *)tools&#91;cursor&#93;.puck.buttons = buttons;
+     *(State&lt;int> *)tools&#91;cursor&#93;.puck.twist = twist;
+     break;
+   &#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">WacomRouter &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>Connecting this transform to the outputs of a Wacom transform routes messages to different variables according to tool and attribute.  For example, if you have a pen as your primary tool, it will route different attributes to variables named /wacom/0/pen/x, /wacom/0/pen/y, etc. when you are using the pen.  If you switch to the eraser, the messages will be routed to /wacom/0/eraser/x, /wacom/0/eraser/y, etc.  If your secondary tool (i.e., the second tablet tool you use) is a puck or mouse, the messages will be routed to /wacom/1/puck/x, /wacom/1/puck/y, etc.&lt;/p>
+&lt;p>For each tool &lt;i>n&lt;/i>, the following variables are available:&lt;/p>
+&lt;dl>
+&lt;dt>Pen:&lt;/dt>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/x&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/y&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/buttons&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/pressure&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/tangent_pressure&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/azimuth&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/pen/altitude&lt;/dd>
+&lt;dt>Pen Eraser:&lt;/dt>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/eraser/x&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/eraser/y&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/eraser/buttons&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/eraser/pressure&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/eraser/azimuth&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/eraser/altitude&lt;/dd>
+&lt;dt>Mouse/Puck&lt;/dt>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/puck/x&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/puck/y&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/puck/y&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/puck/buttons&lt;/dd>
+&lt;dd>/wacom/&lt;i>n&lt;/i>/puck/twist&lt;/dd>
+&lt;/dl>
+&lt;p>Some of the features may not be available (or always return zero) depending on the tools and the capabilities of your tablet.  For example, tangent_pressure is only useful with airbrush tools, and altitude and azimuth are available on pens with ArtZ, Intuos and Intuos 2 devices (but not Graphire tablets).
+&lt;/p></xblock>
+<xblock name="Links">input/Wacom</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_WacomRouter" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Wacom" name="wacom0" x="116" y="92" width="165" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="wacom0/tablet" value="1" />
+
+&lt;STATE name="wacom0/name" value="WACOM Tablet" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WacomRouter " name="wacomrouter0" x="116.0" y="158.0" width="165" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="wacomrouter0/maxtools" value="5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Ticker -interval 0.01" name="ticker1" x="116.0" y="35.0" width="136" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get /wacom/0/pen/x" name="get0" x="116.0" y="254.0" width="118" height="25" color="#ff0000" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="116.0" y="317.0" width="88" height="23" color="#ff0000" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="4111" />
+
+&lt;STATE name="intbox0/max" value="100" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="75.0" y="460.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get /wacom/0/eraser/x" name="get1" x="279.0" y="257.0" width="136" height="25" color="#ff0000" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox1" x="279.0" y="318.0" width="88" height="23" color="#ff0000" fontface="" fontsize="8">
+
+&lt;STATE name="intbox1/intIn" value="1914" />
+
+&lt;STATE name="intbox1/max" value="100" />
+
+&lt;STATE name="intbox1/min" value="0" />
+
+&lt;STATE name="intbox1/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get /wacom/1/pen/x" name="get2" x="487" y="162" width="118" height="25" color="#0080ff" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox2" x="487.0" y="222.0" width="88" height="23" color="#0080ff" fontface="" fontsize="8">
+
+&lt;STATE name="intbox2/intIn" value="0" />
+
+&lt;STATE name="intbox2/max" value="100" />
+
+&lt;STATE name="intbox2/min" value="0" />
+
+&lt;STATE name="intbox2/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get /wacom/1/eraser/x" name="get3" x="486.0" y="284.0" width="136" height="25" color="#0080ff" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get /wacom/1/puck/x" name="get4" x="488.0" y="399.0" width="124" height="25" color="#0080ff" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox3" x="488.0" y="458.0" width="88" height="23" color="#0080ff" fontface="" fontsize="8">
+
+&lt;STATE name="intbox3/intIn" value="5357" />
+
+&lt;STATE name="intbox3/max" value="100" />
+
+&lt;STATE name="intbox3/min" value="0" />
+
+&lt;STATE name="intbox3/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox4" x="487.0" y="338.0" width="88" height="23" color="#0080ff" fontface="" fontsize="8">
+
+&lt;STATE name="intbox4/intIn" value="0" />
+
+&lt;STATE name="intbox4/max" value="100" />
+
+&lt;STATE name="intbox4/min" value="0" />
+
+&lt;STATE name="intbox4/step" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="wacom0/x" inlet="wacomrouter0/x" vertices="" />
+&lt;CONNECTION  outlet="wacom0/y" inlet="wacomrouter0/y" vertices="" />
+&lt;CONNECTION  outlet="wacom0/z" inlet="wacomrouter0/z" vertices="" />
+&lt;CONNECTION  outlet="wacom0/pressure" inlet="wacomrouter0/pressure" vertices="" />
+&lt;CONNECTION  outlet="wacom0/tangent_pressure" inlet="wacomrouter0/tangent_pressure" vertices="" />
+&lt;CONNECTION  outlet="wacom0/buttons" inlet="wacomrouter0/buttons" vertices="" />
+&lt;CONNECTION  outlet="wacom0/azimuth" inlet="wacomrouter0/azimuth" vertices="" />
+&lt;CONNECTION  outlet="wacom0/altitude" inlet="wacomrouter0/altitude" vertices="" />
+&lt;CONNECTION  outlet="wacom0/twist" inlet="wacomrouter0/twist" vertices="" />
+&lt;CONNECTION  outlet="wacom0/cursor" inlet="wacomrouter0/cursor" vertices="" />
+&lt;CONNECTION  outlet="wacom0/cursor_type" inlet="wacomrouter0/cursor_type" vertices="" />
+&lt;CONNECTION  outlet="ticker1/tick" inlet="wacom0/tick" vertices="" />
+&lt;CONNECTION  outlet="get0/value" inlet="intbox0/intIn" vertices="" />
+&lt;CONNECTION  outlet="get1/value" inlet="intbox1/intIn" vertices="" />
+&lt;CONNECTION  outlet="get2/value" inlet="intbox2/intIn" vertices="" />
+&lt;CONNECTION  outlet="get3/value" inlet="intbox4/intIn" vertices="492.0 328.5 493.0 328.5" />
+&lt;CONNECTION  outlet="get4/value" inlet="intbox3/intIn" vertices="" />
+&lt;STICKY  x="477" y="44" width="144.0" height="92.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">2nd tool.  If your second
+tool is a pen, watch the
+x coordinate change for
+the pen or eraser.  If it is
+a puck/mouse, watch
+the puck x coordinate&lt;/STICKY>&lt;STICKY  x="240" y="377" width="181.0" height="90.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Visit the text help for 
+WacomRouter to see all
+the different attributes 
+other than x coordinates that
+can be routed from different tools.&lt;/STICKY>&lt;TITLE  x="259.0" y="234.0" color="#FFFFFF" text="1st tool: x coordinate for pen and eraser" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="367.0" y="48.0" color="#FFFFFF" text="WacomRouter" fontface="Arial" fontsize="14" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

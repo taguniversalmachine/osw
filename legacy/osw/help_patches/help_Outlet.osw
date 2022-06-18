@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_inlet" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="IntBox" name="intbox0" x="78.0" y="101.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="108.0" y="246.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="5.12" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="230.0" y="101.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="1" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<PATCH CLASS="mypatch" Version="1.1beta2" WindowSize="200 230" Background="#d9d9d9"  x="108.0" y="187.0" width="107" height="23" color="darkgrey" >
+<TRANSFORM  command="+" name="add0" x="157" y="117" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -name foo -type Integer" name="foo" x="122" y="25" width="30" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -name bar -type Float" name="bar" x="230.0" y="24.0" width="30" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -name foobar -type Float" name="foobar" x="157" y="204" width="50" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="add0/result" inlet="foobar_outlet/in" vertices="" />
+<CONNECTION  outlet="foo_inlet/out" inlet="add0/param1" vertices="128 96.0 163.0 96.0" />
+<CONNECTION  outlet="bar_inlet/out" inlet="add0/param2" vertices="236.0 95.5 195 95.5" />
+</PATCH>
+
+<CONNECTION  outlet="intbox0/intOut" inlet="mypatch/foo" vertices="84.0 160.5 114.0 160.5" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="mypatch/bar" vertices="236.0 164.5 219.0 164.5" />
+<CONNECTION  outlet="mypatch/foobar" inlet="floatbox1/floatIn" vertices="" />
+<STICKY  x="249.0" y="180.0" width="117.0" height="70.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click the
+subpatch to see
+how the inlets and
+oulets were created</STICKY><TITLE  x="90.0" y="36.0" color="#FFFFFF" text="Inlet / Outlet" fontface="Arial" fontsize="18" /></PATCH>
+</OSW>
+

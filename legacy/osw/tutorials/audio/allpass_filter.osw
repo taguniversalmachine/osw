@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="allpass_filter" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Comb" name="comb0" x="269.0" y="328.0" width="75" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="comb0/gain" value="1" />
+
+<STATE name="comb0/forward" value="0" />
+
+<STATE name="comb0/feedback" value="0" />
+
+<STATE name="comb0/delay" value="0.05" />
+</TRANSFORM>
+<TRANSFORM  name="expr0" x="323.0" y="232.0" width="73" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr -&#36;f1</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="273.0" y="168.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Samples" name="inlet0" x="153.0" y="91.0" width="41" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name gain" name="gain" x="273.0" y="88.0" width="36" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name delay" name="delay" x="454.0" y="90.0" width="44" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="allpass0" x="525.0" y="443.0" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Allpass</COMMAND>
+
+<STATE name="allpass0/gain" value="0" />
+
+<STATE name="allpass0/delay" value="0.05" />
+
+<STATE name="allpass0/fractional" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Samples -name out" name="out" x="269.0" y="418.0" width="28" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="comb0/samplesOut" inlet="out_outlet/in" vertices="" />
+<CONNECTION  outlet="expr0/out" inlet="comb0/feedback" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="comb0/forward" vertices="279.0 266.5 311.0 266.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="expr0/f1" vertices="304.0 218.5 329.0 218.5" />
+<CONNECTION  outlet="gain_inlet/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="delay_inlet/out" inlet="comb0/delay" vertices="460.0 234.0 347.0 234.0" />
+<CONNECTION  outlet="inlet0_inlet/out" inlet="comb0/samplesIn" vertices="159.0 234.5 275.0 234.5" />
+<TITLE  x="558.0" y="412.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="183.0" y="51.0" color="#FFFFFF" text="Variable-delay Allpass Filter" fontface="Arial" fontsize="14" />
+</PATCH>
+</OSW>
+

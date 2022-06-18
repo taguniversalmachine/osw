@@ -1,0 +1,233 @@
+
+#Copyright (c) 2001-2002 Amar Chaudhary. All rights reserved.
+#Copyright (c) 1998-2001 Regents of the University of California.
+#All rights reserved.
+#
+#     ``The contents of this file are subject to the Open Sound World Public
+#     License Version 1.0 (the "License"); you may not use this file except in
+#     compliance with the License. A copy of the License should be included
+#     in a file named "License" or "License.txt" in the distribution from 
+#     which you obtained this file. 
+#
+#     Software distributed under the License is distributed on an "AS IS"
+#     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#     License for the specific language governing rights and limitations
+#     under the License.
+#
+#     The Original Code is Open Sound World (OSW) software.
+#
+#     The Initial Developer of the Original Code is Amar Chaudhary.
+#     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+#     Regents of the University of California and Amar Chaudhary. 
+#     All Rights Reserved.
+#
+#     Contributor(s):
+
+
+include System.mak
+include ../generic/Version.mak
+
+CXX = cl
+CC = cl
+
+STLOPTS = -D_STLP_USE_OWN_NAMESPACE -D_STLP_OWN_IOSTREAMS -D_REENTRANT
+INCLUDES = -I$(STL_DIR)/stlport -I../include -I../generic -I. -I../types -I../sdif -I$(TCL_DIR)/include -I../osc
+
+OPTFLAGS = -O2 $(INCLUDES) -GR -GX -G6 -Oa -Ob2 -MD -Zm1000 -D "_WINDOWS" -D "_OSWCORE" -D "_USING_TCL" $(STLOPTS) $(VERSIONOPTS)
+
+DEBUGCFLAGS = $(INCLUDES) -GR -GX -GZ -Zi -MDd -Zm1000 -D "_WINDOWS" -D "_OSWCORE" -D "_USING_TCL" $(STLOPTS)  $(VERSIONOPTS)
+
+#switch to DEBUGCFLAGS if you want debug mode
+#CFLAGS = $(OPTFLAGS)
+CFLAGS = $(DEBUGCFLAGS)
+
+OBJ = obj
+
+WINOBJECTS =  oswWinDSound.$(OBJ) oswWinMidi.$(OBJ) oswWinLoadOSX.$(OBJ) oswWinThread.$(OBJ) oswWinMutex.$(OBJ) oswWinSock.$(OBJ) oswWinSelect.$(OBJ) oswWinHiResTimer.$(OBJ) oswWinPrefs.$(OBJ) oswWinFileUtils.$(OBJ) oswWinInit.$(OBJ)
+
+
+#Switch to the second LIBFLAGS definition if you want debug mode
+#LIBFLAGS = /LIBPATH:$(TCL_DIR)/lib /MACHINE:X86  /OPT:NOREF /INCREMENTAL:yes
+LIBFLAGS = /LIBPATH:$(TCL_DIR)/lib /MACHINE:X86  /OPT:NOREF /INCREMENTAL:yes /DEBUG
+
+TCLLIBS = tcl82.lib tk82.lib
+LIBRARIES = winmm.lib user32.lib dsound.lib wsock32.lib advapi32.lib ole32.lib $(TCLLIBS)
+
+
+STLLIB = $(STL_DIR)\lib\stlport_vc6
+
+
+
+###################
+# Generic C++ files
+include ../generic/Generic.mak
+
+
+########################
+#libraries / executables
+
+all: libosw.dll osw.exe oswbin.exe
+
+osw.exe : main.$(OBJ) libosw.dll oswWinRes.res
+	link /OUT:osw.exe $(LIBFLAGS) main.$(OBJ) libosw.lib $(TCLLIBS) $(STLLIB).lib oswWinRes.res
+
+oswbin.exe :  oswWinMain.obj libosw.dll oswWinRes.res
+	link @<<
+	/OUT:oswbin.exe /SUBSYSTEM:console $(LIBFLAGS)  oswWinMain.obj libosw.lib $(LIBRARIES) $(STLLIB).lib oswWinRes.res
+<<
+
+libosw.dll : $(OBJECTS) $(WINOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS) \
+	$(STLLIB).lib
+	link @<<	
+  /DLL /OUT:libosw.dll /SUBSYSTEM:console $(LIBFLAGS) $(OBJECTS) $(WINOBJECTS) $(LIBRARIES) $(SDIF_OBJECTS) $(OSC_OBJECTS) $(STLLIB).lib
+<<
+
+###############
+# STL port lib
+
+$(STL_DIR)/lib/stlport_vc6.lib :
+	cd $(STL_DIR)/src
+	nmake -f vc6.mak all_dynamic
+	cd $(OSW_SOURCE_DIR)/src/win
+
+
+############################
+# Windows-specific C++ files
+
+oswWinLoadOSX.$(OBJ) : oswWinLoadOSX.cpp $(REQUIRED_H)
+	$(CC) $(CFLAGS) -c oswWinLoadOSX.cpp
+
+oswWinDSound.$(OBJ) : oswWinDSound.cpp $(REQUIRED_H) ../include/oswAudio.h \
+	oswWinDSound.h ../include/oswTime.h ../include/oswClock.h
+	$(CC) $(CFLAGS) -c oswWinDSound.cpp
+
+oswWinMidi.$(OBJ) : oswWinMidi.cpp $(REQUIRED_H) ../include/oswMidi.h \
+	oswWinMidi.h
+	$(CC) $(CFLAGS) -c oswWinMidi.cpp
+
+oswWinThread.$(OBJ) : oswWinThread.cpp $(REQUIRED_H) ../include/oswThread.h \
+	 ../include/oswSched.h
+	$(CC) $(CFLAGS) -c oswWinThread.cpp
+
+oswWinMutex.$(OBJ) : oswWinMutex.cpp ../include/oswMutex.h
+	$(CC) $(CFLAGS) -c oswWinMutex.cpp
+
+oswWinSock.$(OBJ) : oswWinSock.cpp ../include/oswSock.h
+	$(CC) $(CFLAGS) -c oswWinSock.cpp
+
+oswWinSelect.$(OBJ) : oswWinSelect.cpp ../include/oswSelect.h
+	$(CC) $(CFLAGS) -c oswWinSelect.cpp
+
+oswWinHiResTimer.$(OBJ) : oswWinHiResTimer.cpp ../include/oswHiResTimer.h
+	$(CC) $(CFLAGS) -c oswWinHiResTimer.cpp
+
+oswWinPrefs.$(OBJ) : oswWinPrefs.cpp $(REQUIRED_H) ../include/oswPrefs.h
+	$(CC) $(CFLAGS) -c oswWinPrefs.cpp
+
+oswWinFileUtils.$(OBJ) : oswWinFileUtils.cpp  ../include/oswFileUtils.h
+	$(CC) $(CFLAGS) -c oswWinFileUtils.cpp
+
+oswWinInit.$(OBJ) : oswWinInit.cpp $(REQUIRED_H) ../include/oswSched.h \
+	../include/oswInit.h oswWinDSound.h oswWinMidi.h 
+	$(CC) $(CFLAGS) -c oswWinInit.cpp
+
+oswWinMain.$(OBJ) : oswWinMain.cpp $(REQUIRED_H) ../include/oswInit.h
+	$(CC) $(CFLAGS) -c oswWinMain.cpp
+
+oswWinRes.res : oswWinRes.rc
+	rc oswWinRes.rc
+
+
+main.$(OBJ) : main.cpp
+	$(CC) $(CFLAGS) -c main.cpp
+
+#######################
+# Cleaup & Installation
+ 
+clean:
+	del *.obj
+	del *.dll
+	del *.lib
+	del *.exp
+	del *.ilk
+	del *.exe
+
+execlean:
+	del libosw.dll
+	del osw.exe
+
+install: all
+	tclsh82 testmkdir.tcl $(INSTALL_DIR)
+	copy libosw.dll $(INSTALL_DIR)
+	copy osw.exe $(INSTALL_DIR)
+	copy oswbin.exe $(INSTALL_DIR)
+	tclsh82 testmkdir.tcl $(INSTALL_DIR)/lib
+	copy libosw.lib $(INSTALL_DIR)\lib
+	tclsh82 reginstall.tcl $(INSTALL_DIR)
+	tclsh82 xprefs.tcl $(OSW_SOURCE_DIR) $(INSTALL_DIR) $(STL_DIR) $(TCL_DIR)/include $(TCL_DIR)/include
+	copy $(STLLIB).4.5.dll $(INSTALL_DIR)
+	copy  $(STLLIB).lib $(INSTALL_DIR)\lib
+	xcopy /Y /E /I ..\..\scripts $(INSTALL_DIR)\scripts
+	xcopy /Y /E /I ..\..\bitmaps $(INSTALL_DIR)\bitmaps
+	xcopy /Y /E /I ..\..\externalizer $(INSTALL_DIR)\externalizer
+	xcopy /Y /E /I ..\..\html $(INSTALL_DIR)\html
+	xcopy /Y /E /I ..\..\help_patches $(INSTALL_DIR)\help_patches
+	xcopy /Y /E /I ..\..\tutorials $(INSTALL_DIR)\tutorials
+	xcopy /Y /E /I ..\..\demos $(INSTALL_DIR)\demos
+	xcopy /Y /E ..\..\oswinit.tcl $(INSTALL_DIR)
+	xcopy /Y /E /I ..\..\TclXML-1.2 $(INSTALL_DIR)\TclXML-1.2
+	xcopy /Y /E /I ..\include $(INSTALL_DIR)\src\include
+	xcopy /Y /E /I ..\types $(INSTALL_DIR)\src\types
+	xcopy /Y /E /I $(STL_DIR)\stlport $(INSTALL_DIR)\src\stlport
+	copy reginstall.tcl $(INSTALL_DIR)
+	copy RunMe.tcl $(INSTALL_DIR)
+	copy  ..\..\README $(INSTALL_DIR)
+	copy  ..\..\License $(INSTALL_DIR)
+	copy INSTALL.win $(INSTALL_DIR)
+	copy ..\macosx\INSTALL.macosx $(INSTALL_DIR)
+	copy ..\linux\INSTALL.linux $(INSTALL_DIR)
+	copy ..\sgi\INSTALL.sgi $(INSTALL_DIR)
+	copy INSTALL.win $(INSTALL_DIR)\html
+
+bininstall: all
+	copy libosw.dll $(INSTALL_DIR)
+	copy osw.exe $(INSTALL_DIR)
+	copy oswbin.exe $(INSTALL_DIR)	
+
+externals:	
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/blob
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/osw
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/list
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/note
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/midi
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/sdif
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/table
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/cnmat
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/sinusoids
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/spectral
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/raw
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/markov
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/patented
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/win32
+
+externalclean: external_clean
+
+external_clean:
+	tclsh82 external_clean.tcl
+#	del ..\externals\*\*\*.lib
+#	del ..\externals\*\*\*.obj
+#	del ..\externals\*\*\*.osx
+#	del ..\externals\*\*\*.qqq
+#	del ..\externals\*\*\*.log
+#	del ..\externals\*\*\*.exp
+
+#this requires that you have TAR and GZIP on your system
+dist:
+	tar -uf osw.tar -C $(INSTALL_DIR)
+	tar --delete lib/osw/externals/patented/*
+	gzip osw.tar
+
+patented-dist:
+	tar -uf osw.tar -C $(INSTALL_DIR)
+	gzip osw.tar
+

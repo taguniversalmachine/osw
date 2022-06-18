@@ -1,0 +1,229 @@
+<?xml version="1.0" ?>
+<osw-external name="SamplePlayer" package="osw">
+<description>Plays a channel of audio from a table or SampleBuffer</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="timeIn" type="Time" />
+<inlet name="reset" type="Unit" description="Reset to the beginning of the sound" />
+<inlet name="table" type="String" default="!quot!quot" description="Name of table or SampleBuffer channel to play" />
+<inlet name="loop_start" type="Double" default="0.0" description="start of loop, in seconds" persistent="1" />
+<inlet name="loop_length" type="Double" default="0.0" description="loop length, in seconds" persistent="1" />
+<outlet name="samplesOut" type="Samples" />
+<outlet name="done" type="Unit" description="Emits a unit when done playing sample" />
+<state name="loop" type="Boolean" default="false" description="loop over sample buffer" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">if (string(table) != "") &#123;
+  xtable = dynamic_cast&lt;State&lt;Table&lt;float> > *>
+			  (Nameable::Find(table,acontainer));
+&#125;
+xprevTime = 0.0f;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">float xprevTime,xdirection;
+State&lt;Table&lt;float > > *xtable;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation2" activators="table" order="" >
+
+if (string(table) != "") &#123;
+   xtable = dynamic_cast&lt;State&lt;Table&lt;float> > *>
+	  (Nameable::Find(table,GetContainer()));
+   if (xtable != NULL) &#123;
+      Alert("found table");
+      Container *tableContainer = xtable->GetContainer();
+      if (tableContainer) &#123;
+       State&lt;double> *table_loop_start =
+	  dynamic_cast&lt;State&lt;double> *>
+	  (Nameable::Find(tableContainer->PathName()+"/loop_start"));
+       if (table_loop_start) &#123;
+	  cout &lt;&lt; table_loop_start -> PathName() &lt;&lt; endl;
+	  loop_start = *table_loop_start;
+       &#125; else &#123;
+	  loop_start = 0.0;
+       &#125; 
+       State&lt;double> *table_loop_length =
+	  dynamic_cast&lt;State&lt;double> *>
+	  (Nameable::Find(tableContainer->PathName()+"/loop_length"));
+       if (table_loop_length) &#123;
+	  loop_start = *table_loop_length;
+       &#125; else &#123;
+	  loop_length = (*xtable)->finish();
+       &#125;     
+      &#125; else &#123;
+	loop_start = 0.0;
+	loop_length = (*xtable)->finish();
+      &#125;
+   &#125;
+&#125; else &#123;
+   xtable = NULL;
+&#125;
+</activation>
+<activation name="zero" activators="reset" order="" >
+
+
+
+
+xprevTime = 0.0f;
+</activation>
+<activation name="activation1" activators="timeIn" order="" >
+
+
+
+
+if (xtable == NULL) &#123;
+   samplesOut = Samples(NumberOfSamples,0.0f);
+&#125; else &#123;
+   float currentTime = xprevTime + timeIn->time - timeIn->prevtime;
+   float dt;
+   if (loop &amp;&amp; currentTime > loop_start) &#123;
+	  dt = (currentTime - xprevTime) / float(NumberOfSamples);
+	  currentTime = loop_start + fmod(currentTime-loop_start,loop_length);
+	  //dt = fmod(currentTime - xprevTime + (*xtable)->finish(),(*xtable)->finish()) 
+	  // / float(NumberOfSamples);
+   &#125; else &#123;
+	  dt = (currentTime - xprevTime) / float(NumberOfSamples);
+   &#125;
+   float t = xprevTime;
+   float dt_saved = dt;
+   if (sgn(dt) != sgn(xdirection)) &#123;
+ 	  t = currentTime;
+	  dt = xdirection;
+   &#125;
+   Samples samples(NumberOfSamples,0.0f);
+   if (loop) &#123;
+      for (int i = 0; i &lt; NumberOfSamples; ++i) &#123;
+	  if (t >= 0.0f &amp;&amp; t &lt; loop_start + loop_length) &#123;
+	    samples&#91;i&#93; = (**xtable)(t,true);
+	  &#125; else if (t &lt; 0.0f) &#123;
+	      t = loop_start + loop_length;
+	  &#125; else &#123;	      
+	      t = 0.0f;
+	  &#125;
+	  t += dt;
+      &#125;
+   &#125; else &#123;
+      for (int i = 0; i &lt; NumberOfSamples; ++i) &#123;
+	 if (t >= 0.0f &amp;&amp; t &lt; (*xtable)->finish()) &#123;
+	    samples&#91;i&#93; = (**xtable)(t,true);
+	 &#125; else &#123;
+	    samples&#91;i&#93; = 0;
+	 &#125;
+         t += dt;
+      &#125;
+   &#125;
+   xprevTime = currentTime;
+   xdirection = dt_saved;
+   samplesOut = samples;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">SamplePlayer &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_SamplePlayer" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="SampleBuffer -name quack" name="quack" x="220" y="76" width="154" height="25" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA src="quack.wav" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SamplePlayer" name="sampleplayer0" x="58.0" y="225.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sampleplayer0/loop" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="58.0" y="164.0" width="84" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="quack/0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get0" x="58.0" y="110.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="52.0" y="289.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="160.0" y="76.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SampleStreamer" name="samplestreamer0" x="56.0" y="421.0" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="sampleplayer0/samplesOut" inlet="out0/mix" vertices="64.0 274.5 178.0 274.5" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="sampleplayer0/table" vertices="" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="64.0 154.5 146.0 154.5" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="sampleplayer0/reset" vertices="166.0 208.0 166.0 214.0 104.0 214.0" />
+&lt;STICKY  x="222.0" y="144.0" width="124.0" height="89.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">The string quack/0
+tells the SamplePlayer
+to use channel 0
+of whatever is stored
+in the SampleBuffer
+called quack.&lt;/STICKY>&lt;TITLE  x="146.0" y="20.0" color="#FFFFFF" text="SampleBuffer / SamplePlayer" fontface="Arial" fontsize="16" />&lt;TITLE  x="81.0" y="84.0" color="#FFFFFF" text="Play it again and again!" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="160.0" y="394.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;HYPERLINK  x="215.0" y="423.0" color="#0000FF" link="audio/looping" fontface="MS Sans Serif" fontsize="10" />&lt;HYPERLINK  x="240.0" y="443.0" color="#0000FF" link="audio/stereo_samples" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+<xblock name="HelpPatchSupportFiles">quack.wav</xblock>
+</osw-external>
+
+
+

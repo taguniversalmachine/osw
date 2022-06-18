@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="signal_sym_shift" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Sinewave" name="sinewave0" x="326.0" y="234.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="271.0" y="703.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="340.0" y="625.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.35" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="616.0" y="512.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="gtgt0" x="326.0" y="373.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>&gt;&gt;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  name="tointegersamples0" x="326.0" y="312.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>ToIntegerSamples</COMMAND>
+
+<STATE name="tointegersamples0/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="fromintegersamples0" x="326.0" y="497.0" width="143" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>FromIntegerSamples</COMMAND>
+
+<STATE name="fromintegersamples0/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="609.0" y="295.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="31" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="609.0" y="359.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="ltlt0" x="327.0" y="439.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>&lt;&lt;</COMMAND>
+</TRANSFORM>
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="tointegersamples0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="622.0 602.5 382.0 602.5" />
+<CONNECTION  outlet="gtgt0/result" inlet="ltlt0/param1" vertices="332.0 424.5 333.0 424.5" />
+<CONNECTION  outlet="tointegersamples0/integerSamplesOut" inlet="gtgt0/param1" vertices="" />
+<CONNECTION  outlet="fromintegersamples0/samplesOut" inlet="gain0/samplesIn" vertices="332.0 579.5 346.0 579.5" />
+<CONNECTION  outlet="intbox0/intOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="gtgt0/param2" vertices="615.0 411.0 491.5 411.0 491.5 358.0 368.0 358.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="ltlt0/param2" vertices="640.0 417.5 369.0 417.5" />
+<CONNECTION  outlet="ltlt0/result" inlet="fromintegersamples0/integerSamplesIn" vertices="333.0 486.5 332.0 486.5" />
+<STICKY  x="672.0" y="176.0" width="189.0" height="70.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">As more bits are shifted,
+more "artifacts" are added
+to the sound</STICKY>
+<TITLE  x="321.0" y="103.0" color="#FFFFFF" fontface="Arial" fontsize="14" >Symmetric Bit Shift of Signals</TITLE>
+</PATCH>
+</OSW>
+

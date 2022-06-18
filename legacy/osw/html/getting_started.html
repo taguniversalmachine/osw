@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+        
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <title>Getting started with OSW</title>
+<link href="css/text.css" rel="stylesheet" type="text/css">
+
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<div class="Section1">
+<div align="Center">
+<h1 class="title">2. Getting Started With Open Sound World</h1>
+
+<br>
+<br>
+</div>
+</div>
+<h3 class="title">2.1. What is Open Sound World?</h3>
+<p class="MsoNormal">Open Sound World, or OSW, is a development and run-time
+environment that allows sound designers and musicians to process sound in
+response to expressive real-time control. OSW employs a visual programming
+environment in which users instantiate and connect graphical components,
+called <i>transforms</i> to form programs, called <i>patches</i>. This model
+of &ldquo;patching things together&rdquo; has a long and storied history in
+computer music from early analog synths to modern programming environments
+such as Max/MSP, jMax and Pd. Users of these environments will probably find
+the OSW interface quite familiar, although there are several important differences.
+OSW uses a more uniform model where everything is a transform (i.e., no messages
+or constants floating around), connections between transforms are strongly
+typed, and only one connection may enter or leave a particular outlet. OSW
+is also highly dynamic and allows users to both edit transforms and manipulate
+performance controls simultaneously, and change patches or the basic configuration
+even while the audio is running.</p>
+<h3 class="title">2.2. Starting OSW</h3>
+You can start OSW by clicking on the program icon or typing &ldquo;osw&rdquo;
+on a command line. In either case, you will be presented with the OSW visual
+programming environment. It looks a bit like this:<br>
+<br>
+<div align="center"><img alt="The OSW Workspace" src="getting_started_files/image001.jpg"></div>
+<p class="MsoNormal">To the left is a palette of &ldquo;docked&rdquo; transforms
+that you can use to build your programs (of course, there are many more transforms
+than these!). Taking up most of the screen are one or more <i>patch views
+</i>representing open patches. Each time you create or load a new patch, a new
+view is added.</p>
+<p class="MsoNormal">Now let&rsquo;s create a patch&hellip;</p>
+<h3 class="title">2.3. The First Patch:&ldquo;HelloWorld&rdquo;</h3>
+<p class="MsoNormal">No programming document would be complete without first
+showing you how to write a &ldquo;Hello World&rdquo; program.&nbsp; Click
+on the blank transform button <img src="getting_started_files/image003.gif">
+and then move the mouse the place on an open patch view where you want to
+place the new transform and click again to drop it. There will now be a blank
+box on the patch window.<br>
+</p>
+<div align="Center"><img src="getting_started_files/image004.png" alt="blank transform"></div>
+<p class="MsoNormal">Type <span class="transform">MessageBox
+</span>into the blank box <br>
+<div align="center">
+<img src="getting_started_files/image007.jpg"><br>
+</div>
+</p>
+<p class="MsoNormal">and either hit the Enter key or click outside the box.
+This will create a new <a class="transform" href="osw/MessageBox.html">MessageBox</a> transform.<br>
+</p>
+<div align="Center"><img src="getting_started_files/image008.png" alt="message box in patch"><br>
+</div>
+<p class="MsoNormal">Note that there is a transform on the dock that looks
+somewhat like this one. Indeed, MessageBoxes are used so often that that
+you can create them by clicking on the docked copy and then clicking on your
+patch. Do this to create a second <span class="transform">MessageBox</span>.</p>
+<div align="Center"><img src="getting_started_files/image010.png" alt="Drag and drop message box prototype"><br>
+<br>
+<img src="getting_started_files/image012.png" alt="two message boxes"><br>
+<br>
+<div align="Left"><br>
+</div>
+<div align="Left">
+<p class="MsoNormal">Now connect the first MessageBox to the
+second one. Click on the <i>outlet</i> of the first MessageBox to create a &ldquo;wire&rdquo;and drag it
+to left inlet of the other MessageBox. Click on the inlet to complete the
+process.</span></p>
+</div>
+<img src="getting_started_files/image014.png" alt="inlets and oulets"><br>
+<br>
+<br>
+<img src="getting_started_files/image016.png" alt="Message boxes are connected"><br>
+<br>
+<div align="Left">
+<p class="MsoNormal"><span style="mso-bidi-font-style:italic">Now press the
+red button and watch your message travel through the wire!</span></p>
+<h2>2.4. Transforms: A More Detailed Look</h2>
+<p class="MsoNormal">Recall that we created a transform by typing a <i>command</i>
+into a blank transform box. Try creating a sinewave transform by typing <span class="transform">
+Sinewave</span>. This is a command that <i>instantiates</i> a new transform
+whose <i>class name</i> is "Sinewave" and whose <i>instance name is</i> &ldquo;sinewave0.&rdquo;<br>
+<img src="getting_started_files/sinewave2sinewave.gif"><br>
+</p>
+<p class="MsoNormal">There may be many transforms of the same class (e.g.,
+lots of sinewave oscillators), but each transform will have a unique instance
+name. OSW will automatically assign an instance name to a new transform, but
+you can optionally specify a name for the transform by using the &ldquo;-name&rdquo;
+option. To create a sinewave transform called &ldquo;joe,&rdquo; type <span class="transform">
+Sinewave &ndash;name joe</span> instead.<br>
+<img src="getting_started_files/joe.gif"><br>
+</p>
+<br>
+<p class="MsoNormal">&ldquo;-name&rdquo; is just one example of an option
+you can specify when instantiating a new transform. For example, if you wanted
+to specify an initial frequency of 256.1 Hz for your sinewave transform called
+&ldquo;joe,&rdquo; type the command <span class="transform">
+Sinewave &ndash;name joe &ndash;freq 256.1</span>. All transforms have
+the &ldquo;-name&rdquo; option, but most other options are specific to the
+transform class (refer the help page for a particular transform class to
+find out its options).</p>
+<h3 class="title"><i>2.4.1 Transform Completions</i></h3>
+<p class="MsoNormal">You might have noticed that OSW transforms often have
+long names like &ldquo;MessageBox&rdquo; or &ldquo;Sinewave&rdquo; &ndash;
+these are relatively short examples. Long descriptive names are easier to
+remember and also help users understand the function of the transform, but they
+also require more typing. Fortunately, OSW removes the need to type full
+transform class names through a feature called <i>transform completion</i>
+. For example,you could just type &ldquo;Mess&rdquo;
+or &ldquo;Sine followed by the Escape key to automatically complete the
+class name:<br>
+<img src="getting_started_files/escape.gif"><br>
+</p>
+<p class="MsoNormal">If two or more transforms match what you typed, OSW
+fills in the common letters and displays a list of all the matched transforms:<br>
+<img src="getting_started_files/midicomplete.jpg"><br>
+</p>
+<br>
+<h3 class="title"><i>2.4.2 Exploring Transforms</i></h3>
+<p class="MsoNormal">Transforms display &ldquo;tool tip&rdquo; messages that
+describe their behavior. Leave the mouse over the body of a transform to
+see a brief description of its function. You can also learn about inlets
+and outlets of a transform this way.<br>
+<img src="getting_started_files/image040.png"><img src="getting_started_files/image042.png"></p>
+<p class="MsoNormal">Those who find tool tips more annoying than helpful
+can turn them off in the Help menu. The same help information is also displayed
+in the status bar at the bottom of the window.<br>
+</p>
+<h3 class="title"><i>2.4.3 Getting Help on Transforms</i></h3>
+<p>You can get help on any transform by selecting it and using the F1 key.  This will bring up a web document describing the inlets, outlets and options for a transform:</p>
+<div align="center">
+<img src="getting_started_files/sinewaveselect.png" align="center">
+&nbsp;&nbsp;
+<img src="getting_started_files/f1.png" align="center">
+&nbsp;&nbsp;
+<img src="getting_started_files/webpage.png" align="center">
+</div>
+<p>If it is available and OSW is running, a patch demonstrating the use of the transform will also be loaded.</p>
+<div align="center">
+<img src="getting_started_files/helppatch.png">
+</div>
+<h2>2.5. Working with Patches</h2>
+<p class="MsoNormal">Patches are to OSW as documents are to word processor:
+they are the things that you create, edit and store in files. We have already
+seen how you can build patches by instantiating and connecting transforms.
+You can save your patch by using the Save command in the File menu, or clicking
+the Save icon <img src="getting_started_files/image044.gif" alt="piggy">
+in the view for your patch. You can also Open and Close patches using the
+appropriate commands in the File menu or icons in a patch view.</p>
+<p class="MsoNormal">Patches are themselves transforms, which can be included
+in other patches. To add a patch from a file, type the name of the patch
+into a blank transform. If the patch file is in another directory, you will
+need to specify an absolute or relative path to that directory (if you don&rsquo;t
+know what an absolute or relative path is, check your OS documentation).
+You can also use the <span class="transform">Patch</span>
+ transform to add a new subpatch that will be saved in the same file as the
+patch you&rsquo;re working on.</p>
+<h2>2.6. Cutting, Copying and Pasting</h2>
+<p class="MsoNormal">OK, so now you can build, save and load patches. Unless
+you never make mistakes, you will probably want to make changes to your patches
+as you build them. OSW supports the standard Cut, Copy and Paste operations
+on transforms. To select a transform, click on its border. You can select
+multiple transforms by holding down the Shift key while you click on each
+transform&rsquo;s border. Alternatively, you could draw a region around the
+transforms you want to select. For more fun with drawing regions, see the
+<a href="#gestural">Gestural Commands</a> section.</p>
+<p class="MsoNormal">Once transforms are selected, you can use the Cut, Copy
+and Paste commands in the Edit menu. These operations work both within and
+between patches.</p>
+<h2>2.7. Annotating Your Patches</h2>
+<p>You can add comments and annotations to your patches using
+the “Insert Annotation” command in the Edit menu or the Annotation icon
+<img src="./getting_started_files/image045.gif"> in the patch view. This command will add a new “sticky note” to your patch. You can then type in whatever comments you want.<br>
+<div align="center"><img src="./getting_started_files/image046.png"></div><br>
+You can also insert titles (i.e., lines of text without the “sticky-note” look), images and hyperlinks.
+</p>
+<a name="gestural"/>
+<h2>2.8. Gestural Commands</h2>
+<p>In addition to
+traditional point-and-click editing, users can perform some common tasks by
+drawing gestures on the patch window. You might have already noticed that you can “draw” on the patch window
+by clicking and dragging the mouse. If
+you draw a figure around one or more transforms, it selects them for moving,
+cutting or copying:
+<div align="center"><img src="./getting_started_files/image048.png"></div>
+</p>
+<p>Drawing a figure around an outlet creates a wire that you
+can drag to an inlet (same as clicking on the outlet). Enclosing both an inlet and an outlet in a figure automatically connects them:<br>
+<div align="center"><img src="./getting_started_files/image050.png">
+<br><br>
+<img src="./getting_started_files/image052.png">
+</div>
+</p>
+<p>Editing-by-drawing might seem a bit odd at first, but it can
+really help speed up all that tedious moving and connecting of transforms. Future versions of OSW will likely expand
+this facility.</p>
+<h2>2.9. Where to go from here</h2>
+<p class=MsoNormal>If you're the type who easily gets bored reading documents,
+you can jump right in to the Tutorial Patches, or <a href="Transform_by_group.html" target="_top">explore the transforms</a> available for your OSW projects.</p>
+<p>Otherwise, you can read more about the <a href="details.html">details of OSW</a>, including how to <a href="making_music.htm">compose music</a> and <a href="signal_processing.htm">process audio signals</a>.</p>
+
+
+</div>
+</div>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

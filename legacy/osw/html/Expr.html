@@ -1,0 +1,100 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">Expr</h1>
+<p>Evaluate a mathematical expression.</p>
+<h3 class="title">Syntax</h3>
+<p>Expr <i>expression</i></p>
+<h3 class="title">Comments</h3>
+<p>Expr evaluates mathematical expressions in a format resembling programming languages like C, Java or Tcl.  The expression is composed of numbers, arithmetic operators, math functions like <b>sin</b> or <b>log</b> and variables.</p>
+<p>Integer, floating-point, and complex numbers can be used as constants within an expression.</p>
+<p>Variables are alphanumeric strings preceded by a <b>$</b>.  The first letter or pair of letters after the <b>$</b> determine the type of the variable:
+<dl>
+<dt><b>i</b>: integer</dt>
+<dt><b>f</b>: float</dt>
+<dt><b>d</b>: double</dt>
+<dt><b>c</b>: complex</dt>
+<dt><b>cd</b>: double-precision complex</dt>
+<dt><b>s</b>: audio samples (floating-point)</dt>
+<dt><b>ds</b>: double-precision audio samples</dt>
+<dt><b>is</b>: integer audio samples</dt>
+<dt><b>ss</b>: 16 bit audio samples</dt>
+<dt><b>l</b>: list</dt>
+</dl>
+<p>For example <b>$i1</b> would be an integer variable and <b>$sfoo</b> would be a audio-sample variable.  For each variable used in the expression, an inlet of the same name and type is created for the Expr transform.  So the expression <b>$i1 + $f2 / $f3</b> would have one Integer inlet and two Float inlets.</p>
+<p>If a variable name does not use any of the above prefixes, it is treated as an ordinary OSW variable (i.e., as used by Get/Put or the $ operator in transform arguments).  If the variable exists elsewhere in the patch (e.g., as a transform variable or a free variable), it is used in the expression.  Otherwise, a new inlet of type Any is added to the Expr transform is created.</p>
+<p>The valid operators are listed below, in order of decreasing precedence:</p>
+<dl>
+<dt><b>^</b></dt>
+<dd>Exponentiation (<i>a<sup>b</sup></i>).  Valid for all operand types.</dd>
+<dt><b>!</b></dt>
+<dd>Factorial (e.g. 3! = 3*2*1 = 6).  Only works with integer operands.</dd>
+<dt><b>-</b></dt>
+<dd>Unary minus (negation).  Valid for all operand types.</dd>
+<dt><b>~</b></dt>
+<dd>Logical negation (NOT).  Only works with integer and boolean operands.</dd>
+<dt><b>* / %</b></dt>
+<dd>Multiplication, division and modulus (remainder).  Modulus does not currently work with complex numbers.</dd>
+<dt><b>+ -</b></dt>
+<dd>Addition and subtraction.  Valid for all operand types</dd>
+<dt><b>&lt;&lt; &gt;&gt;</b></dt>
+<dd>Bitwise left shift and right shift operations.  Valid only for integer operands.</dd>
+<dt><b>?&amp; ?| ?^</b></dt>
+<dd>Bitwise AND, OR and XOR.  The "?" is added to the traditional C symbols to distingish them from other OSW operators, such as ^ used for exponentiation.</dd>
+<dt><b>&lt; &lt;= &gt;= &gt;</b></dt>
+<dd>Comparison operators.  Not valid for complex numbers.</dd>
+<dt><b>== !=</b></dt>
+<dd>Equality and inequality.  Valid for all operand types.
+<dt><b>&amp;&amp; ||</b></dt>
+<dd>Logical AND and OR.  Valid only for integer and boolean operands.</dd>
+</dl>
+<p>Operator precedence can of course be overriden using parentheses.</p>
+<p>Expr understands the following math functions:</p>
+
+<ul>
+<li><a href="math.html">Abs, Acos, Asin, Atan, Ceil, Cos, Cosh</a></li>
+  <li><a href="math.html">Exp, Floor, Frac, Log, Log10, Sgn, Sin</a></li>
+  <li><a href="math.html">Sinh, Sqrt, Tan, Tanh</a></li>
+</ul>
+
+<p>See the documentation for the standalone versions of these functions for their valid argument types.  It is possible to extend the set of available functions via special external libraries.</p>
+
+<p>The expression is evaluated whenever a new value is received via any of the inlets. A single outlet is provided to transmit the result of the expression evaluation. If no variables are specified in the expression (i.e., the expression is constant), a single inlet of type unit is created.  When this inlet receives a unit value, the constant expression is evaluated.</p>
+
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="If.html">If</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

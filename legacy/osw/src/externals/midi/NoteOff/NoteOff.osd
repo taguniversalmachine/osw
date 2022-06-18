@@ -1,0 +1,161 @@
+<?xml version="1.0" ?>
+<osw-external name="NoteOff" package="midi">
+<description>Generate a note-off event</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inlet name="note" type="Integer" default="60" description="note number" persistent="1" />
+<inlet name="velocity" type="Integer" default="0" description="velocity" persistent="1" />
+<inlet name="channel" type="Integer" default="0" description="MIDI channel" persistent="1" />
+<outlet name="midiOut" type="MidiMessage" description="MIDI message to output" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">bool Connect (BaseOutlet *source, BaseState *&amp;sink) &#123;
+    makeevent.AddActivator(sink);
+    ostringstream os;
+    os &lt;&lt; "oswFixTransformTerminals " &lt;&lt; PathName() &lt;&lt; endl;
+    oswTclEvalString(os.str().c_str());
+    return Transform::Connect(source,sink);
+&#125;
+
+bool BackDisconnect(BaseState *sink) &#123;
+    makeevent.RemoveActivator(sink,true);
+    ostringstream os;
+    os &lt;&lt; "oswFixTransformTerminals " &lt;&lt; PathName() &lt;&lt; endl;
+    oswTclEvalString(os.str().c_str());
+    return Transform::BackDisconnect(sink);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="makeevent" activators="" order="0" >
+
+
+
+midiOut = MidiMessage(channel,0x8,note,velocity);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">NoteOff &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_NoteOff" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="NoteOn -velocity 100 -channel 0" name="noteon0" x="130.0" y="252.0" width="196" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="noteon0/note" value="74" />
+
+&lt;STATE name="noteon0/velocity" value="100" />
+
+&lt;STATE name="noteon0/channel" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="NoteOff -channel 0" name="noteoff0" x="371.0" y="251.0" width="118" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="noteoff0/note" value="74" />
+
+&lt;STATE name="noteoff0/velocity" value="0" />
+
+&lt;STATE name="noteoff0/channel" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Pipe -delay 1.0" name="pipe0" x="371.0" y="195.0" width="100" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="pipe0/delay" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="-2.0" y="408.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanIn" name="fanin0" x="148.0" y="316.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiOutput -driver /midiOut/0" name="midioutput0" x="148.0" y="404.0" width="184" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="midioutput0/driver" value="/midiOut/0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Keyboard " name="keyboard0" x="131.0" y="12.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="keyboard0/octave" value="5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="133.0" y="129.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="noteon0/midiOut" inlet="fanin0/in1" vertices="136.0 301.5 154.0 301.5" />
+&lt;CONNECTION  outlet="noteoff0/midiOut" inlet="fanin0/in2" vertices="377.0 301.0 173.0 301.0" />
+&lt;CONNECTION  outlet="pipe0/out" inlet="noteoff0/note" vertices="" />
+&lt;CONNECTION  outlet="fanin0/out" inlet="midioutput0/message" vertices="" />
+&lt;CONNECTION  outlet="keyboard0/noteOut" inlet="fanout0/in" vertices="137.0 119.5 139.0 119.5" />
+&lt;CONNECTION  outlet="fanout0/out1" inlet="noteon0/note" vertices="139.0 208.0 136.0 208.0" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="pipe0/in" vertices="161.0 179.5 377.0 179.5" />
+&lt;STICKY  x="-9.0" y="315.0" width="141.0" height="68.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Start the audio output
+to make the Pipe function.
+(Otherwise, no note-off
+events will be generated.)&lt;/STICKY>&lt;STICKY  x="-6.0" y="154.0" width="118.0" height="111.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Connect something
+to the velocity or
+channel inlets to
+set the velocity or
+channel for each
+note.  If the inlets are
+not connected, the
+default values are used&lt;/STICKY>&lt;TITLE  x="56.0" y="23.0" color="#FFFFFF" text="midi::NoteOn" fontface="MS Sans Serif" fontsize="14" />&lt;TITLE  x="55.0" y="46.0" color="#FFFFFF" text="midi::NoteOff" fontface="MS Sans Serif" fontsize="14" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

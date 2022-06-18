@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_andor" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  name="ampamp0" x="58.0" y="170.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>&amp;&amp;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="58.0" y="85.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="169.0" y="83.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="58.0" y="232.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="1" />
+
+<STATE name="intbox3/max" value="100" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="||" name="oror0" x="337.0" y="166.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox7" x="337.0" y="86.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox7/intIn" value="0" />
+
+<STATE name="intbox7/max" value="100" />
+
+<STATE name="intbox7/min" value="0" />
+
+<STATE name="intbox7/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox8" x="451.0" y="85.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox8/intIn" value="0" />
+
+<STATE name="intbox8/max" value="100" />
+
+<STATE name="intbox8/min" value="0" />
+
+<STATE name="intbox8/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox10" x="337.0" y="232.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox10/intIn" value="0" />
+
+<STATE name="intbox10/max" value="100" />
+
+<STATE name="intbox10/min" value="0" />
+
+<STATE name="intbox10/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="qampamp0" x="176.0" y="411.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>'&amp;&amp;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="'||" name="qoror0" x="247.0" y="410.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="ampamp0/result" inlet="intbox3/intIn" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="ampamp0/param1" vertices="" />
+<CONNECTION  outlet="intbox2/intOut" inlet="ampamp0/param2" vertices="175.0 143.0 96.0 143.0" />
+<CONNECTION  outlet="oror0/result" inlet="intbox10/intIn" vertices="" />
+<CONNECTION  outlet="intbox7/intOut" inlet="oror0/param1" vertices="" />
+<CONNECTION  outlet="intbox8/intOut" inlet="oror0/param2" vertices="457.0 142.0 375.0 142.0" />
+<STICKY  x="172.0" y="292.0" width="149.0" height="38.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8"> and || only output values
+when the left inlet changes</STICKY>
+<TITLE  x="92.0" y="46.0" color="#FFFFFF" fontface="MS Sans Serif" fontsize="14" >And (&amp;&amp;)</TITLE>
+<TITLE  x="359.0" y="50.0" color="#FFFFFF" text="Or (||)" fontface="MS Sans Serif" fontsize="14" />
+<TITLE  x="233.0" y="386.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+</PATCH>
+</OSW>
+

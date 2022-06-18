@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="variable_allpass_demo" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="allpass_filter" name="allpass_filter0" x="285.0" y="336.0" width="108" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="489.0" y="169.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="0.25" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.001" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="338.0" y="170.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Impulse" name="impulse0" x="189.0" y="233.0" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="142.0" y="166.0" width="170" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="0.75" />
+</TRANSFORM>
+<TRANSFORM  command="Scope" name="scope0" x="285.0" y="411.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="1" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="164.0" y="486.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="189.0" y="405.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="allpass_filter0/out" inlet="fanout0/in" vertices="291.0 389.0 195.0 389.0" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="allpass_filter0/delay" vertices="495.0 270.5 397.0 270.5" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="allpass_filter0/gain" vertices="" />
+<CONNECTION  outlet="impulse0/samplesOut" inlet="allpass_filter0/inlet0" vertices="195.0 303.0 291.0 303.0" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="impulse0/impulse" vertices="148.0 217.5 252.0 217.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="out0/mix" vertices="195.0 464.0 239.0 464.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="220.0 457.0 255.5 457.0 255.5 396.0 291.0 396.0" />
+<TITLE  x="391.0" y="152.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="549.0" y="151.0" color="#FFFFFF" text="delay" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="240.0" y="57.0" color="#FFFFFF" text="Variable Allpass Demo" fontface="Arial" fontsize="16" />
+</PATCH>
+</OSW>
+

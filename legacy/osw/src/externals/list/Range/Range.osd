@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<osw-external name="Range" package="list">
+<description>List of numbers in a specified range</description>
+<copyright></copyright>
+<inlet name="send" type="Unit" description="Output range using current settings" />
+<inlet name="from" type="Float" default="0.0" description="lowest value in range" persistent="1" />
+<inlet name="to" type="Float" default="1.0" description="highest value in range" persistent="1" />
+<inlet name="step" type="Float" default="1.0" description="increment (or decrement)" persistent="1" />
+<outlet name="listOut" type="List" description="output of list range" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="send_now" activators="send" order="0" >
+
+List alist;
+
+for (Float x = from; x &lt;= to; x += step) &#123;
+  alist.append(new Datum&lt;Float>(x));
+&#125;
+listOut = alist;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Range &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>&lt;b>Range&lt;/b> generates a list of numbers between &lt;b>from&lt;/b> and &lt;b>to&lt;/b> inclusively, with an interval of &lt;b>step&lt;/b> between successive numbers.&lt;/p></xblock>
+<xblock name="Links">ForEach</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Range" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="list::Range -from 0 -to 3" name="range1" x="144.0" y="183.0" width="185" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="range1/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="144.0" y="249.0" width="170" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="144.0" y="105.0" width="31" height="36" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="list::Range -from 0 -to 1 -step 0.25" name="range2" x="136.0" y="459.0" width="262" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="136.0" y="525.0" width="170" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="136.0" y="381.0" width="31" height="36" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="red" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="range1/listOut" inlet="msgbox0/messageIn" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="range1/send" vertices="" />
+&lt;CONNECTION  outlet="range2/listOut" inlet="msgbox1/messageIn" vertices="" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="range2/send" vertices="" />
+&lt;TITLE  x="108.0" y="36.0" color="#FFFFFF" text="list::Range" fontface="Arial" fontsize="14" />
+&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

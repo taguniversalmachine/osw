@@ -1,0 +1,135 @@
+<?xml version="1.0" ?>
+<osw-external name="Interpolate" package="list">
+<description>Interpolate between corresponding values in two lists</description>
+<copyright>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</copyright>
+<inlet name="list1" type="List" description="first list for interpolation" />
+<inlet name="list2" type="List" description="second list for interpolation" />
+<inlet name="weight" type="Float" description="Weight (interpolation point) between two lists (range 0-1)" />
+<outlet name="listOut" type="List" description="interpolated list" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">op1 = LookupBinop(MULTIPLY,typeid(List),typeid(Float));
+if (op1 == NULL) &#123;
+   Error ("No List-Float multiply operator");
+&#125;
+
+op2 = LookupBinop(ADD,typeid(List),typeid(List));
+if (op2 == NULL) &#123;
+    Error ("No List-List add operator");
+&#125;
+
+temp1 = new State&lt;List>("temp1",this,"temporary state, do not use");
+temp2 = new State&lt;List>("temp2",this,"temporary state, do not use");
+temp3 = new State&lt;Float>("temp3",this,"temporary state, do not use");
+activation1.AddEffect(&amp;listOut);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">
+if (temp1) &#123;
+  delete temp1;
+&#125;
+if (temp2) &#123;
+  delete temp2;
+&#125;
+if (temp3) &#123;
+  delete temp3;
+&#125;</xblock>
+<xblock name="Private">BaseBinop *op1, *op2;
+
+State&lt;List> *temp1,*temp2;
+State&lt;Float> *temp3;
+
+void DoEval() &#123;
+ op1->eval(list2,weight,*temp1);
+ *temp3 = 1 - weight;
+ op1->eval(list1,*temp3,*temp2);
+ op2->eval(*temp1,*temp2,listOut);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">&#125;
+#include "oswBinop.h"
+namespace osw &#123;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="weight" order="0" >
+DoEval();
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Interpolate &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>&lt;b>list::Interpolate&lt;/b> performs a weighted linear interpolation between corresponding values in two lists.  For example, consider two lists &#123;&lt;i>a&lt;/i>&lt;sub>1&lt;/sub> &lt;i>a&lt;/i>&lt;sub>2&lt;/sub> &lt;i>a&lt;/i>&lt;sub>3&lt;/sub>&#125; and &#123;&lt;i>b&lt;/i>&lt;sub>1&lt;/sub> &lt;i>b&lt;/i>&lt;sub>2&lt;/sub> &lt;i>b&lt;/i>&lt;sub>3&lt;/sub>&#125; and interpolation point &lt;i>w&lt;/i>.  The resulting list would be the values:
+
+&#123;&lt;i>a&lt;/i>&lt;sub>1&lt;/sub>&lt;i>w&lt;/i>+&lt;i>b&lt;/i>&lt;sub>1&lt;/sub>(1-&lt;i>w&lt;/i>),  &lt;i>a&lt;/i>&lt;sub>2&lt;/sub>&lt;i>w&lt;/i>+&lt;i>b&lt;/i>&lt;sub>2&lt;/sub>(1-&lt;i>w&lt;/i>),  &lt;i>a&lt;/i>&lt;sub>3&lt;/sub>&lt;i>w&lt;/i>+&lt;i>b&lt;/i>&lt;sub>3&lt;/sub>(1-&lt;i>w&lt;/i>) &#125;</xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Interpolate" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="list::Interpolate " name="interpolate0" x="225.0" y="241.0" width="118" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="109.0" y="157.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="1 2.4 3" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="283" y="159" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="3 3 4" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="482.0" y="85.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="0" />
+
+&lt;STATE name="hslider0/max" value="1" />
+
+&lt;STATE name="hslider0/resolution" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="482.0" y="156.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0.06" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox2" x="225.0" y="335.0" width="167" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox2/message" value="1.00000 2.40000 3.00000" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get0" x="108.0" y="96.0" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get1" x="280.0" y="96.0" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="interpolate0/listOut" inlet="msgbox2/messageIn" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="interpolate0/list1" vertices="115.0 216.0 231.0 216.0" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="interpolate0/list2" vertices="" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="floatbox1/floatIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="interpolate0/weight" vertices="488.0 215.0 347.0 215.0" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="114.0 143.5 263.0 143.5" />
+&lt;CONNECTION  outlet="get1/value" inlet="msgbox1/sendnow" vertices="286.0 144.5 437.0 144.5" />
+&lt;TITLE  x="125.0" y="39.0" color="#FFFFFF" text="list::Interpolate" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="517.0" y="62.0" color="#FFFFFF" text="weight" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

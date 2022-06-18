@@ -1,0 +1,98 @@
+INSTALLING THE BINARY VERSION OF OSW FOR LINUX
+
+0.  INSTALL THE OSW DISTRIBUTION
+
+0.1 INSTALLING FROM AN RPM
+
+OSW 1.1 and above is available as an RPM installation.  If your system
+supports RPMs (RedHat, Mandrake and SuSE include RPM support), it is 
+recommended that you use them.  Two RPMs are available, a "binary" RPM:
+
+	osw-x.x.i386.rpm 
+
+or for those not using ALSA:
+
+	osw-x.x.noalsa.i386.rpm
+
+and a "source" RPM:
+
+	osw-x.x.src.rpm
+
+To install the binary, type "rpm -i osw-x.x.i386.rpm".  If you get a 
+message about a failed dependency, such as libasound.so, you might try
+"rpm -i --nodeps osw-x.x.i386.rpm" and see if it works.  To install
+from the source RPM, type "rpm -ba osw-x.x.src.rpm" and be prepared to
+wait a while.
+
+Note that for both binary and source RPMs, you should already have
+Tcl/Tk and Incr Tcl installed.  See section 1.1 for more info.
+
+0.2 INSTALLING FROM A tar.gz DISTRIBUTION
+
+If you have not already done so, unpack your OSW distribution into a directory
+of your choice (e.g., we recommend "/usr/local/lib/osw").  
+
+Copy the distribution to the directory, and type the following:
+
+	zcat osw-x.xx.tar.gz | tar -xf -
+
+Where "x.xx" is the version number of your distribution.
+
+Edit the file install.sh to reflect the desired directories into which
+you want to install OSW, as well as the version of Tcl/Tk you are running.
+Again, see section 1.1 to install Tcl/Tk if you have not already done so.
+You can then run install.sh to complete the installation of OSW.
+
+
+1. INSTALLING REQUIRED PACKAGES
+
+The following packages are required to run OSW under linux:
+
+	Tcl/Tk version 8.3 or above and Itcl
+
+1.1  INSTALLING TCL/TK AND INCR TCL
+
+If you do not already have Tcl/Tk 8.3 or above as well as Itcl, please
+install them now.  If you have one of the popular distributions of Linux
+such as RedHat, SuSe, Debian or Mandrake, changes are pretty good that
+you *do* have them already.  If not, RPMs, Debian packages and source
+versions are available.  Visit the Tcl/Tk Developer eXchange at
+www.scriptics.com for source and binary versions.  RPMs are also available
+from rpmfind.net.
+
+Note: OSW requires multithreading support in Tcl/Tk.
+
+If you are compiling Tcl/Tk from source, you must use the --enable-threads switch
+to ensure that multithreading is supported. More info can be found here: 
+http://www.tcl.tk/doc/howto/compile.html.
+
+It has come to our attention that some binary distributions of Tcl/Tk are compiled
+without multithreading support. You can determine whether your distribution has
+multithreading support by first typing "tclsh", then typing 
+"puts $tcl_platform(threaded)" at the interpreter prompt. If this returns an error
+message similar to "no such element in array", it is likely that your distribution
+has been compiled without multithreading support. Obtain a distribution that has
+been compiled with multithreading support or compile from source yourself (see
+above). If this command returns a "1", it is likely that your distribution does
+support multithreading; proceed to the next step.
+
+2.  INSTALL.SH
+
+Once Tcl/Tk and Itcl are installed, return to the installation directory and 
+type "cd osw" to enter the OSW subdirectory.  To complete the installation,
+ type
+
+	install.sh
+
+This will create a command "osw" that you can use to start the program.
+
+
+3.  START PLAYING
+
+That's it.  You should be ready to start using OSW now.  Have fun!
+
+For the more command-line oriented among you, you can use the command
+"oswbin."  More information is available in the online manual.
+
+
+

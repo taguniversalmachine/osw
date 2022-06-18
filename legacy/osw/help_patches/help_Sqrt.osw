@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Sqrt" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox" name="floatbox0" x="94" y="110" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/max" value="4" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="94.0" y="225.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sqrt" name="sqrt0" x="94.0" y="166.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="298" y="110" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="+ 1.0" name="add0" x="298.0" y="188.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Sqrt" name="sqrt1" x="298.0" y="253.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 0.5" name="mul1" x="298.0" y="315.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="296.0" y="386.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="sqrt0/in" vertices="" />
+<CONNECTION  outlet="sqrt0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="add0/param1" vertices="" />
+<CONNECTION  outlet="add0/result" inlet="sqrt1/in" vertices="" />
+<CONNECTION  outlet="sqrt1/out" inlet="mul1/param1" vertices="" />
+<CONNECTION  outlet="mul1/result" inlet="out0/mix" vertices="304.0 368.0 422.0 368.0" />
+<STICKY  x="82.0" y="54.0" width="126.0" height="32.0" color="#FFFF77" text="Calculate the sqaure root
+of numbers" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="284" y="47" width="136.0" height="37.0" color="#FFFF77" text="Or take the square root of
+audio samples." fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="84.0" y="292.0" width="134.0" height="94.0" color="#80ffff" text="Avoid negative audio
+samples when using
+Sqrt for signals.   
+
+And yes, OSW *does*
+support complex numbers!" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="55.0" y="25.0" color="#FFFFFF" text="Sqrt" fontface="Arial" fontsize="18" /></PATCH>
+</OSW>
+

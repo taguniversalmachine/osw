@@ -1,0 +1,98 @@
+set name {LEDMeter}
+set packageName {osw}
+set description {A level meter using LEDs}
+set timedomain {0}
+set interactivedraw {1}
+set drawCodeTcl {HideName
+ledmeter $drawingSpace.led
+pack $drawingSpace.led -fill both -expand yes
+
+}
+set drawCodeCpp {
+}
+set autoname {0}
+set Copyright {
+
+}
+set TclDialog {
+
+}
+set Constructor {
+
+}
+set Destructor {
+
+}
+set Private {
+
+}
+set Initialize {
+
+}
+set Global {
+
+}
+set TclStartup {class ledmeter {
+    inherit itk::Widget
+
+    private variable oncolors {#0F0 #0F0 #0F0 #0F0 #0F0 #0F0 #0F0 #FF0 #FF0 #F00 #F00 #F00}
+    private variable offcolors {#070 #070 #070 #070 #070 #070 #070 #770 #770 #700 #700 #700}
+
+    constructor {args} {
+
+	for {set i 0} {$i < 12} {incr i} {
+	    frame $itk_interior.led$i -width 32 -height 5 -relief raised \
+		    -bd 2 -bg [lindex $offcolors $i]	    
+	    pack $itk_interior.led$i -side bottom -fill both -expand yes
+	}
+
+	eval itk_initialize $args
+    }
+
+    itk_option define -value value Value 0.0
+}
+
+
+configbody ledmeter::value {
+
+    set level [expr int($itk_option(-value) * 10)-1]
+    if {$level > 12} {
+	set level 12
+    }
+    for {set i 0} {$i < $level} {incr i} {
+	$itk_interior.led$i configure -bg [lindex $oncolors $i]
+    }
+    for {set i [expr $level + 1]} {$i < 12} {incr i} {
+	$itk_interior.led$i configure -bg [lindex $offcolors $i]
+    }
+}
+
+
+
+}
+set inlets(level) { float {Current level to display} {} }
+eval UpdateStates inlets level
+eval UpdateStates outlets 
+eval UpdateStates states 
+set inheritedStates(drawInfo) { TkDrawingInfo "" none }
+set inheritedStates(widget) { string "Tk Widget Name" none }
+eval UpdateStates inheritedStates drawInfo widget
+set activations(level_changed) { now level {SetWidgetProperty(widget + ".led","-value",&level);
+
+
+} }
+UpdateActivations
+set publicStates {  }
+set Libraries {  }
+set Includes {  }
+set Syntax "LEDMeter <i>name options</i>"
+set LongDescription {  }
+set Links {  }
+set Author ""
+set OnTheWeb ""
+set HTMLIncludes {  }
+set Keywords {  }
+set HTMLIcon ""
+
+
+

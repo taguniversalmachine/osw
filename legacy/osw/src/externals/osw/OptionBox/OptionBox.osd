@@ -1,0 +1,161 @@
+<?xml version="1.0" ?>
+<osw-external name="OptionBox" package="osw">
+<description>Select from a set of options</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="interactivedraw" />
+<inlet name="selectIn" type="Integer" description="change selection by index" />
+<inlet name="optionsIn" type="List" description="change list of options in box" />
+<outlet name="selectOut" type="String" description="output selected option" />
+<outlet name="indexOut" type="Integer" description="index of selected option" />
+<state name="options" type="String" description="list of options" persistent="1" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<inherited-state name="widget" type="String" default="none" description="Tk Widget Name" />
+<xblock name="drawCodeTcl">HideName
+iwidgets::combobox &#36;drawingSpace.cb -selectioncommand  &#91;list eval oswSet &#36;transform/selectOut &#92;&#91; &#36;drawingSpace.cb getcurselection &#92;&#93; &#92;; oswSet &#36;transform/indexOut &#92;&#91; &#36;drawingSpace.cb curselection &#92;&#93; &#93;
+pack &#36;drawingSpace.cb -fill x -expand yes
+if &#123;&#91;llength &#91;oswGet &#36;transform/options&#93;&#93; > 0&#125; &#123;
+  eval &#36;drawingSpace.cb insert list end &#91;oswGet &#36;transform/options&#93;
+&#125;</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">#include "oswTcl.h"</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="selectionChanged" activators="selectIn" order="" >
+
+
+
+
+
+
+ostringstream os;
+os &lt;&lt; selectIn;
+WidgetMethod(widget + ".cb","selection set",
+             os.str().c_str());
+</activation>
+<activation name="optionsInChanged" activators="optionsIn" order="" >
+
+
+
+
+
+
+ ostringstream os;
+ os &lt;&lt; widget &lt;&lt; ".cb delete list 0 end; " &lt;&lt; endl;
+ os &lt;&lt; widget &lt;&lt; ".cb insert list end " &lt;&lt; optionsIn &lt;&lt; endl;
+ oswTclEvalString (os.str().c_str());
+</activation>
+<activation name="optionsChanged" activators="options" order="" >
+
+
+
+
+
+
+if (string(options) != "") &#123;
+ ostringstream os;
+ os &lt;&lt; widget &lt;&lt; ".cb delete list 0 end;" &lt;&lt; endl;
+ os &lt;&lt; widget &lt;&lt; ".cb insert list end " &lt;&lt; options &lt;&lt; endl;
+ oswTclEvalString (os.str().c_str());
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">OptionBox &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_OptionBox" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="OptionBox" name="optionbox0" x="34.0" y="150.0" width="149" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="optionbox0/options" value="January February March April May Jule July August September October November December" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="34.0" y="248.0" width="81" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="January" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="134.0" y="248.0" width="58" height="30" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="0" />
+
+&lt;STATE name="intbox0/max" value="100" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="optionbox0/selectOut" inlet="msgbox0/messageIn" vertices="" />
+&lt;CONNECTION  outlet="optionbox0/indexOut" inlet="intbox0/intIn" vertices="187.0 215.5 140.0 215.5" />
+&lt;STICKY  x="37.0" y="85.0" width="127.0" height="36.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Select a string from the
+list of choices&lt;/STICKY>&lt;STICKY  x="234.0" y="130.0" width="90.0" height="68.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Double-click
+the OptionBox
+to edit the
+choices&lt;/STICKY>&lt;TITLE  x="98.0" y="46.0" color="#FFFFFF" text="OptionBox" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

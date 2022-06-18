@@ -1,0 +1,195 @@
+
+#Copyright (c) 2001-2002 Amar Chaudhary. All rights reserved.
+#Copyright (c) 1998-2001 Regents of the University of California.
+#All rights reserved.
+#
+#     ``The contents of this file are subject to the Open Sound World Public
+#     License Version 1.0 (the "License"); you may not use this file except in
+#     compliance with the License. A copy of the License should be included
+#     in a file named "License" or "License.txt" in the distribution from 
+#     which you obtained this file. 
+#
+#     Software distributed under the License is distributed on an "AS IS"
+#     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#     License for the specific language governing rights and limitations
+#     under the License.
+#
+#     The Original Code is Open Sound World (OSW) software.
+#
+#     The Initial Developer of the Original Code is Amar Chaudhary.
+#     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+#     Regents of the University of California and Amar Chaudhary. 
+#     All Rights Reserved.
+#
+#     Contributor(s):
+
+
+# Makefile for GNU C++ under Windows
+# requires gcc 2.95.3 or better
+
+include System.mak.gcc
+include ../generic/Version.mak
+
+CXX = g++
+CC = gcc
+
+STLOPTS = -D_STLP_USE_OWN_NAMESPACE -D_STLP_OWN_IOSTREAMS -D_GNU_SOURCE -D_STLP_NO_NATIVE_WIDE_FUNCTIONS -D_REENTRANT -D_STLP_USE_NEW_C_HEADERS
+INCLUDES = -I$(STL_DIR)/stlport -I../include -I../generic -I. -I../types -I../sdif -I$(TCL_DIR)/include -I../osc 
+
+OPTFLAGS = -O2 -ftemplate-depth-64 -fvtable-thunks -felide-constructors $(INCLUDES) -D "_OSWCORE" -D "_USING_TCL" $(STLOPTS) -march=pentium -march=i586 -Wall -w $(VERSIONOPTS) -D "_WINDOWS" -D "_WIN32"
+DEBUGCFLAGS = $(INCLUDES) -g  -D "_OSWCORE" -D "_USING_TCL" $(STLOPTS) $(VERSIONOPTS)  -fvtable-thunks -ftemplate-depth-64 -D "_WINDOWS" -D "_WIN32"
+
+#For Debug Mode, uncomment the second CFLAGS line
+CFLAGS = $(OPTFLAGS) $(EXTRAFEATURES) -mno-cygwin -I$(MSVC_DIR)/include
+#CFLAGS = $(DEBUGCFLAGS) $(EXTRAFEATURES) -mno-cygwin -I$(MSVC_DIR)/include
+
+#For Debug Mode, uncomment the second line
+#STLDEBUG =
+#STLDEBUG = _stldebug
+
+OBJ = o
+
+WINOBJECTS =  oswWinDSound.$(OBJ) oswWinMidi.$(OBJ) oswWinLoadOSX.$(OBJ) oswWinThread.$(OBJ) oswWinMutex.$(OBJ) oswWinSock.$(OBJ) oswWinSelect.$(OBJ) oswWinHiResTimer.$(OBJ) oswWinInit.$(OBJ)
+
+
+#Switch to the second LIBFLAGS definition if you want debug mode
+LIBFLAGS = -L$(TCL_DIR)/lib  -mno-cygwin 
+#LIBFLAGS = -shared -L$(TCL_DIR)/lib 
+
+TCLLIBS = -ltcl82 -ltk82
+LIBRARIES = -lwinmm -luser32 -ldsound -lwsock32 -ladvapi32 -lole32 $(TCLLIBS) -lm
+
+STLBASE = stlport_cygwin
+STLVER = 4.5
+STLLIB = $(STLBASE).dll.$(STLVER)
+
+###################
+# Generic C++ files
+include ../generic/Generic.mak
+
+
+########################
+#libraries / executables
+
+all: libosw.dll osw.exe
+
+osw.exe : main.$(OBJ)
+	g++ -o osw.exe $(LIBFLAGS) main.$(OBJ) libosw.dll $(TCLLIBS) 
+
+libosw.dll : $(OBJECTS) $(WINOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS) lib$(STLBASE).dll
+	g++ -shared -o libosw.dll $(LIBFLAGS) $(OBJECTS) $(WINOBJECTS)  $(SDIF_OBJECTS) $(OSC_OBJECTS) -L. -l$(STLBASE) -Wl,--dll,--export-all-symbols,--exclude-symbols,tcl82_NULL_THUNK_DATA:tk82_NULL_THUNK_DATA $(LIBRARIES)
+
+###############
+# STL port lib
+
+lib$(STLBASE).dll:
+	make -C $(STL_DIR)/src -f gcc-cygwin.mak release_dynamic
+	cp $(STL_DIR)/lib/lib$(STLLIB) lib$(STLBASE).dll
+	
+
+############################
+# Windows-specific C++ files
+
+oswWinLoadOSX.$(OBJ) : oswWinLoadOSX.cpp $(REQUIRED_H)
+	$(CC) $(CFLAGS) -c oswWinLoadOSX.cpp
+
+oswWinDSound.$(OBJ) : oswWinDSound.cpp $(REQUIRED_H) ../include/oswAudio.h \
+	oswWinDSound.h ../include/oswTime.h ../include/oswClock.h
+	$(CC) $(CFLAGS) -D_M_IX86 -c oswWinDSound.cpp
+
+oswWinMidi.$(OBJ) : oswWinMidi.cpp $(REQUIRED_H) ../include/oswMidi.h \
+	oswWinMidi.h
+	$(CC) $(CFLAGS) -c oswWinMidi.cpp
+
+oswWinThread.$(OBJ) : oswWinThread.cpp $(REQUIRED_H) ../include/oswThread.h \
+	 ../include/oswSched.h
+	$(CC) $(CFLAGS) -c oswWinThread.cpp
+
+oswWinMutex.$(OBJ) : oswWinMutex.cpp ../include/oswMutex.h
+	$(CC) $(CFLAGS) -c oswWinMutex.cpp
+
+oswWinSock.$(OBJ) : oswWinSock.cpp ../include/oswSock.h
+	$(CC) $(CFLAGS) -c oswWinSock.cpp
+
+oswWinSelect.$(OBJ) : oswWinSelect.cpp ../include/oswSelect.h
+	$(CC) $(CFLAGS) -c oswWinSelect.cpp
+
+oswWinHiResTimer.$(OBJ) : oswWinHiResTimer.cpp ../include/oswHiResTimer.h
+	$(CC) $(CFLAGS) -c oswWinHiResTimer.cpp
+
+oswWinInit.$(OBJ) : oswWinInit.cpp $(REQUIRED_H) ../include/oswSched.h \
+	../include/oswInit.h oswWinDSound.h oswWinMidi.h 
+	$(CC) $(CFLAGS) -c oswWinInit.cpp
+
+main.$(OBJ) : main.cpp
+	$(CC) $(CFLAGS) -c main.cpp
+
+#######################
+# Cleaup & Installation
+ 
+clean:
+	rm *.o
+	rm *.dll
+#	rm *.a
+	rm *.exe
+
+execlean:
+	rm libosw.dll
+	rm osw.exe
+
+install: libosw.dll osw.exe
+	tclsh82 testmkdir.tcl $(INSTALL_DIR)
+	cp libosw.dll $(INSTALL_DIR)
+	cp osw.exe $(INSTALL_DIR)
+	tclsh82 testmkdir.tcl $(INSTALL_DIR)/lib
+	tclsh82 reginstall.tcl $(INSTALL_DIR)
+	tclsh82 xprefs.tcl $(OSW_SOURCE_DIR) $(INSTALL_DIR) $(STL_DIR)
+	cp lib$(STLBASE).dll $(INSTALL_DIR)
+	cp -r ../../scripts $(INSTALL_DIR)
+	cp -r ../../bitmaps $(INSTALL_DIR)
+	cp -r ../../externalizer $(INSTALL_DIR)
+	cp -r  ../../html $(INSTALL_DIR)
+	cp -r ../../help_patches $(INSTALL_DIR)
+	cp -r ../../tutorials $(INSTALL_DIR)
+	cp -r ../../demos $(INSTALL_DIR)
+	cp -r ../../oswinit.tcl $(INSTALL_DIR)
+	cp -r ../../TclXML-1.2 $(INSTALL_DIR)
+	tclsh82 testmkdir.tcl $(INSTALL_DIR)
+	cp -r ../include $(INSTALL_DIR)/src
+	cp reginstall.tcl $(INSTALL_DIR)
+	cp RunMe.tcl $(INSTALL_DIR)
+	cp  ../../README $(INSTALL_DIR)
+	cp  ../../License $(INSTALL_DIR)
+	cp INSTALL.win $(INSTALL_DIR)
+	cp INSTALL.win $(INSTALL_DIR)/html
+	cp ../macosx/INSTALL.macosx $(INSTALL_DIR)/html
+	cp ../linux/INSTALL.linux $(INSTALL_DIR)/html
+	cp ../sgi/INSTALL.sgi $(INSTALL_DIR)/html
+
+externals:	
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/blob
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/osw
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/list
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/note
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/midi
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/sdif
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/table
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/cnmat
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/sinusoids
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/spectral
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/patented
+	wish82 ../../externalizer/externalizer.tcl -batch ../externals/win32
+
+external_clean:
+	tclsh82 external_clean.tcl
+
+#this requires that you have TAR and GZIP on your system
+dist:
+	tar -uf osw.tar -C $(INSTALL_DIR)
+	tar --delete lib/osw/externals/patented/*
+	gzip osw.tar
+
+patented-dist:
+	tar -uf osw.tar -C $(INSTALL_DIR)
+	gzip osw.tar
+

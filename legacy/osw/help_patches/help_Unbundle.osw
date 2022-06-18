@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Unbundle" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Bundle" name="bundle0" x="152.0" y="156.0" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="117.0" y="78.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Unbundle" name="unbundle0" x="216.0" y="241.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="166.0" y="313.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="273.0" y="323.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox4" x="387" y="315" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox4/floatIn" value="0" />
+
+<STATE name="floatbox4/step" value="0.01" />
+
+<STATE name="floatbox4/min" value="0" />
+
+<STATE name="floatbox4/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider0" x="306.0" y="5.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider0/min" value="0" />
+
+<STATE name="vslider0/max" value="1" />
+
+<STATE name="vslider0/resolution" value="0.01" />
+
+<STATE name="vslider0/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="223.0" y="41.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="bundle0/bundleOut" inlet="unbundle0/bundleIn" vertices="158.0 216.0 222.0 216.0" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="bundle0/in1" vertices="123.0 133.5 158.0 133.5" />
+<CONNECTION  outlet="unbundle0/out1" inlet="floatbox2/floatIn" vertices="222.0 294.5 172.0 294.5" />
+<CONNECTION  outlet="unbundle0/out2" inlet="floatbox3/floatIn" vertices="240.0 299.5 279.0 299.5" />
+<CONNECTION  outlet="unbundle0/out3" inlet="floatbox4/floatIn" vertices="258.0 295.5 393.0 295.5" />
+<CONNECTION  outlet="vslider0/floatOut" inlet="bundle0/in3" vertices="312.0 141.5 196.0 141.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="bundle0/in2" vertices="229.0 132.5 177.0 132.5" />
+<STICKY  x="22.0" y="180.0" width="111.0" height="82.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Bundle combines
+many inputs into
+a single wire, which
+can be separated
+again using Unbundle</STICKY><TITLE  x="109.0" y="21.0" color="#FFFFFF" text="Bundle / Unbundle" fontface="Arial" fontsize="18" />
+</PATCH>
+</OSW>
+

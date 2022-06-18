@@ -1,0 +1,294 @@
+<?xml version="1.0" ?>
+<osw-external name="MSlider" package="osw">
+<description>Simple slider for use in arrays</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inherit class="interactivedraw" />
+<inlet name="floatIn" type="Float" />
+<outlet name="floatOut" type="Float" />
+<state name="min" type="Float" default="0.0" description="Minimum slider value" persistent="1" />
+<state name="width" type="Integer" default="10" description="Width of slider in pixels" persistent="1" />
+<state name="max" type="Float" default="1.0" description="Maximum slider value" persistent="1" />
+<inherited-state name="widget" type="String" default="none" description="Tk Widget Name" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl">HideName
+mslider &#36;drawingSpace.s -from &#91;oswGet &#36;transform/min&#93;  -to &#91;oswGet &#36;transform/max&#93;  -width &#91;oswGet &#36;transform/width&#93;  -command &#91;list oswSet &#36;transform/floatOut&#93; -height 100
+pack &#36;drawingSpace.s -fill y -side left</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">
+itk::usual mslider &#123;
+    keep -background -cursor -labelfont -foreground
+&#125;
+
+class mslider &#123;
+
+    inherit itk::Widget
+
+    itk_option define -command command Command &#123;&#125;
+    itk_option define -value value Value 0.5
+    itk_option define -from  from  From  0.0
+    itk_option define -to    to    To    1.0
+
+    constructor &#123;args&#125; &#123;&#125;
+    destructor &#123;&#125;
+
+    #
+    # Public methods
+    #
+    public &#123;
+	method mslider &#123;args&#125;
+	method SliderMoved &#123;newY&#125;
+    &#125;
+
+    #
+    # Private methods
+    #
+    private &#123;
+
+	method _displaySlider &#123;&#125;
+
+	variable _x0 0
+	variable _y0 0
+
+	common PI &#91;expr 2*asin(1.0)&#93;
+    &#125;
+&#125;
+
+
+# -----------------------------------------------------------------------------
+#                        CONSTRUCTOR
+# -----------------------------------------------------------------------------
+body mslider::constructor &#123; args &#125; &#123;
+    #
+    # Add back to the hull width and height options and make the
+    # borderwidth zero since we don't need it.
+    #
+    set _interior &#36;itk_interior
+
+    itk_option add hull.width hull.height
+    component hull configure -borderwidth 0
+    grid propagate &#36;itk_component(hull) no
+
+    itk_component add canvas &#123;
+	canvas &#36;itk_interior.canvas -highlightthickness 0
+    &#125;
+    bind &#36;itk_component(canvas) &lt;Map> +&#91;code &#36;this _displaySlider&#93;
+    bind &#36;itk_component(canvas) &lt;Configure> +&#91;code &#36;this _displaySlider&#93;
+
+
+    mslider create line 0 0 40 0 -width 3 -tags slider
+    &#36;itk_component(canvas) bind slider &lt;B1-Motion> &#91;list &#36;this SliderMoved %y&#93;
+    &#36;itk_component(canvas) bind &#36;this &lt;Button-1> &#91;list &#36;this SliderMoved %y&#93;
+
+    grid &#36;itk_component(canvas) -row 0 -column 0 -sticky nsew -padx 0 -ipadx 0
+    grid rowconfigure    &#36;itk_interior 0 -weight 1
+    grid columnconfigure &#36;itk_interior 0 -weight 1
+
+    configure -highlightthickness 0
+    eval itk_initialize &#36;args
+&#125;
+
+# -----------------------------------------------------------------------------
+#                           DESTURCTOR
+# -----------------------------------------------------------------------------
+body mslider::destructor &#123;&#125; &#123;
+    #avoid strange destructor issue with Arrays
+    if &#123;&#91;catch &#123;set _reposition&#125;&#93;&#125; &#123;
+	return
+    &#125;
+    if &#123;&#36;_reposition != ""&#125; &#123;
+	after cancel &#36;_reposition
+    &#125;
+&#125;
+
+# -----------------------------------------------------------------------------
+#                            METHODS
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# METHOD: mslider ?args?
+#
+# Evaluates the specified args against the canvas component.
+# -----------------------------------------------------------------------------
+body mslider::mslider &#123;args&#125; &#123;
+    return &#91;eval &#36;itk_component(canvas) &#36;args&#93;
+&#125;
+
+
+body mslider::_displaySlider &#123;&#125; &#123;
+
+    set width &#91;winfo width &#36;itk_component(canvas)&#93;
+    set height &#91;winfo height &#36;itk_component(canvas)&#93;
+
+    set y &#91;expr &#36;height - &#36;itk_option(-value) * &#36;height / (&#36;itk_option(-to) - &#36;itk_option(-from))&#93;
+
+    mslider coords slider 0 &#36;y &#36;width &#36;y
+&#125;
+
+body mslider::SliderMoved &#123;newY&#125; &#123;
+
+    set width &#91;winfo width &#36;itk_component(canvas)&#93;
+    set height &#91;winfo height &#36;itk_component(canvas)&#93;
+    
+    if &#123;&#36;newY &lt; 0 || &#36;newY >= &#36;height &#125; &#123;
+	return
+    &#125;
+
+    set y &#36;newY
+    set itk_option(-value) &#91;expr double(&#36;height - &#36;y) * (&#36;itk_option(-to) - &#36;itk_option(-from)) / double(&#36;height)&#93;
+    mslider coords slider 0 &#36;y &#36;width &#36;y
+    if &#123;&#91;llength &#36;itk_option(-command)&#93; > 0&#125; &#123;
+	eval &#36;itk_option(-command) &#36;itk_option(-value)
+    &#125;
+&#125;
+
+configbody mslider::value &#123;
+    _displaySlider
+&#125;
+
+configbody mslider::to &#123;
+    _displaySlider
+&#125;
+
+configbody mslider::from &#123;
+    _displaySlider
+&#125;</xblock>
+<activation name="floatChanged" activators="floatIn" order="" >
+
+
+
+
+
+floatOut = floatIn;
+SetWidgetProperty (widget + ".s","-value",&amp;floatIn);
+</activation>
+<activation name="maxChanged" activators="max" order="" >
+
+
+
+
+
+SetWidgetProperty (widget + ".s","-to",&amp;max);
+</activation>
+<activation name="minChanged" activators="min" order="" >
+
+
+
+
+
+SetWidgetProperty (widget + ".s","-from",&amp;min);
+</activation>
+<activation name="widthChanged" activators="width" order="" >
+
+
+
+
+
+SetWidgetProperty(widget + ".s","-width",&amp;width);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">MSlider &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"> MSlider is a very simple slider widget.  It is particularly useful in Arrays to create "mutli-sliders."</xblock>
+<xblock name="Links"> HSlider VSlider Array</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"> slider, widget, array</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_MSlider" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="109.0" y="242.0" width="89" height="23" color="darkgrey" fontface="" fontsize="">
+
+&lt;STATE name="floatbox0/floatIn" value="0.2" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MSlider" name="mslider0" x="109.0" y="101.0" width="14" height="104" color="darkgrey" fontface="" fontsize="">
+
+&lt;STATE name="mslider0/min" value="0" />
+
+&lt;STATE name="mslider0/width" value="10" />
+
+&lt;STATE name="mslider0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="mslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+&lt;STICKY  x="179.0" y="93.0" width="97.0" height="35.0" color="#FFFF77" text="Move the slider
+to change its value
+" fontface="" fontsize="8">&lt;/STICKY>&lt;STICKY  x="182.0" y="149.0" width="90.0" height="60.0" color="#FFFF77" text="Double-click it
+to change its
+range and
+resolution
+" fontface="" fontsize="8">&lt;/STICKY>&lt;TITLE  x="74.0" y="54.0" color="#FFFFFF" text="MSlider" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

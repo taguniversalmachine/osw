@@ -1,0 +1,15 @@
+package require registry 1.0
+registry set HKEY_LOCAL_MACHINE\\Software\\OSW Home [lindex $argv 0]
+puts "Set OSW directory as [lindex $argv 0]"
+registry set HKEY_CLASSES_ROOT\\.osw "" "OSW Patch"
+registry set "HKEY_CLASSES_ROOT\\OSW Patch" "" "OSW Patch"
+registry set "HKEY_CLASSES_ROOT\\OSW Patch\\shell\\open\\command" "" "[lindex $argv 0]\\osw.exe \"%1\""
+puts "Set \".osw\" extension type to OSW"
+registry set HKEY_CLASSES_ROOT\\.osx "" "OSW External"
+registry set "HKEY_CLASSES_ROOT\\OSW External" "" "OSW External"
+registry set "HKEY_CLASSES_ROOT\\OSW External\\shell\\open\\command" "" "[lindex $argv 0]\\osw.exe --install \"%1\""
+puts "Set \".osx\" extension type to OSW"
+registry set HKEY_CLASSES_ROOT\\.osd "" "OSW Externalizer Description"
+registry set "HKEY_CLASSES_ROOT\\OSW Externalizer Description " "" "OSW Externalizer Description"
+registry set "HKEY_CLASSES_ROOT\\OSW Externalizer Description\\shell\\open\\command" "" "[lindex $argv 0]\\osw.exe \"%1\""
+puts "Set \".osd\" extension type to OSW"

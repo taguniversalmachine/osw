@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_List" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="List 1 2 3 four" name="list0" x="62.0" y="147.0" width="100" height="25" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		1 2 3 four 
+	</DATA>
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="62.0" y="78.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="62.0" y="226.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="1 2 3 four" />
+</TRANSFORM>
+<CONNECTION  outlet="list0/listOut" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="button0/unitOut" inlet="list0/unitIn" vertices="" />
+<STICKY  x="249.0" y="89.0" width="91.0" height="60.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+the List transform
+to edit the
+list.</STICKY><TITLE  x="78.0" y="37.0" color="#FFFFFF" text="List" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

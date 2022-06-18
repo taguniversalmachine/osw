@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="signal_xor" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="ToIntegerSamples" name="tointegersamples0" x="249.0" y="321.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="tointegersamples0/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="ToIntegerSamples" name="tointegersamples1" x="461.0" y="315.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="tointegersamples1/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="'?^" name="q?x0" x="355.0" y="428.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FromIntegerSamples" name="fromintegersamples0" x="355" y="497" width="143" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="fromintegersamples0/unity" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="286.0" y="658.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="249.0" y="240.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave1" x="461.0" y="230.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave1/freq" value="570" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="533.0" y="151.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="440" />
+
+<STATE name="floatbox0/max" value="1000" />
+
+<STATE name="floatbox0/min" value="100" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="355.0" y="575.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.26145" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="672" y="438" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="tointegersamples0/integerSamplesOut" inlet="q?x0/param1" vertices="255.0 393.0 361.0 393.0" />
+<CONNECTION  outlet="tointegersamples1/integerSamplesOut" inlet="q?x0/param2" vertices="467.0 390.0 397.0 390.0" />
+<CONNECTION  outlet="q?x0/result" inlet="fromintegersamples0/integerSamplesIn" vertices="" />
+<CONNECTION  outlet="fromintegersamples0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="tointegersamples0/samplesIn" vertices="" />
+<CONNECTION  outlet="sinewave1/samplesOut" inlet="tointegersamples1/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="sinewave1/freq" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="678.0 540.5 397.0 540.5" />
+<STICKY  x="675.0" y="151.0" width="180.0" height="75.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Change the frequency
+to create different pairs
+of integers for XOR op</STICKY>
+<STICKY  x="668.0" y="255.0" width="201.0" height="112.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Because XOR-ing a number
+with itself returns zero, the
+initial signals of the same
+frequency and phase offset
+will yield silence.</STICKY>
+<TITLE  x="218.0" y="68.0" color="#FFFFFF" text="xor-ing two signals" fontface="Arial" fontsize="14" />
+<TITLE  x="702.0" y="413.0" color="#FFFFFF" fontface="MS Sans Serif" fontsize="10" >volume</TITLE>
+</PATCH>
+</OSW>
+

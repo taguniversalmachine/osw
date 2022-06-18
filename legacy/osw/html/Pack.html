@@ -1,0 +1,73 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">Pack <a href="http://localhost:7775/OSW_DIR/help_patches/help_Pack.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Pack several inputs into a single list</p>
+<h3 class="title">Syntax</h3>
+<p>Pack <i>options</i></p>
+<h3 class="title">Options</h3>
+<ul><dl>
+<dt><b>-inputs</b></dt>
+<dd>Number of inputs to Pack
+<dd>Type: Integer</dd>
+<dd>Default: 2</dd>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>in1</b> ... <b>in</b><i>n</i></dt>
+<dd>Inlets for the elements to pack.</dd>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>listOut</b></dt>
+<dd>The list containing all the input elements
+<dd>Type: List
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>Pack is used combine several input elements into a single list.  The inputs can be of any type.  The number of inlets automatically grows as more connections are added.</p>
+<p>Note that Pack must receive new data on <i>all connected</i> inlets before emitting a list.  If you want to emit a list when <i>any</i> inlet changes, use <a href="AsyncPack.html">AsyncPack</a> instead.  Unconnected inlets are ignored when contructing the output list.</p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="details.html">OSW Programming Details</a></dt>
+<dt><a href="List.html">List</a></dt>
+<dt><a href="Unpack.html">Unpack</a></dt>
+<dt><a href="AsyncPack.html">AsyncPack</a></dt>
+<dt><a href="Bundle.html">Bundle</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

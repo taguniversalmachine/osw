@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_If" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="If $f1 ;gt; 0.5 then High else Low" name="if0" x="53.0" y="145.0" width="196" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="63.0" y="261.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="63.0" y="201.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="53.0" y="75.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="1" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Expr" name="expr0" x="108.0" y="363.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="if0/consequent" inlet="fanin0/in1" vertices="59.0 190.5 69.0 190.5" />
+<CONNECTION  outlet="if0/alternative" inlet="fanin0/in2" vertices="253.0 190.5 88.0 190.5" />
+<CONNECTION  outlet="fanin0/out" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="if0/f1" vertices="" />
+<STICKY  x="244.0" y="212.0" width="168.0" height="101.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">You can use any expressions
+with If that you can use with
+Expr.  The consequent and
+alternative (i.e., "then" and "else"
+clauses) can be either strings
+or expressions.</STICKY><TITLE  x="54.0" y="31.0" color="#FFFFFF" text="If" fontface="Arial" fontsize="18" /><TITLE  x="130" y="335" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

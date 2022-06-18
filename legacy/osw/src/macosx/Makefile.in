@@ -1,0 +1,232 @@
+
+
+#Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+#Copyright (c) 1998-2001 Regents of the University of California.
+#All rights reserved.
+#
+#     ``The contents of this file are subject to the Open Sound World Public
+#     License Version 1.0 (the "License"); you may not use this file except in
+#     compliance with the License. A copy of the License should be included
+#     in a file named "License" or "License.txt" in the distribution from 
+#     which you obtained this file. 
+#
+#     Software distributed under the License is distributed on an "AS IS"
+#     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#     License for the specific language governing rights and limitations
+#     under the License.
+#
+#     The Original Code is Open Sound World (OSW) software.
+#
+#     The Initial Developer of the Original Code is Amar Chaudhary.
+#     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+#     Regents of the University of California and Amar Chaudhary. 
+#     All Rights Reserved.
+#
+#     Contributor(s):
+
+CC=@CC@
+CXX=@CXX@
+
+include ../generic/Version.mak
+
+STL_DIR = @STLPORT_DIR@
+BIN_DIR = @prefix@/bin
+INSTALL_DIR = @prefix@/lib/osw
+OSW_SOURCE_DIR = @ac_srcdir_abs@/../..
+TCL_INCLUDE_DIR = @TCL_INCLUDE_DIR@
+TK_INCLUDE_DIR = @TK_INCLUDE_DIR@
+TCL_BIN = @TCL_BIN@
+
+CFLAGS = @CFLAGS@
+
+ifneq (TCL_INCLUDE_DIR,"")
+  CFLAGS += -I $(TCL_INCLUDE_DIR)
+endif
+ifneq (TK_INCLUDE_DIR,"")
+  CFLAGS += -I $(TK_INCLUDE_DIR)
+endif
+
+CXXFLAGS = $(CFLAGS) @CXXFLAGS@
+
+OBJ = o
+
+MACOSXOBJECTS = oswMacOSXThread.o oswMacOSXMutex.o oswMacOSXLoadOSX.o oswMacOSXSock.o oswMacOSXSelect.o oswMacOSXHiResTimer.o oswMacOSXPrefs.o oswMacOSXFileUtils.o oswMacOSXCoreAudio.o oswMacOSXCoreMidi.o oswMacOSXInit.o oswMacOSXAnnoyingInit.o
+
+LIBFLAGS = -dynamic
+LIBRARIES =  @LIBS@ 
+
+################
+# Default is all
+
+all: oswbin libosw.dylib
+
+###################
+# Generic C++ files
+
+include ../generic/Generic.mak
+
+########################
+#libraries / executables
+
+libosw.dylib : $(OBJECTS) $(MACOSXOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS)
+	g++ -dynamiclib -o libosw.dylib $(LIBFLAGS) $(OBJECTS) $(MACOSXOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS) -L. $(LIBRARIES)
+
+oswbin : libosw.dylib
+	g++ -o oswbin -L. libosw.dylib -lpthread
+
+
+##########################
+# MacOSX-specific C++ files
+
+oswMacOSXThread.o : oswMacOSXThread.cpp ../include/osw.h ../include/oswThread.h ../include/oswSched.h
+	$(CXX) $(CFLAGS) -c oswMacOSXThread.cpp
+
+oswMacOSXMutex.o : oswMacOSXMutex.cpp ../include/oswMutex.h
+	$(CXX) $(CFLAGS) -c oswMacOSXMutex.cpp
+
+oswMacOSXSock.o : oswMacOSXSock.cpp ../include/oswSock.h
+	$(CXX) $(CFLAGS) -c oswMacOSXSock.cpp
+
+oswMacOSXSelect.o : oswMacOSXSelect.cpp ../include/oswSelect.h
+	$(CXX) $(CFLAGS) -c oswMacOSXSelect.cpp
+
+oswMacOSXLoadOSX.o : oswMacOSXLoadOSX.cpp 
+	$(CXX) $(CFLAGS) -c oswMacOSXLoadOSX.cpp
+
+oswMacOSXHiResTimer.o : oswMacOSXHiResTimer.cpp ../include/oswHiResTimer.h
+	$(CXX) $(CFLAGS) -c oswMacOSXHiResTimer.cpp
+
+oswMacOSXFileUtils.o : oswMacOSXFileUtils.cpp ../include/oswFileUtils.h
+	$(CXX) $(CFLAGS) -c oswMacOSXFileUtils.cpp
+
+oswMacOSXPrefs.o : oswMacOSXPrefs.cpp ../include/oswPrefs.h
+	$(CXX) $(CFLAGS) -c oswMacOSXPrefs.cpp
+
+oswMacOSXCoreAudio.o : oswMacOSXCoreAudio.cpp oswMacOSXCoreAudio.h \
+	../include/oswAudio.h $(REQUIRED_H)
+	$(CXX) $(CFLAGS) -c oswMacOSXCoreAudio.cpp
+
+oswMacOSXCoreMidi.o : oswMacOSXCoreMidi.cpp ../include/oswMidi.h \
+	$(REQUIRED_H)
+	$(CXX) $(CFLAGS) -c oswMacOSXCoreMidi.cpp
+
+oswMacOSXInit.o : oswMacOSXInit.cpp $(REQUIRED_H) ../include/oswSched.h \
+	../include/oswInit.h  oswMacOSXAnnoyingInit.h
+	$(CXX) $(CFLAGS) -c oswMacOSXInit.cpp
+
+oswMacOSXAnnoyingInit.o : oswMacOSXAnnoyingInit.cpp $(REQUIRED_H) \
+	oswMacOSXAnnoyingInit.h
+	$(CXX) $(CFLAGS) -c oswMacOSXAnnoyingInit.cpp
+
+########################
+# Cleanup & Installation
+
+clean:
+	rm *.o
+	rm *.dylib
+	rm oswbin
+
+execlean:
+	rm libosw.dylib
+	rm oswbin
+
+install: libosw.dylib oswbin
+	echo "#!/bin/sh" > osw
+	echo "OSW_DIR=$(INSTALL_DIR)" >> osw
+	echo 'LD_LIBRARY_PATH=.:$$OSW_DIR:/usr/local/lib:/usr/lib:/lib' >> osw
+	echo 'LD_RUN_PATH=.:$$OSW_DIR:/usr/local/lib:/usr/lib:/lib' >> osw
+	echo 'export OSW_DIR' >> osw
+	echo 'export LD_LIBRARY_PATH' >> osw
+	echo 'export LD_RUN_PATH' >> osw
+	echo "TCL_BIN=$(TCL_BIN)" >> osw
+	echo "export TCL_BIN" >> osw
+	cat osw_init.sh >> osw 
+	chmod a+x osw
+	cp osw $(BIN_DIR)	
+	cp oswbin $(BIN_DIR)
+	echo "OSWSourceDir $(OSW_SOURCE_DIR)/src" > ../../externalizer/preferences.txt
+	echo "OSWInstallDir $(INSTALL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWStlDir $(STL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTclInclude $(TCL_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTkInclude $(TK_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWLibs @LIBS@" >> ../../externalizer/preferences.txt
+	if test ! -d $(INSTALL_DIR); then \
+	  mkdir $(INSTALL_DIR); \
+	fi
+	cp libosw.dylib @prefix@/lib
+	cp -r ../../scripts $(INSTALL_DIR)
+	cp -r ../../bitmaps $(INSTALL_DIR)
+	cp -r ../../externalizer $(INSTALL_DIR)
+	cp -r ../../html $(INSTALL_DIR)
+	cp -r ../../help_patches $(INSTALL_DIR)
+	cp -r ../../tutorials $(INSTALL_DIR)	
+	cp -r ../../demos $(INSTALL_DIR)	
+	cp -r ../../oswinit.tcl $(INSTALL_DIR)
+	cp -r ../../TclXML-1.2 $(INSTALL_DIR)
+
+	echo "OSW_DIR=$(INSTALL_DIR)" > externalizer
+	echo "export OSW_DIR" >> externalizer
+	echo '$(TCL_BIN) $$OSW_DIR/externalizer/externalizer.tcl $$1 $$2 $$3 $$4 $$5' >> externalizer
+	chmod a+x externalizer
+	cp externalizer $(BIN_DIR)
+	cp INSTALL.macosx $(INSTALL_DIR)
+	cp ../win/INSTALL.win $(INSTALL_DIR)
+	cp ../linux/INSTALL.linux $(INSTALL_DIR)
+	cp ../sgi/INSTALL.sgi $(INSTALL_DIR)
+	cp INSTALL.macosx $(INSTALL_DIR)/html
+	cp ../../README $(INSTALL_DIR)
+	cp ../../License $(INSTALL_DIR)
+	if test ! -d $(INSTALL_DIR)/src; then \
+	  mkdir $(INSTALL_DIR)/src; \
+	fi
+	cp -r ../include $(INSTALL_DIR)/src
+	cp -r ../types $(INSTALL_DIR)/src
+
+bininstall: oswbin libosw.dylib
+	cp libosw.dylib @prefix@/lib
+	cp oswbin @prefix@/bin
+	cp osw @prefix@/bin
+
+
+externals:
+	OSW_DIR=$(OSW_SOURCE_DIR)
+	export OSW_DIR
+	if test ! -d $(INSTALL_DIR)/externals ; then \
+	   mkdir $(INSTALL_DIR)/externals ; \
+        fi
+	externalizer -batch -nogui ../externals/blob
+	externalizer -batch -nogui ../externals/osw
+	externalizer -batch -nogui ../externals/list
+	externalizer -batch -nogui ../externals/note
+	externalizer -batch -nogui ../externals/midi
+	externalizer -batch -nogui ../externals/sdif
+	externalizer -batch -nogui ../externals/table
+	externalizer -batch -nogui ../externals/cnmat
+	externalizer -batch -nogui ../externals/sinusoids
+	externalizer -batch -nogui ../externals/spectral
+	externalizer -batch -nogui ../externals/raw
+	externalizer -batch -nogui ../externals/fx
+	externalizer -batch -nogui ../externals/patented
+
+external_clean:
+	rm ../externals/*/*/*.o
+	rm ../externals/*/*/*.osx
+
+test:
+	python ../test/oswtest.py --server=$(BIN_DIR)/oswbin --gui=$(BIN_DIR)/osw
+
+dist:
+	chmod a+x install.sh
+	tar -uf osw.tar install.sh
+	tar -uf osw.tar -C $(INSTALL_DIR) .
+#	tar --delete lib/osw/externals/patented/*
+	gzip osw.tar
+
+patented-dist:
+	chmod a+x install.sh
+	tar -uf osw.tar install.sh
+	tar -uf osw.tar -C $(INSTALL_DIR) .
+	gzip osw.tar
+
+
+

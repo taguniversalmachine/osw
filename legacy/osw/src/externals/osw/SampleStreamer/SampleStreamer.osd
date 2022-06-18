@@ -1,0 +1,369 @@
+<?xml version="1.0" ?>
+<osw-external name="SampleStreamer" package="osw">
+<description>Play a sound from disk</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inherit class="datasource" />
+<inlet name="start" type="Unit" description="Start streaming" />
+<inlet name="pause" type="Unit" description="Pause/Continue streaming" />
+<inlet name="fileIn" type="String" description="Dynamically change the stream being played" />
+<inlet name="timeIn" type="Time" description="synchronize streaming to an explicit time source" />
+<outlet name="left" type="Samples" description="Left (or Mono) output" />
+<outlet name="right" type="Samples" description="right output" />
+<outlet name="done" type="Unit" description="Unit sent when the stream is done playing" />
+<state name="channels" type="Integer" default="1" description="Number of channels in file" />
+<state name="sample_rate" type="Integer" default="44100" description="Sample rate of audio file" />
+<inherited-state name="src" type="String" default="none" description="External Data Source" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog">
+oswLoadScript oswLoadFile.tcl
+oswLoadFileManyTypes &#36;transformPath/src  &#123;&#123;&#123;Wave File&#125; &#123;.wav&#125;&#125; &#123;&#123;AIFF File&#125; &#123;.aiff .aif&#125;&#125; &#123;&#123;Sun Audio AU File&#125; &#123;.au&#125;&#125; &#92;
+ &#123;&#123;Text data samples&#125; &#123;.dat&#125;&#125; &#123;&#123;Raw format&#125; &#123;.raw&#125;&#125; &#92;
+ &#123;&#123;IRCAM Sound File&#125; &#123;.sf&#125;&#125;&#125;</xblock>
+<xblock name="Constructor">      	informat.info.rate      = 0;
+	informat.info.size      = -1;
+	informat.info.style     = -1;
+	informat.info.channels  = -1;
+	informat.comment   = NULL;
+	informat.swap      = 0;
+	informat.filetype  = (char *) 0;
+	informat.fp        = NULL;
+	informat.filename  = "none";
+
+inputSamples = NULL;
+CreateBuffers();
+xpaused = true;
+xendOfStream = false;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">if (informat.fp != NULL) &#123;
+   fclose(informat.fp);
+&#125;
+DestroyBuffers();</xblock>
+<xblock name="Private">soundstream informat;
+ft_t  ft;
+bool xpaused;
+bool xendOfStream;
+
+stl::vector&lt;Samples *> nextframe;
+long *inputSamples;
+int  xnumberOfSamples;
+
+void StartRead () &#123;
+   fseek(ft->fp,0L,SEEK_SET);   
+   gettype(&amp;informat);
+   (* informat.h->startread)(&amp;informat);
+   checkformat(&amp;informat);
+&#125;
+
+
+void SetDataFromSource() &#123;
+      informat.info.rate      = 0;
+      informat.info.size      = -1;
+      informat.info.style     = -1;
+      informat.info.channels  = -1;
+      informat.comment   = NULL;
+      informat.swap      = 0;
+      informat.filetype  = (char *) 0;
+
+      if (informat.fp != NULL) &#123;
+ 	fclose(informat.fp);
+      &#125;
+      informat.fp        = NULL;
+      informat.filename  = "none";
+      ft = &amp;informat;
+      if ((ft->fp = fopen(src->c_str(), READBINARY)) == NULL) &#123;
+	Error ("Can't open file " + string(src));
+	return;
+      &#125;
+      
+      informat.seekable  = 1;
+
+      /* If file types have not been set with -t
+	 (and the never will be -AC) set from file names. */
+      if (! informat.filetype) &#123;
+	if ((informat.filetype = strrchr(src->c_str(), LASTCHAR)) != NULL)
+	  informat.filetype++;
+	else
+	  informat.filetype = const_cast&lt;char *>(src->c_str());;
+	if ((informat.filetype = strrchr(informat.filetype, '.')) != NULL)
+	  informat.filetype++;
+	else /* Default to "auto" */
+	  informat.filetype = "auto";
+      &#125;
+
+      informat.comment = informat.filename;
+      
+      StartRead();    
+
+      sample_rate = int(informat.info.rate);
+      channels = int(informat.info.channels);
+
+      GetNextFrame();
+&#125;
+
+void EndOfStream () &#123;
+  if (!xendOfStream) &#123;
+     xendOfStream = true;
+     done = done;
+  &#125;
+&#125;
+
+void GetNextFrame () &#123;
+  if (int(SampleRate) == sample_rate) &#123;
+    int numread = (*informat.h->read)(&amp;informat, inputSamples,(int)NumberOfSamples*channels);
+    numread /= (int) channels;
+    for (int i = 0; i &lt; channels; ++i) &#123;
+	int j,k;
+    
+	for (j = 0, k = i; j &lt; numread; ++j, k += (int) channels) &#123;
+	  (*(nextframe&#91;i&#93;))&#91;j&#93; = float(inputSamples&#91;k&#93;) / float (0x7FFFFFFF);
+	&#125;
+        for (j = numread; j &lt; (int)NumberOfSamples; ++j) &#123;
+          (*(nextframe&#91;i&#93;))&#91;j&#93; = 0.0f;
+        &#125;
+    &#125;
+    if (numread &lt; (int)NumberOfSamples) &#123;
+      xpaused = true;
+      EndOfStream();
+    &#125;
+  &#125; else &#123;
+	float ratio = float(sample_rate) / SampleRate;
+        int numread = (*informat.h->read)(&amp;informat, inputSamples,(int)NumberOfSamples*channels*ratio);
+        numread /= (int) channels * ratio;
+ 	for (int i = 0; i &lt; channels; ++i) &#123;
+  	  int j,k;
+          float t = 0;
+   	  for (j = 0; j &lt; numread; ++j, t += ratio) &#123;
+		k = int(t);
+		float weight = t - float(k);
+		k = i + k * channels;
+		(*(nextframe&#91;i&#93;))&#91;j&#93; = ((1.0f - weight) * float(inputSamples&#91;k&#93;) + weight * float(inputSamples&#91;k+channels&#93;)) / float (0x7FFFFFFF);		
+ 	  &#125;
+        &#125;    
+	if (numread &lt; (int)NumberOfSamples) &#123;
+	      xpaused = true;
+	      EndOfStream();
+	&#125;	
+  &#125;
+&#125;
+
+
+void CreateBuffers () &#123;
+   if (inputSamples != NULL) &#123;
+      DestroyBuffers();
+   &#125;
+   // extra int cast for strict ANSI C++ compliance
+   inputSamples = new long &#91;int((int)NumberOfSamples*channels*(float(sample_rate) / SampleRate))&#93;;
+
+   nextframe.resize(channels);
+   for (int i = 0; i &lt; nextframe.size(); ++i) &#123;
+      nextframe&#91;i&#93; = new Samples(NumberOfSamples);
+   &#125;
+   xnumberOfSamples = (int) NumberOfSamples;
+&#125;
+
+void DestroyBuffers () &#123;
+   if (inputSamples != NULL) &#123;
+       delete inputSamples;
+   &#125;
+   for (int i = 0; i &lt; nextframe.size(); ++i) &#123;
+     if (nextframe&#91;i&#93;) &#123;
+        delete nextframe&#91;i&#93;;
+     &#125;
+   &#125;
+&#125;
+
+void NumberOfSamplesHasChanged () &#123;
+  if (xnumberOfSamples == int(NumberOfSamples)) &#123;
+    CreateBuffers();
+  &#125;
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">#include "st.h"
+
+#define LASTCHAR        '/'
+#define BUFSIZE         1024
+
+extern "C" void cleanup () &#123;
+&#125;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="start_now" activators="start" order="" >
+
+
+
+
+
+xendOfStream = false;
+StartRead();
+GetNextFrame();
+xpaused = false;
+</activation>
+<activation name="activation" activators="timeIn" order="" >
+
+
+
+
+
+
+if (!xpaused) &#123;
+ for (int i = 0; i &lt; channels; ++i) &#123;
+    switch(i) &#123;
+    case  0 :
+       left = *(nextframe&#91;i&#93;); break;
+    case  1 :
+       right = *(nextframe&#91;i&#93;); break;
+    &#125;
+ &#125;
+ GetNextFrame();
+&#125;
+</activation>
+<activation name="channel_change" activators="channels" order="" >
+
+
+
+
+
+
+CreateBuffers();
+</activation>
+<activation name="file_updated" activators="fileIn" order="0" >
+
+
+
+
+
+src = fileIn;
+</activation>
+<activation name="toggle_pause" activators="pause" order="" >
+
+
+
+
+
+
+xpaused = !xpaused;
+</activation>
+<xblock name="SourceFiles">
+&#123; g72x.c  &#125;
+&#123; handlers.c st.h &#123;&#125; &#125;
+&#123; sf.c st.h &#123;&#125; &#125;
+&#123; dat.c st.h &#123;&#125; &#125;
+&#123; auto.c st.h &#123;&#125; &#125;
+&#123; raw.c st.h &#123;&#125; &#125;
+&#123; wav.c st.h &#123;&#125; &#125;
+&#123; g723_40.c  &#125;
+&#123; g723_24.c  &#125;
+&#123; g721.c  &#125;
+&#123; misc.c st.h &#123;&#125; &#125;
+&#123; util.c st.h &#123;&#125; &#125;
+&#123; libst.c st.h &#123;&#125; &#125;
+&#123; aiff.c st.h &#123;&#125; &#125;
+&#123; au.c  &#125;
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">SampleStreamer &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;b>SampleStreamer&lt;/b> supports the following audio file formats:
+&lt;dl>
+&lt;dd>&lt;bb>.wav&lt;/bb> - Microsoft WAV file&lt;/dd>
+&lt;dd>&lt;bb>.aif,.aiff&lt;/bb> - AIFF Format&lt;/dd>
+&lt;dd>&lt;bb>.dat&lt;/bb> - Text format, 1 channel, textual floating-point numbers&lt;/dd>
+&lt;dd>&lt;bb>.sf&lt;/bb> - IRCAM Sound files&lt;/dd>
+&lt;dd>&lt;bb>.au&lt;/bb> - Sun/Java audio files&lt;/dd>
+&lt;/dl></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_SampleStreamer" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="SampleStreamer " name="samplestreamer0" x="61.0" y="170.0" width="100" height="25" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA src="streamer.wav" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="61.0" y="84.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="110.0" y="84.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="28.0" y="246.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SamplePlayer" name="sampleplayer0" x="37.0" y="371.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sampleplayer0/loop" value="0" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="samplestreamer0/left" inlet="out0/samplesIn0" vertices="67.0 225.5 74.0 225.5" />
+&lt;CONNECTION  outlet="samplestreamer0/right" inlet="out0/samplesIn1" vertices="165.0 225.5 114.0 225.5" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="samplestreamer0/start" vertices="" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="samplestreamer0/pause" vertices="" />
+&lt;STICKY  x="193.0" y="165.0" width="133.0" height="59.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+the SampleStreamer
+to change the audio file
+being played from disk&lt;/STICKY>&lt;STICKY  x="186.0" y="261.0" width="134.0" height="58.0" color="#80ffff" fontface="MS Sans Serif" fontsize="8">SampleStreamer only
+supports mono and stereo
+files at this time&lt;/STICKY>&lt;TITLE  x="104.0" y="19.0" color="#FFFFFF" text="SampleStreamer" fontface="Arial" fontsize="18" />&lt;TITLE  x="68.0" y="57.0" color="#FFFFFF" text="Start" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="122" y="58" color="#FFFFFF" text="Pause" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="73.0" y="348.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+<xblock name="HelpPatchSupportFiles">streamer.wav</xblock>
+</osw-external>

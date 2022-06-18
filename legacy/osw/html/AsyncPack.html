@@ -1,0 +1,47 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<h1 class="title">AsyncPack <a href="http://localhost:7775/OSW_DIR/help_patches/help_AsyncPack.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Pack several inputs into a single list asynchronously</p>
+<h3 class="title">Syntax</h3>
+<p>Pack <i>options</i></p>
+<h3 class="title">Options</h3>
+<ul><dl>
+<dt><b>-inputs</b></dt>
+<dd>Number of inputs to AsyncPack
+<dd>Type: Integer</dd>
+<dd>Default: 2</dd>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>in1</b> ... <b>in</b><i>n</i></dt>
+<dd>Inlets for the elements to pack.</dd>
+<dd>Type: variant.</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>listOut</b></dt>
+<dd>The list containing all the input elements
+<dd>Type: List
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>AsyncPack is used combine several input elements into a single list.  The inputs can be of any type.  The number of inlets automatically grows as more connections are added.</p>
+<p>Note that AsyncPack will emit a new output list whenever <i>any connected inlet</i> receives a new value.  If you want to emit a list only after <i>all</i> inlets change, use <a href="Pack.html">Pack</a> instead.  Unconnected inlets are ignored when contructing the output list.</p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="details.html">OSW Programming Details</a></dt>
+<dt><a href="List.html">List</a></dt>
+<dt><a href="Unpack.html">Unpack</a></dt>
+<dt><a href="Pack.html">Pack</a></dt>
+<dt><a href="Bundle.html">Bundle</a></dt>
+</dl>
+</body>
+</html>

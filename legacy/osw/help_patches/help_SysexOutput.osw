@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_SysexOutput" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="SysexOutput " name="sysexoutput0" x="149" y="256" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sysexoutput0/driver" value="/midiOut/1" />
+</TRANSFORM>
+<TRANSFORM  command="List2Raw " name="list2raw0" x="149.0" y="194.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="149.0" y="123.0" width="190" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="0xF0 0x43 0x18 0x12 52 0 0xF7" />
+</TRANSFORM>
+<CONNECTION  outlet="list2raw0/rawOut" inlet="sysexoutput0/message" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="list2raw0/listIn" vertices="" />
+<STICKY  x="260.0" y="250.0" width="88.0" height="50.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+to select a 
+MIDI device</STICKY><TITLE  x="249.0" y="100.0" color="#FFFFFF" text="type a system-exclusive message here" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="196.0" y="51.0" color="#FFFFFF" text="SysexOutput" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

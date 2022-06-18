@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Route" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Route numbers months animals" name="route0" x="71.0" y="283.0" width="178" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="71.0" y="217.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="27.0" y="65.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="numbers 1 2 3 4" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="64.0" y="107.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="months jan feb mar apr" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="94.0" y="151.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="animals cows pigs goats sheep" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox3" x="71.0" y="350.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox3/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox4" x="111.0" y="400.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox4/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox5" x="144.0" y="449.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox5/message" value="" />
+</TRANSFORM>
+<CONNECTION  outlet="route0/numbers" inlet="msgbox3/messageIn" vertices="" />
+<CONNECTION  outlet="route0/months" inlet="msgbox4/messageIn" vertices="165.0 359.0 117.0 359.0" />
+<CONNECTION  outlet="route0/animals" inlet="msgbox5/messageIn" vertices="253.0 383.5 150.0 383.5" />
+<CONNECTION  outlet="fanin0/out" inlet="route0/toRoute" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanin0/in1" vertices="33.0 158.0 77.0 158.0" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="fanin0/in2" vertices="70.0 179.0 89.0 179.0" />
+<CONNECTION  outlet="msgbox2/messageOut" inlet="fanin0/in3" vertices="100.0 201.0 101.0 201.0" />
+<TITLE  x="56.0" y="15.0" color="#FFFFFF" text="Route" fontface="Arial" fontsize="16" /></PATCH>
+</OSW>
+

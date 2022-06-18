@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="lofi_crusher" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Phasor" name="phasor0" x="356.0" y="271.0" width="59" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="phasor0/frequency" value="44100" />
+</TRANSFORM>
+<TRANSFORM  command="SampleAndHold -threshold 0.5" name="sampleandhold1" x="254.0" y="348.0" width="206" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="230.0" y="271.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="181.0" y="628.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="342.0" y="130.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="1" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  name="expr0" x="342.0" y="189.0" width="122" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr &#36;f1 * 44100</COMMAND>
+</TRANSFORM>
+<TRANSFORM  name="expr1" x="576.0" y="333.0" width="108" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr 1.0/2^&#36;f1</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="576.0" y="131.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="16" />
+
+<STATE name="floatbox1/max" value="16" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  name="expr2" x="302" y="438" width="241" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr &#36;f1 * floor(&#36;s1 / &#36;f1 + 0.5)</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="Scope" name="scope0" x="406" y="552" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="10" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="302.0" y="496.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="752" y="456" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Put* floatbox?/unitIn" name="putmul0" x="752.0" y="525.0" width="143" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="phasor0/samplesOut" inlet="sampleandhold1/controlIn" vertices="" />
+<CONNECTION  outlet="sampleandhold1/samplesOut" inlet="expr2/s1" vertices="260.0 411.5 547 411.5" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="sampleandhold1/samplesIn" vertices="236.0 335.0 260.0 335.0" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="expr0/f1" vertices="" />
+<CONNECTION  outlet="expr0/out" inlet="phasor0/frequency" vertices="348.0 248.5 390.0 248.5" />
+<CONNECTION  outlet="expr1/out" inlet="expr2/f1" vertices="582.0 404.0 308.0 404.0" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="expr1/f1" vertices="" />
+<CONNECTION  outlet="expr2/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="out0/mix" vertices="308.0 580.5 256.0 580.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="333.0 542.5 412.0 542.5" />
+<CONNECTION  outlet="get0/value" inlet="putmul0/input" vertices="" />
+<STICKY  x="92.0" y="126.0" width="168.0" height="68.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Based on algorithm
+posted to musicdsp.org
+by David Lowenfels</STICKY>
+<TITLE  x="624.0" y="109.0" color="#FFFFFF" fontface="MS Sans Serif" fontsize="10" >&quot;bits&quot;</TITLE>
+<TITLE  x="399.0" y="103.0" color="#FFFFFF" text="relative rate (0-1)" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="228.0" y="53.0" color="#FFFFFF" text="Lo-fi Crusher" fontface="Arial" fontsize="16" />
+<TITLE  x="816.0" y="435.0" color="#FFFFFF" text="slam initial values" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="170.0" y="223.0" color="#0000FF" link="http://www.musicdsp.org/showone.php?id=139" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

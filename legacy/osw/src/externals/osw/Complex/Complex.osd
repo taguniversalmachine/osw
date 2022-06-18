@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<osw-external name="Complex" package="osw">
+<description>Define complex numbers</description>
+<copyright></copyright>
+<inlet name="real" type="Float" default="0" description="Real value" persistent="1" />
+<inlet name="imag" type="Float" default="0" description="Imaginary part" persistent="1" />
+<inlet name="send" type="Unit" description="Send currently defined complex value" />
+<outlet name="complexOut" type="Complex" description="Complex value output" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation2" activators="imag" order="0" >
+
+complexOut = Complex(real,imag);
+</activation>
+<activation name="activation3" activators="send" order="0" >
+
+complexOut = Complex(real,imag);
+</activation>
+<activation name="activation1" activators="real" order="0" >
+
+complexOut = Complex(real,imag);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Complex &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;b>Complex&lt;/b> can be used to enter complex constants via the &lt;b>-real&lt;/b> and &lt;b>-imag&lt;/b> options, or variable complex numbers via its inlets.</xblock>
+<xblock name="Links">DoubleComplex</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Complex" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="83.0" y="300.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox2" x="83.0" y="240.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox2/message" value="(0,0)" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Complex" name="complex1" x="83.0" y="172.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="complex1/real" value="0" />
+
+&lt;STATE name="complex1/imag" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox2" x="83.0" y="102.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox2/floatIn" value="0" />
+
+&lt;STATE name="floatbox2/max" value="1" />
+
+&lt;STATE name="floatbox2/min" value="0" />
+
+&lt;STATE name="floatbox2/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox3" x="218" y="100" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox3/floatIn" value="0" />
+
+&lt;STATE name="floatbox3/max" value="1" />
+
+&lt;STATE name="floatbox3/min" value="0" />
+
+&lt;STATE name="floatbox3/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Real " name="real0" x="71.0" y="361.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Imag" name="imag0" x="135.0" y="359.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="61" y="448" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox " name="floatbox1" x="179.0" y="450.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Complex -real 1 -imag 2" name="complex2" x="376.0" y="173.0" width="148" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout1" x="376.0" y="295.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="376.0" y="235.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Real " name="real1" x="364.0" y="356.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Imag" name="imag1" x="428.0" y="354.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox4" x="354.0" y="443.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox4/floatIn" value="0.04" />
+
+&lt;STATE name="floatbox4/max" value="1" />
+
+&lt;STATE name="floatbox4/min" value="0" />
+
+&lt;STATE name="floatbox4/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox " name="floatbox5" x="472.0" y="445.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox5/floatIn" value="0.22" />
+
+&lt;STATE name="floatbox5/max" value="1" />
+
+&lt;STATE name="floatbox5/min" value="0" />
+
+&lt;STATE name="floatbox5/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="522.0" y="99.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="red" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="fanout0/out1" inlet="real0/in" vertices="89.0 348.0 77.0 348.0" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="imag0/in" vertices="111.0 347.0 141.0 347.0" />
+&lt;CONNECTION  outlet="msgbox2/messageOut" inlet="fanout0/in" vertices="" />
+&lt;CONNECTION  outlet="complex1/complexOut" inlet="msgbox2/messageIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox2/floatOut" inlet="complex1/real" vertices="" />
+&lt;CONNECTION  outlet="floatbox3/floatOut" inlet="complex1/imag" vertices="224 152.5 114.0 152.5" />
+&lt;CONNECTION  outlet="real0/out" inlet="floatbox0/floatIn" vertices="77.0 422.0 67 422.0" />
+&lt;CONNECTION  outlet="imag0/out" inlet="floatbox1/floatIn" vertices="141.0 422.0 185.0 422.0" />
+&lt;CONNECTION  outlet="complex2/complexOut" inlet="msgbox1/messageIn" vertices="" />
+&lt;CONNECTION  outlet="fanout1/out1" inlet="real1/in" vertices="382.0 343.0 370.0 343.0" />
+&lt;CONNECTION  outlet="fanout1/out2" inlet="imag1/in" vertices="404.0 342.0 434.0 342.0" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="fanout1/in" vertices="" />
+&lt;CONNECTION  outlet="real1/out" inlet="floatbox4/floatIn" vertices="370.0 417.0 360.0 417.0" />
+&lt;CONNECTION  outlet="imag1/out" inlet="floatbox5/floatIn" vertices="434.0 417.0 478.0 417.0" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="complex2/send" vertices="" />
+&lt;STICKY  x="391.0" y="104.0" width="94.0" height="42.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Or define them as
+constants&lt;/STICKY>&lt;TITLE  x="111.0" y="25.0" color="#FFFFFF" text="Complex" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="126.0" y="81.0" color="#FFFFFF" text="real" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="261.0" y="78.0" color="#FFFFFF" text="imag" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

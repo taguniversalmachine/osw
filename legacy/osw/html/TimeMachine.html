@@ -1,0 +1,78 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">TimeMachine <a href="http://localhost:7775/OSW_DIR/help_patches/help_TimeMachine.osw"><</h1>
+<p>Control virtual time</p>
+<h3 class="title">Syntax</h3>
+<p>TimeMachine <i>options</i>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><b>-name</b></dt>
+<dd>Optional name for TimeMachine</dd>
+</dt>
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>rate</b></dt>
+<dd>Rate of &quot;virtual time&quot; vs. real time.</dd>
+<dd>Type: Float</dd>
+<dd>Default: 1</dd>
+<dt><b>goto</b></dt>
+<dd>Jump to a particular point in &quot; virtual time</dd>
+<dd>Type: Double</dd>
+<dt><b>zero</b></dt>
+<dd>Jump to virtual time zero.  Same as sending 0 to <b>goto</b> inlet.</dd>
+<dd>Type: Unit</dd>
+<dt><b>timeIn</b></dt>
+<dd>Slave to another time machine.</dd>
+<dd>Type: Time</dd>
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dt><b>timeOut</b></dt>
+<dd>&quot;Virutal time&quot; output</dd>
+<dd>Type: Time</dd>
+</ul>
+<h3 class="title">Comments</h3>
+<p>For more information on virtual time control, refer to the chapter on <a href="time.htm">Time Control in OSW</a>.</p>
+<h3 class="title">See also</h3>
+Tutorial patches:
+<dl>
+<dd><a href="http://localhost:7775/OSW_DIR/tutorials/time/rate_controls_pitch.osw">Using virtual time to control pitch.</a></dd>
+<dd><a href="http://localhost:7775/OSW_DIR/help_patches/cnmat/help_AddSynth.osw">Using virtual time to control sinusoidal models.</a></dd>
+<dd><a href="http://localhost:7775/OSW_DIR/tutorials/time/switcheroo.osw">Using virtual time to switch on/off signal-flow paths.</a></dd>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

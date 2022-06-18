@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Put" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Put foo" name="put0" x="46.0" y="167.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get foo" name="get0" x="45.0" y="244.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="46.0" y="103.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="45.0" y="311.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+</TRANSFORM>
+<PATCH CLASS="subpatch" Version="1.0.0" WindowSize="200 230" Background="SystemButtonFace"  x="255.0" y="233.0" width="130" height="25" color="darkgrey" >
+<TRANSFORM  command="Get foo" name="get0" x="107" y="79" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type int -name out" name="out" x="107.0" y="148.0" width="40" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="get0/value" inlet="out_outlet/in" vertices="" />
+</PATCH>
+
+<TRANSFORM  command="IntBox" name="intbox2" x="255" y="295" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="Put subpatch/foo" name="put1" x="255.0" y="185.0" width="106" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="255.0" y="125.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="Put intbox4/intIn" name="put2" x="459.0" y="183.0" width="112" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox4" x="459.0" y="292.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox4/intIn" value="0" />
+
+<STATE name="intbox4/step" value="1" />
+
+<STATE name="intbox4/min" value="0" />
+
+<STATE name="intbox4/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox5" x="459.0" y="127.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox5/intIn" value="0" />
+
+<STATE name="intbox5/step" value="1" />
+
+<STATE name="intbox5/min" value="0" />
+
+<STATE name="intbox5/max" value="100" />
+</TRANSFORM>
+<CONNECTION  outlet="get0/value" inlet="intbox1/intIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="put0/input" vertices="" />
+<CONNECTION  outlet="subpatch/out" inlet="intbox2/intIn" vertices="" />
+<CONNECTION  outlet="intbox3/intOut" inlet="put1/input" vertices="" />
+<CONNECTION  outlet="intbox5/intOut" inlet="put2/input" vertices="" />
+<STICKY  x="252.0" y="17.0" width="138.0" height="78.0" color="#FFFF77" text="Variables are local
+to the patch in which
+they are defined.  You can
+send values to variables
+in other patches" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="463.0" y="28.0" width="111.0" height="62.0" color="#FFFF77" text="You can also address inlets of other 
+transforms using Put" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="257.0" y="354.0" width="112.0" height="62.0" color="#80ffff" text="Double-click
+the subpatch to
+see the corresponding 
+Get" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="75.0" y="32.0" color="#FFFFFF" text="Put / Get" fontface="Arial" fontsize="18" /><TITLE  x="113.0" y="76.0" color="#FFFFFF" text="Use Put to store a value in a variable" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="79.0" y="368.0" color="#FFFFFF" text="and Get to receive it" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

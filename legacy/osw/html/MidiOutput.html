@@ -1,0 +1,68 @@
+<html>
+<head>
+	<meta name="Author" content="Amar Chaudhary">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="Open Sound World MIDI Output">
+<title>MidiOutput</title>
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">MidiOutput <a href="http://localhost:7775/OSW_DIR/help_patches/help_MidiOutput.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Output MIDI messages</p>
+<h3 class="title">Syntax</h3>
+<p>MidiOutput&nbsp;&nbsp;<i>options</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><b>-driver</b></dt>
+<dd>The name of a MIDI device to use for output.  MIDI output device names are of the form /midiOut/<i>n</i></dd>
+<dd>Type: String</dd>
+<h3 class="title">Inlets</h3>
+<ul>
+<dl>
+<dt><b>message</b></dt>
+<dd>MIDI message to output</dd>
+<dd>Type: MidiMessage</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>You can double click the MidiOutput transform to view and select from a list of available MIDI output devices.</p>
+<p>To produce MIDI messages, use the MidiPack or MidiPackBytes transform.  Other transforms listed below also produce MIDI messages</p>
+<h3 class="title">Known Issues</h3>
+MIDI Output is currently available on Windows and Linux platforms.
+<h3 class="title">See Also</h3>
+<a href="MidiInput.html">MidiInput</a><br>
+<a href="SysexOuput.html">SysexOutput</a><br>
+<a href="midi/MidiPack.html">MidiPack</a><br>
+<a href="midi/MidiPackBytes.html">MidiPackBytes</a><br>
+<a href="midi/MidiSequener.html">MidiSequencer</a><br>
+<a href="midi/Control.html">Control</a>, <a href="midi/NoteOff.html">NoteOff</a>, <a href="midi/NoteOn.html">NoteOn</a>, <a href="midi/PitchBend.html">PitchBend</a>, <a href="hmidi/elp_PolyTouch.html">PolyTouch</a>, <a href="midi/ProgChange.html">ProgChange</a>, <a href="midi/Touch.html">Touch</a><br>
+<a href="making_music.htm">Notes and MIDI</a><br>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="additive" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Array 10 MSlider" name="array1" x="459.0" y="47.0" width="112" height="118" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Keyboard " name="keyboard0" x="23.0" y="50.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="keyboard0/octave" value="5" />
+</TRANSFORM>
+<TRANSFORM  command="* 2.0" name="mul1" x="39.0" y="292.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 3.0" name="mul2" x="88.0" y="292.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 4.0" name="mul3" x="138.0" y="292.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 5.0" name="mul4" x="190.0" y="292.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 6.0" name="mul5" x="240.0" y="292.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 7.0" name="mul6" x="292.0" y="293.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 8.0" name="mul7" x="343.0" y="293.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 9.0" name="mul8" x="394.0" y="293.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Midi2Freq " name="midi2freq0" x="23.0" y="170.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midi2freq0/freq_ref" value="440" />
+
+<STATE name="midi2freq0/midi_ref" value="69" />
+
+<STATE name="midi2freq0/degrees" value="12" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="23.0" y="228.0" width="165" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="List2Sinusoids " name="list2sinusoids0" x="23.0" y="468.0" width="100" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="list2sinusoids0/phase" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Unbundle -outputs 10" name="unbundle0" x="555.0" y="292.0" width="165" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AddSynth" name="addsynth0" x="23.0" y="532.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="addsynth0/maxpartials" value="128" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="21.0" y="653.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AsyncPack -inputs 20" name="asyncpack0" x="23.0" y="404.0" width="315" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="23.0" y="591.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.168459" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="123.0" y="531.0" width="56" height="56" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="* 10.0" name="mul0" x="447.0" y="293.0" width="48" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="array1/floatOut" inlet="unbundle0/bundleIn" vertices="465.0 233.5 561.0 233.5" />
+<CONNECTION  outlet="keyboard0/noteOut" inlet="midi2freq0/midi_note" vertices="" />
+<CONNECTION  outlet="mul1/result" inlet="asyncpack0/in3" vertices="45.0 365.5 59.0 365.5" />
+<CONNECTION  outlet="mul2/result" inlet="asyncpack0/in5" vertices="94.0 365.5 89.0 365.5" />
+<CONNECTION  outlet="mul3/result" inlet="asyncpack0/in7" vertices="144.0 365.5 119.0 365.5" />
+<CONNECTION  outlet="mul4/result" inlet="asyncpack0/in9" vertices="196.0 365.5 149.0 365.5" />
+<CONNECTION  outlet="mul5/result" inlet="asyncpack0/in11" vertices="246.0 365.5 179.0 365.5" />
+<CONNECTION  outlet="mul6/result" inlet="asyncpack0/in13" vertices="298.0 366.0 209.0 366.0" />
+<CONNECTION  outlet="mul7/result" inlet="asyncpack0/in15" vertices="349.0 366.0 239.0 366.0" />
+<CONNECTION  outlet="mul8/result" inlet="asyncpack0/in17" vertices="400.0 366.0 269.0 366.0" />
+<CONNECTION  outlet="midi2freq0/frequency" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="asyncpack0/in1" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="mul1/param1" vertices="" />
+<CONNECTION  outlet="fanout0/out3" inlet="mul2/param1" vertices="61.0 277.5 94.0 277.5" />
+<CONNECTION  outlet="fanout0/out4" inlet="mul3/param1" vertices="77.0 277.5 144.0 277.5" />
+<CONNECTION  outlet="fanout0/out5" inlet="mul4/param1" vertices="93.0 277.5 196.0 277.5" />
+<CONNECTION  outlet="fanout0/out6" inlet="mul5/param1" vertices="109.0 277.5 246.0 277.5" />
+<CONNECTION  outlet="fanout0/out7" inlet="mul6/param1" vertices="125.0 278.0 298.0 278.0" />
+<CONNECTION  outlet="fanout0/out8" inlet="mul7/param1" vertices="141.0 278.0 349.0 278.0" />
+<CONNECTION  outlet="fanout0/out9" inlet="mul8/param1" vertices="157.0 278.0 400.0 278.0" />
+<CONNECTION  outlet="fanout0/out10" inlet="mul0/param1" vertices="173.0 278.0 453.0 278.0" />
+<CONNECTION  outlet="list2sinusoids0/sinusoids" inlet="addsynth0/sinusoidsIn" vertices="" />
+<CONNECTION  outlet="unbundle0/out1" inlet="asyncpack0/in2" vertices="561.0 365.5 44.0 365.5" />
+<CONNECTION  outlet="unbundle0/out2" inlet="asyncpack0/in4" vertices="577.0 365.5 74.0 365.5" />
+<CONNECTION  outlet="unbundle0/out3" inlet="asyncpack0/in6" vertices="593.0 365.5 104.0 365.5" />
+<CONNECTION  outlet="unbundle0/out4" inlet="asyncpack0/in8" vertices="609.0 365.5 134.0 365.5" />
+<CONNECTION  outlet="unbundle0/out5" inlet="asyncpack0/in10" vertices="625.0 365.5 164.0 365.5" />
+<CONNECTION  outlet="unbundle0/out6" inlet="asyncpack0/in12" vertices="641.0 365.5 194.0 365.5" />
+<CONNECTION  outlet="unbundle0/out7" inlet="asyncpack0/in14" vertices="657.0 365.5 224.0 365.5" />
+<CONNECTION  outlet="unbundle0/out8" inlet="asyncpack0/in16" vertices="673.0 365.5 254.0 365.5" />
+<CONNECTION  outlet="unbundle0/out9" inlet="asyncpack0/in18" vertices="689.0 365.5 284.0 365.5" />
+<CONNECTION  outlet="unbundle0/out10" inlet="asyncpack0/in20" vertices="705.0 365.5 314.0 365.5" />
+<CONNECTION  outlet="addsynth0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="asyncpack0/listOut" inlet="list2sinusoids0/partials" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="29.0 639.5 147.0 639.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="129.0 612.0 95.0 612.0 95.0 576.0 61.0 576.0" />
+<CONNECTION  outlet="mul0/result" inlet="asyncpack0/in19" vertices="453.0 366.0 299.0 366.0" />
+<STICKY  x="197.0" y="531.0" width="93.0" height="54.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Keep the gain
+down as you add
+more partials</STICKY><STICKY  x="624.0" y="48.0" width="121.0" height="65.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Add harmonics to your
+sound output</STICKY><TITLE  x="182.0" y="21.0" color="#FFFFFF" text="Simple harmonic additive synthesis" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

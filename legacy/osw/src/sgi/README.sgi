@@ -1,0 +1,18 @@
+
+SPECIAL NOTES FOR REAL-TIME PERFORMANCE UNDER IRIX 6.5
+
+To get better performance from OSW under SGI Irix 6.5, use the following
+procedure.  Note that you must have root access in order to access this
+feature.
+
+1)  Switch to user root (e.g., "su root")
+2)  Type "root-osw" instead of "osw".  This executes the commands:
+
+unlimit -h
+unlimit
+limit
+
+You should now be able to enjoy dramatically improved real-time performance.
+
+
+

@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+<osw-external name="MidiPack" package="midi">
+<description>Packs channel, status and value components into a MIDI message</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inlet name="channel" type="Integer" description="MIDI channel number" />
+<inlet name="status" type="String" description="MIDI status (i.e. command) name" />
+<inlet name="first" type="Integer" description="First data byte" />
+<inlet name="second" type="Integer" description="second data byte" />
+<outlet name="messageOut" type="MidiMessage" description="packed MIDI message" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"> struct StatusTypes &#123;
+    char *statusName;
+    int  statusNum;
+  &#125;;
+  
+  static StatusTypes statusTypes&#91;&#93; = &#123;
+    &#123;"noteoff",0x8&#125;,
+    &#123;"note",0x9&#125;,
+    &#123;"polyaftertouch",0xA&#125;,
+    &#123;"control",0xB&#125;,
+    &#123;"program",0xC&#125;,
+    &#123;"aftertouch",0xD&#125;,
+    &#123;"pitchbend",0xE&#125;,
+    &#123;NULL,NULL&#125;
+  &#125;;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="pack_now" activators="second first status channel" order="" >
+ int statusNum;
+      for (int i = 0; statusTypes&#91;i&#93;.statusName != NULL; ++i) &#123;
+	if (!strnicmp(statusTypes&#91;i&#93;.statusName,status->c_str(),
+		      strlen(statusTypes&#91;i&#93;.statusName))) &#123;
+	  statusNum = 0x8 + i;
+	  break;
+	&#125;
+      &#125;
+      if (statusNum > 0xE) &#123;
+	Error (PathName() + ": invalid status &#92;"" + status + "&#92;"");
+      &#125; else &#123;
+	messageOut = MidiMessage(channel,statusNum,first,second);
+      &#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">default</xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_MidiPack" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="FanIn" name="fanin0" x="141.0" y="162.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="95.0" y="80.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="0 noteon 60 80" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Unpack" name="unpack0" x="141.0" y="226.0" width="88" height="26" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiPack" name="midipack0" x="141.0" y="300.0" width="67" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="269.0" y="80.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="0 noteoff 60 0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiOutput" name="midioutput0" x="141.0" y="367.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="midioutput0/driver" value="/midiOut/0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MidiPackBytes " name="midipackbytes0" x="287" y="241" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="fanin0/out" inlet="unpack0/toUnpack" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="fanin0/in1" vertices="101.0 138.0 147.0 138.0" />
+&lt;CONNECTION  outlet="unpack0/out1" inlet="midipack0/channel" vertices="" />
+&lt;CONNECTION  outlet="unpack0/out2" inlet="midipack0/status" vertices="" />
+&lt;CONNECTION  outlet="unpack0/out3" inlet="midipack0/first" vertices="" />
+&lt;CONNECTION  outlet="unpack0/out4" inlet="midipack0/second" vertices="" />
+&lt;CONNECTION  outlet="midipack0/messageOut" inlet="midioutput0/message" vertices="" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="fanin0/in2" vertices="275.0 138.0 166.0 138.0" />
+&lt;STICKY  x="247" y="353" width="100.0" height="51.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+manually choose
+MIDI port&lt;/STICKY>&lt;TITLE  x="69" y="21" color="#FFFFFF" text="MidiPack" fontface="Arial" fontsize="16" />&lt;TITLE  x="161" y="59" color="#FFFFFF" text="Note On" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="339.0" y="60.0" color="#FFFFFF" text="Note Off" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="335.0" y="216.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>
+
+
+

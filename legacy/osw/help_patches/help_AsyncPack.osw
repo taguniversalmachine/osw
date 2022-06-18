@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_AsyncPack" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="AsyncPack" name="asyncpack0" x="118" y="185" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="63.0" y="111.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="178" y="109" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="302" y="108" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="blah" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="118.0" y="267.0" width="180" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="Pack" name="pack0" x="146" y="380" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="asyncpack0/listOut" inlet="msgbox1/messageIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="asyncpack0/in1" vertices="69.0 164.5 124 164.5" />
+<CONNECTION  outlet="intbox0/intOut" inlet="asyncpack0/in2" vertices="184.0 163.5 144 163.5" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="asyncpack0/in3" vertices="308.0 163.5 164 163.5" />
+<STICKY  x="323" y="184" width="124.0" height="64.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">AsyncPack creates
+a new list each time
+any of the inlet values
+change.</STICKY><TITLE  x="105.0" y="55.0" color="#FFFFFF" text="AsyncPack" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="165.0" y="350.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

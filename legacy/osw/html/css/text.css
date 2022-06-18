@@ -1,0 +1,40 @@
+H1.title {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 36px;
+}
+
+H3.title {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+}
+
+dl {
+        margin-left: 1.5em
+}
+
+div.mantle {
+        border-width: 4;
+        border-style: ridge;
+}
+
+.mantle {
+}
+
+.menubar {
+        background-color: black;
+        color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+}
+
+a.menu {
+        background-color: black;
+        color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+        text-decoration: none;
+}
+
+.transform {
+	font-family: Arial, Helvetica, sans-serif;
+}

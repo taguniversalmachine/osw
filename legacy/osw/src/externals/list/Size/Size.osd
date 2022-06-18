@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<osw-external name="Size" package="list">
+<description>Return the size of a list</description>
+<copyright></copyright>
+<inlet name="listIn" type="List" description="List to get size of" />
+<outlet name="size" type="Integer" description="Size of list" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="get_size_now" activators="listIn" order="" >
+
+size = listIn->size();
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Length &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Size" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="list::Size" name="size0" x="87.0" y="305.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="list::Size" name="size1" x="231.0" y="306.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="list::Size" name="size2" x="488.0" y="309.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="87.0" y="371.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="0" />
+
+&lt;STATE name="intbox0/max" value="100" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox1" x="231.0" y="372.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox1/intIn" value="0" />
+
+&lt;STATE name="intbox1/max" value="100" />
+
+&lt;STATE name="intbox1/min" value="0" />
+
+&lt;STATE name="intbox1/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List 1 2 3" name="list0" x="87.0" y="236.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA>
+		1 2 3 
+	&lt;/DATA>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="87.0" y="163.0" width="31" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="231.0" y="242.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Expr &#91;&#93;" name="expr0" x="488.0" y="241.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="488.0" y="374.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="488.0" y="174.0" width="33" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="red" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="size0/size" inlet="intbox0/intIn" vertices="" />
+&lt;CONNECTION  outlet="size1/size" inlet="intbox1/intIn" vertices="" />
+&lt;CONNECTION  outlet="size2/size" inlet="msgbox1/messageIn" vertices="" />
+&lt;CONNECTION  outlet="list0/listOut" inlet="size0/listIn" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="list0/unitIn" vertices="" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="size1/listIn" vertices="" />
+&lt;CONNECTION  outlet="expr0/out" inlet="size2/listIn" vertices="" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="expr0/doExpr" vertices="" />
+&lt;STICKY  x="252.0" y="176.0" width="103.0" height="43.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Type in your own
+list here&lt;/STICKY>&lt;TITLE  x="509.0" y="149.0" color="#FFFFFF" text="empty list of size 0" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="115.0" y="139.0" color="#FFFFFF" text="list of 3 elements" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="102.0" y="49.0" color="#FFFFFF" text="list::Size" fontface="MS Sans Serif" fontsize="14" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

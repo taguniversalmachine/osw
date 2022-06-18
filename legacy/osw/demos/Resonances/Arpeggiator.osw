@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="Arpeggiator" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="ResPing " name="resping0" x="220.0" y="300.0" width="75" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="resping0/amplitude" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="227.0" y="461.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="220.0" y="383.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.996342" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="468.0" y="258.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Counter" name="counter0" x="256.0" y="193.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="counter0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Ticker " name="ticker0" x="258.0" y="65.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="ticker0/interval" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="Switch " name="switch0" x="258.0" y="133.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Toggle" name="toggle0" x="366" y="60" width="36" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="353.0" y="156.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="470.0" y="153.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="sdif::ToResonances " name="toresonances0" x="53.0" y="237.0" width="124" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="53.0" y="182.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="res/1" />
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="68" y="134" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SDIFBuffer -name res" name="res" x="449" y="482" width="130" height="24" color="darkgrey" fontface="" fontsize="8">
+	<DATA src="Tamtam.res.sdif" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="360.0" y="246.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut " name="fanout1" x="256.0" y="245.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="resping0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="resping0/not_found" inlet="fanout0/in" vertices="299.0 349.0 387.5 349.0 387.5 138.0 476.0 138.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="226.0 439.0 302.0 439.0" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="474.0 354.5 258.0 354.5" />
+<CONNECTION  outlet="counter0/intOut" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="ticker0/tick" inlet="switch0/in" vertices="" />
+<CONNECTION  outlet="switch0/out2" inlet="counter0/next" vertices="289.0 180.0 262.0 180.0" />
+<CONNECTION  outlet="toggle0/toggleOut" inlet="switch0/switch" vertices="372.0 120.0 314.0 120.0" />
+<CONNECTION  outlet="intbox0/intOut" inlet="counter0/set" vertices="359.0 204.0 335.5 204.0 335.5 178.0 312.0 178.0" />
+<CONNECTION  outlet="fanout0/out1" inlet="toggle0/toggle" vertices="476.0 202.0 424.0 202.0 424.0 45.0 372.0 45.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="intbox0/unitIn" vertices="498.0 202.0 471.5 202.0 471.5 141.0 445.0 141.0" />
+<CONNECTION  outlet="toresonances0/resonances" inlet="resping0/resonances" vertices="59.0 285.5 244.0 285.5" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="toresonances0/stream" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="74 175.0 207.0 175.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="resping0/ping" vertices="" />
+<CONNECTION  outlet="fanout1/out2" inlet="intbox2/intIn" vertices="287.0 294.0 326.5 294.0 326.5 231.0 366.0 231.0" />
+<TITLE  x="383.0" y="32.0" color="#FFFFFF" text="click button to hear resonaces" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="125.0" y="26.0" color="#FFFFFF" text="Resonance Arpeggiator" fontface="MS Sans Serif" fontsize="14" /><TITLE  x="502.0" y="237.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

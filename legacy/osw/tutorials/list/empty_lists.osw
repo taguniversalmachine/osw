@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="empty_lists" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Expr []" name="expr0" x="152.0" y="184.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Size " name="size0" x="152.0" y="260.0" width="76" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="152.0" y="325.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="3" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="152.0" y="117.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button1" x="423.0" y="114.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button1/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="Expr []" name="expr1" x="423.0" y="181.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Append 2 blue" name="append0" x="423.0" y="243.0" width="124" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="423.0" y="312.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="" />
+</TRANSFORM>
+<CONNECTION  outlet="expr0/out" inlet="size0/listIn" vertices="" />
+<CONNECTION  outlet="size0/size" inlet="intbox0/intIn" vertices="" />
+<CONNECTION  outlet="button0/unitOut" inlet="expr0/doExpr" vertices="" />
+<CONNECTION  outlet="button1/unitOut" inlet="expr1/doExpr" vertices="" />
+<CONNECTION  outlet="expr1/out" inlet="append0/listIn" vertices="" />
+<CONNECTION  outlet="append0/listOut" inlet="msgbox1/messageIn" vertices="" />
+<STICKY  x="207" y="99" width="102.0" height="61.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use this 
+Expr to construct
+an empty list</STICKY><STICKY  x="508.0" y="103.0" width="105.0" height="63.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Empty lists
+can be used
+in most transforms
+that accept lists</STICKY><TITLE  x="75.0" y="26.0" color="#FFFFFF" text="Empty Lists" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

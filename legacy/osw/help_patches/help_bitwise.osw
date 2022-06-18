@@ -1,0 +1,201 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_bitwise" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  name="ltlt0" x="75.0" y="174.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>&lt;&lt;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="75.0" y="114.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="190.0" y="112.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="75.0" y="242.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="ltlt1" x="351.0" y="170.0" width="34" height="24" color="#808000" fontface="" fontsize="8">
+<COMMAND>&gt;&gt;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="351.0" y="110.0" width="88" height="23" color="#808000" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="0" />
+
+<STATE name="intbox3/max" value="100" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox4" x="466.0" y="108.0" width="88" height="23" color="#808000" fontface="" fontsize="8">
+
+<STATE name="intbox4/intIn" value="0" />
+
+<STATE name="intbox4/max" value="100" />
+
+<STATE name="intbox4/min" value="0" />
+
+<STATE name="intbox4/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox5" x="351.0" y="238.0" width="88" height="23" color="#808000" fontface="" fontsize="8">
+
+<STATE name="intbox5/intIn" value="0" />
+
+<STATE name="intbox5/max" value="100" />
+
+<STATE name="intbox5/min" value="0" />
+
+<STATE name="intbox5/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="ltlt2" x="73.0" y="403.0" width="34" height="24" color="#ff8080" fontface="" fontsize="8">
+<COMMAND>?&amp;</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox6" x="73.0" y="343.0" width="88" height="23" color="#ff8080" fontface="" fontsize="8">
+
+<STATE name="intbox6/intIn" value="0" />
+
+<STATE name="intbox6/max" value="100" />
+
+<STATE name="intbox6/min" value="0" />
+
+<STATE name="intbox6/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox7" x="188.0" y="341.0" width="88" height="23" color="#ff8080" fontface="" fontsize="8">
+
+<STATE name="intbox7/intIn" value="0" />
+
+<STATE name="intbox7/max" value="100" />
+
+<STATE name="intbox7/min" value="0" />
+
+<STATE name="intbox7/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox8" x="73.0" y="471.0" width="88" height="23" color="#ff8080" fontface="" fontsize="8">
+
+<STATE name="intbox8/intIn" value="0" />
+
+<STATE name="intbox8/max" value="100" />
+
+<STATE name="intbox8/min" value="0" />
+
+<STATE name="intbox8/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="ltlt3" x="311.0" y="401.0" width="34" height="24" color="#008080" fontface="" fontsize="8">
+<COMMAND>?|</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox9" x="311.0" y="341.0" width="88" height="23" color="#008080" fontface="" fontsize="8">
+
+<STATE name="intbox9/intIn" value="0" />
+
+<STATE name="intbox9/max" value="100" />
+
+<STATE name="intbox9/min" value="0" />
+
+<STATE name="intbox9/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox10" x="426.0" y="339.0" width="88" height="23" color="#008080" fontface="" fontsize="8">
+
+<STATE name="intbox10/intIn" value="0" />
+
+<STATE name="intbox10/max" value="100" />
+
+<STATE name="intbox10/min" value="0" />
+
+<STATE name="intbox10/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox11" x="311.0" y="469.0" width="88" height="23" color="#008080" fontface="" fontsize="8">
+
+<STATE name="intbox11/intIn" value="0" />
+
+<STATE name="intbox11/max" value="100" />
+
+<STATE name="intbox11/min" value="0" />
+
+<STATE name="intbox11/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="ltlt4" x="542.0" y="399.0" width="34" height="24" color="#80ff80" fontface="" fontsize="8">
+<COMMAND>?^</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox132" x="542.0" y="341.0" width="88" height="23" color="#80ff80" fontface="" fontsize="8">
+
+<STATE name="intbox132/intIn" value="0" />
+
+<STATE name="intbox132/max" value="100" />
+
+<STATE name="intbox132/min" value="0" />
+
+<STATE name="intbox132/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox13" x="656.0" y="340.0" width="88" height="23" color="#80ff80" fontface="" fontsize="8">
+
+<STATE name="intbox13/intIn" value="0" />
+
+<STATE name="intbox13/max" value="100" />
+
+<STATE name="intbox13/min" value="0" />
+
+<STATE name="intbox13/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox14" x="542.0" y="467.0" width="88" height="23" color="#80ff80" fontface="" fontsize="8">
+
+<STATE name="intbox14/intIn" value="0" />
+
+<STATE name="intbox14/max" value="100" />
+
+<STATE name="intbox14/min" value="0" />
+
+<STATE name="intbox14/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="qgtgt0" x="636.0" y="211.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>'&gt;&gt;</COMMAND>
+</TRANSFORM>
+<CONNECTION  outlet="ltlt0/result" inlet="intbox2/intIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="ltlt0/param1" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="ltlt0/param2" vertices="196.0 159.5 113.0 159.5" />
+<CONNECTION  outlet="ltlt1/result" inlet="intbox5/intIn" vertices="" />
+<CONNECTION  outlet="intbox3/intOut" inlet="ltlt1/param1" vertices="" />
+<CONNECTION  outlet="intbox4/intOut" inlet="ltlt1/param2" vertices="472.0 155.5 389.0 155.5" />
+<CONNECTION  outlet="ltlt2/result" inlet="intbox8/intIn" vertices="" />
+<CONNECTION  outlet="intbox6/intOut" inlet="ltlt2/param1" vertices="" />
+<CONNECTION  outlet="intbox7/intOut" inlet="ltlt2/param2" vertices="194.0 388.5 111.0 388.5" />
+<CONNECTION  outlet="ltlt3/result" inlet="intbox11/intIn" vertices="" />
+<CONNECTION  outlet="intbox9/intOut" inlet="ltlt3/param1" vertices="" />
+<CONNECTION  outlet="intbox10/intOut" inlet="ltlt3/param2" vertices="432.0 386.5 349.0 386.5" />
+<CONNECTION  outlet="ltlt4/result" inlet="intbox14/intIn" vertices="" />
+<CONNECTION  outlet="intbox132/intOut" inlet="ltlt4/param1" vertices="" />
+<CONNECTION  outlet="intbox13/intOut" inlet="ltlt4/param2" vertices="662.0 386.0 580.0 386.0" />
+<STICKY  x="597" y="53" width="130.0" height="76.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">These operators require
+input via the left inlet and
+output the result of the
+operation with the most
+recent right inlet.</STICKY>
+<TITLE  x="124" y="79" color="#FFFFFF" text="Left Shift" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="451.0" y="85.0" color="#FFFFFF" text="Right Shift" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="175.0" y="312.0" color="#FFFFFF" text="Bitwise And" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="417.0" y="314.0" color="#FFFFFF" text="Bitwise Or" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="637.0" y="315.0" color="#FFFFFF" text="Bitwise Xor" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="657.0" y="163.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="278.0" y="36.0" color="#FFFFFF" fontface="MS Sans Serif" fontsize="14" >Bitwise operators (&lt;&lt;  &gt;&gt;  ?&amp; ?| ?^)</TITLE>
+<HYPERLINK  x="658.0" y="186.0" color="#0000FF" link="audio/bitwise_signal" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

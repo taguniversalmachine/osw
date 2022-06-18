@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_This" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox " name="floatbox0" x="118" y="129" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="118" y="354" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0.26" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Inlet" name="inlet0" x="396.0" y="117.0" width="35" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Print" name="print0" x="396.0" y="197.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="TypeFilter -type Float" name="typefilter0" x="396.0" y="254.0" width="142" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 2.0" name="mul0" x="396.0" y="315.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet" name="outlet0" x="396.0" y="417.0" width="42" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="This" name="this0" x="118.0" y="224.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="this0/inlet0" vertices="" />
+<CONNECTION  outlet="inlet0_inlet/out" inlet="print0/to_print" vertices="" />
+<CONNECTION  outlet="print0/thru_print" inlet="typefilter0/input" vertices="" />
+<CONNECTION  outlet="typefilter0/output" inlet="mul0/param1" vertices="" />
+<CONNECTION  outlet="mul0/result" inlet="outlet0_outlet/in" vertices="" />
+<CONNECTION  outlet="this0/outlet0" inlet="floatbox1/floatIn" vertices="" />
+<STICKY  x="481.0" y="107.0" width="99.0" height="49.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Input into This is
+routed here</STICKY><STICKY  x="471.0" y="407.0" width="117.0" height="57.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Output is routed back
+to the outlet of This</STICKY><STICKY  x="174.0" y="214.0" width="116.0" height="52.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">This creates a new
+copy of this patch and
+routes input to it.</STICKY><STICKY  x="55.0" y="417.0" width="253.0" height="48.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Once you understand the concept of recursive
+you can start implementing all sorts of mind-blowing
+programs.</STICKY><TITLE  x="115.0" y="40.0" color="#FFFFFF" text="This" fontface="MS Sans Serif" fontsize="16" /><HYPERLINK  x="169.0" y="497.0" color="#0000FF" link="math/factorial" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="169.0" y="518.0" color="#0000FF" link="math/fib" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

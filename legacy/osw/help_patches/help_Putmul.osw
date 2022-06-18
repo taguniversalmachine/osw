@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Putmul" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="IntBox" name="intbox0" x="110.0" y="354.0" width="88" height="23" color="#ff0000" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="3" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="111.0" y="411.0" width="88" height="23" color="#0000ff" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="5" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox -name dontUseMe" name="dontUseMe" x="123.0" y="138.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="dontUseMe/intIn" value="0" />
+
+<STATE name="dontUseMe/max" value="100" />
+
+<STATE name="dontUseMe/min" value="0" />
+
+<STATE name="dontUseMe/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Put* int*/intIn" name="putmul0" x="123.0" y="198.0" width="100" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox -name dontUseMeEither" name="dontUseMeEither" x="309.0" y="141.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="dontUseMeEither/intIn" value="0" />
+
+<STATE name="dontUseMeEither/max" value="100" />
+
+<STATE name="dontUseMeEither/min" value="0" />
+
+<STATE name="dontUseMeEither/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Put* intbox?/intIn" name="putmul1" x="309.0" y="197.0" width="118" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="111.0" y="465.0" width="88" height="23" color="#0000ff" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="5" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox -name meNeither" name="meNeither" x="480.0" y="135.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="meNeither/intIn" value="0" />
+
+<STATE name="meNeither/max" value="100" />
+
+<STATE name="meNeither/min" value="0" />
+
+<STATE name="meNeither/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Put* intbox[012]/intIn" name="putmul2" x="480.0" y="200.0" width="142" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox -name yetAnother" name="yetAnother" x="404" y="305" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="yetAnother/intIn" value="0" />
+
+<STATE name="yetAnother/max" value="100" />
+
+<STATE name="yetAnother/min" value="0" />
+
+<STATE name="yetAnother/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Put* intbox{1,2}/intIn" name="putmul3" x="404.0" y="368.0" width="142" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="dontUseMe/intOut" inlet="putmul0/input" vertices="" />
+<CONNECTION  outlet="dontUseMeEither/intOut" inlet="putmul1/input" vertices="" />
+<CONNECTION  outlet="meNeither/intOut" inlet="putmul2/input" vertices="" />
+<CONNECTION  outlet="yetAnother/intOut" inlet="putmul3/input" vertices="" />
+<STICKY  x="104.0" y="287.0" width="105.0" height="32.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Watch these boxes
+change value</STICKY><TITLE  x="144.0" y="39.0" color="#FFFFFF" text="Put*" fontface="Arial" fontsize="16" /><TITLE  x="170.0" y="112.0" color="#FFFFFF" text="use * wildcards" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="356.0" y="116.0" color="#FFFFFF" text="use ? wildcards" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="526.0" y="114.0" color="#FFFFFF" text="range of values" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="452.0" y="286.0" color="#FFFFFF" text="list of possible values" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="474.0" y="415.0" color="#FFFFFF" text="only matches the blue boxes" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

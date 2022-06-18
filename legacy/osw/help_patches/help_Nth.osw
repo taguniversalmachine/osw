@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Nth" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Nth -index 2" name="nth0" x="164" y="218" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="89.0" y="140.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="1 2 3 3.5 4" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="320" y="136" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="164.0" y="289.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="nth0/element" inlet="msgbox1/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="nth0/listIn" vertices="95.0 196.0 170.0 196.0" />
+<CONNECTION  outlet="intbox0/intOut" inlet="nth0/index" vertices="326 193 250 193" />
+<STICKY  x="277.0" y="29.0" width="129.0" height="79.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">To access different
+elements, change the
+value of the number box 
+and repress the button to 
+the left.</STICKY><TITLE  x="160.0" y="63.0" color="#FFFFFF" text="Nth" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

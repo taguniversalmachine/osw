@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Gamma" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Gamma" name="gamma0" x="114.0" y="212.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="DoubleBox" name="doublebox0" x="114.0" y="148.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublebox0/max" value="20" />
+
+<STATE name="doublebox0/min" value="0" />
+
+<STATE name="doublebox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleBox" name="doublebox1" x="114.0" y="279.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublebox1/max" value="20" />
+
+<STATE name="doublebox1/min" value="0" />
+
+<STATE name="doublebox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Fact" name="fact0" x="334" y="285" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr sqrt(pi)" name="expr0" x="520.0" y="192.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="520.0" y="121.0" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox \" name="floatbox0" x="520" y="263" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="1.77245" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<CONNECTION  outlet="doublebox0/doubleOut" inlet="gamma0/in" vertices="" />
+<CONNECTION  outlet="gamma0/out" inlet="doublebox1/doubleIn" vertices="" />
+<CONNECTION  outlet="expr0/out" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="button0/unitOut" inlet="expr0/doExpr" vertices="" />
+<STICKY  x="308.0" y="164.0" width="113.0" height="37.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">For integers,
+Gamma(n + 1) = n!</STICKY><STICKY  x="576.0" y="111.0" width="103.0" height="50.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Compare this 
+value to
+Gamma (0.5)</STICKY><TITLE  x="357.0" y="266.0" color="#FFFFFF" text="see also fact" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="122.0" y="60.0" color="#FFFFFF" text="Gamma" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

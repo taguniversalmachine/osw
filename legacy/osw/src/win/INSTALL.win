@@ -1,0 +1,29 @@
+INSTALLING THE BINARY VERSION OF OSW FOR WINDOWS 98/2000/ME/XP
+
+These instructions are intended for users who are not using the
+self-installing executable distribution.  It is strongly recommended
+that you use that distribution instead and thus avoid running the
+installation steps below.
+
+0.  INSTALL THE OSW DISTRIBUTION
+
+OSW 1.1 and higher is packaged as a self-installing executable called:
+
+oswX.X.win.exe
+
+Simply double-click on this file after downloading it (if you're feeling
+lucky you can just select "Open" from your browser while downloading) 
+and follow the instructions.
+
+1.  INSTALLING TCL/TK
+
+If you do not already have Tcl/Tk 8.2 and Incr Tcl installed on your
+system, you will be prompted during the installation process to
+install these components.  Installation then proceeds automatically,
+except that you MUST CHECK THE BOX FOR INCR TCL AND IWIDGET SUPPORT!
+Failing to do so will prevent OSW from running after installation.
+
+2.  START PLAYING
+
+That's it.  You should be ready to start using OSW now.  Have fun!
+

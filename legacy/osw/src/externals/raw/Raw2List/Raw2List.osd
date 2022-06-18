@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<osw-external name="Raw2List" package="raw">
+<description>Convert raw data to a list of integers</description>
+<copyright></copyright>
+<inlet name="rawIn" type="Raw" description="data to convert" />
+<outlet name="listOut" type="List" description="List of integers representing bytes in data" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="convert" activators="rawIn" order="0" >
+
+List alist;
+for (int i = 0; i &lt; rawIn->size(); ++i) &#123;
+  alist.append(new Datum&lt;Integer>(rawIn&#91;i&#93;));
+&#125;
+listOut = alist;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Raw2List &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">Raw2List converts a stream of raw data into a list of integers representing each byte of the data.</xblock>
+<xblock name="Links">List2Raw UDPListen</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Raw2List" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="59.0" y="145.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="1 2 3" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List2Raw " name="list2raw0" x="59.0" y="214.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="317.0" y="155.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="4 banana 5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List2Raw " name="list2raw1" x="317.0" y="224.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Raw2List " name="raw2list0" x="59.0" y="294.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Raw2List" name="raw2list1" x="317.0" y="298.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox2" x="59.0" y="372.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox2/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox3" x="317.0" y="366.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox3/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List2Raw" name="list2raw2" x="227.0" y="467.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="list2raw0/listIn" vertices="" />
+&lt;CONNECTION  outlet="list2raw0/rawOut" inlet="raw2list0/rawIn" vertices="" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="list2raw1/listIn" vertices="" />
+&lt;CONNECTION  outlet="list2raw1/rawOut" inlet="raw2list1/rawIn" vertices="" />
+&lt;CONNECTION  outlet="raw2list0/listOut" inlet="msgbox2/messageIn" vertices="" />
+&lt;CONNECTION  outlet="raw2list1/listOut" inlet="msgbox3/messageIn" vertices="" />
+&lt;STICKY  x="89.0" y="97.0" width="71.0" height="21.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Try this list&lt;/STICKY>&lt;STICKY  x="344.0" y="106.0" width="77.0" height="24.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">And this one&lt;/STICKY>&lt;TITLE  x="93.0" y="31.0" color="#FFFFFF" text="Raw2List" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="258.0" y="447.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

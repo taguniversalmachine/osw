@@ -1,0 +1,58 @@
+INSTALLING THE BINARY VERSION OF OSW FOR LINUX
+
+0.  GET THE OSW DISTRIBUTION
+
+Download the Mac OS X image osw-x.xx.macosx.dmg and mount it on your Desktop
+by double-clicking it.
+
+1.  INSTALLING TCL/TK
+
+A self-installing version of Tcl/Tk, including Itcl is available from Apple's
+download site.  From the apple menu, select "Get Mac OSX Software."  Find
+the search box (it is not obvious on the current layout of Apple's website)
+and select "Tcl/Tk".  The "8.4.x" item should point you to Tcl/Tk Aqua.
+Follow the download and installation instructions provided.
+
+2.  RUNNING "INSTALL"
+
+Once Tcl/Tk and Itcl are installed, you are ready to continue with 
+installation of OSW.  Double-click on the osw-x.xx disk on your desktop.
+Inside this disk you will find the OSW installer, OpenSoundWorld.pkg.
+Double-click on the installer and follow to the steps on the screen.  This
+is a standard Apple OSX installer, so the process should be fairly familiar.
+
+3. ENVIRONMENT VARIABLES
+
+In the spirit of Apple's "Think Different" motto, dynamic libraries on OS X
+do not work quite the same way they do on Linux, Irix or indeed most other
+flavors of Unix.  The project is set up to compile and link using the OS X
+dynamic-library framework, but to run OSW you will need to define the
+following environment variable:
+
+DYLD_BIND_AT_LAUNCH
+
+It doesn't seem to matter what you set it to, it just needs to be there.
+Without this variable, running oswbin or loading an external will hang.
+
+To set an environment variable from the command line, type the following
+commands:
+
+"DYLD_BIND_AT_LAUNCH=1"
+"export DYLD_BIND_AT_LAUNCH"
+
+For the more Unix-adept, you can add these commands to your shell startup
+script.
+
+You will also need to set the following environment variable if you want to 
+use oswbin:
+
+OSW_DIR = /usr/local/lib/osw
+
+(or an alternative directory you have chosen for OSW)
+
+Note: In the future one of us will figure out how to integrate this step
+into the installer.
+
+4.  START PLAYING
+
+That's it.  You should be ready to start using OSW now.  Have fun!

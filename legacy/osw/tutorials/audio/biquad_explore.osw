@@ -1,0 +1,166 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="biquad_explore" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="VSlider" name="vslider0" x="200.0" y="185.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider0/min" value="0" />
+
+<STATE name="vslider0/max" value="1" />
+
+<STATE name="vslider0/resolution" value="0.01" />
+
+<STATE name="vslider0/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="200.0" y="331.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0.36" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider2" x="317.0" y="184.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider2/min" value="-1" />
+
+<STATE name="vslider2/max" value="1" />
+
+<STATE name="vslider2/resolution" value="0.01" />
+
+<STATE name="vslider2/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="317.0" y="332.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="-0.24" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider3" x="431.0" y="187.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider3/min" value="-1" />
+
+<STATE name="vslider3/max" value="1" />
+
+<STATE name="vslider3/resolution" value="0.01" />
+
+<STATE name="vslider3/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="431.0" y="333.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0.33" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider4" x="546.0" y="186.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider4/min" value="-1" />
+
+<STATE name="vslider4/max" value="1" />
+
+<STATE name="vslider4/resolution" value="0.01" />
+
+<STATE name="vslider4/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="546.0" y="332.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="-0.3" />
+
+<STATE name="floatbox3/max" value="1" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider5" x="663.0" y="188.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider5/min" value="-1" />
+
+<STATE name="vslider5/max" value="1" />
+
+<STATE name="vslider5/resolution" value="0.01" />
+
+<STATE name="vslider5/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox4" x="663.0" y="334.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox4/floatIn" value="-0.12" />
+
+<STATE name="floatbox4/max" value="1" />
+
+<STATE name="floatbox4/min" value="0" />
+
+<STATE name="floatbox4/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="AsyncPack" name="pack0" x="206.0" y="400.0" width="90" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FrequencyResponse" name="frequencyresponse0" x="206.0" y="595.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="frequencyresponse0/zoom" value="1" />
+
+<STATE name="frequencyresponse0/vertical_zoom" value="1" />
+
+<STATE name="frequencyresponse0/background" value="black" />
+
+<STATE name="frequencyresponse0/foreground" value="cyan" />
+</TRANSFORM>
+<TRANSFORM  command="Biquad" name="biquad0" x="540.0" y="498.0" width="105" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="biquad0/gain" value="1" />
+
+<STATE name="biquad0/zero1" value="0" />
+
+<STATE name="biquad0/zero2" value="0" />
+
+<STATE name="biquad0/pole1" value="0" />
+
+<STATE name="biquad0/pole2" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="206.0" y="476.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="noise0" x="442" y="408" width="59" height="41" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>WhiteNoise</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="Tanh" name="tanh0" x="540.0" y="561.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="540.0" y="620.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="543.0" y="685.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="vslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="pack0/in1" vertices="206.0 383.5 212.0 383.5" />
+<CONNECTION  outlet="vslider2/floatOut" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="pack0/in2" vertices="323.0 384.0 229.0 384.0" />
+<CONNECTION  outlet="vslider3/floatOut" inlet="floatbox2/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="pack0/in3" vertices="437.0 384.5 246.0 384.5" />
+<CONNECTION  outlet="vslider4/floatOut" inlet="floatbox3/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox3/floatOut" inlet="pack0/in4" vertices="552.0 384.0 263.0 384.0" />
+<CONNECTION  outlet="vslider5/floatOut" inlet="floatbox4/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox4/floatOut" inlet="pack0/in5" vertices="669.0 385.0 280.0 385.0" />
+<CONNECTION  outlet="pack0/listOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="biquad0/samplesOut" inlet="tanh0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="frequencyresponse0/listIn" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="biquad0/coefs" vertices="237.0 528.0 442.5 528.0 442.5 483.0 648.0 483.0" />
+<CONNECTION  outlet="noise0/samplesOut" inlet="biquad0/samplesIn" vertices="448 478.5 546.0 478.5" />
+<CONNECTION  outlet="tanh0/out" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="546.0 671.0 618.0 671.0" />
+<TITLE  x="221.0" y="77.0" color="#FFFFFF" text="Visual and Aural Exploration of Biquads" fontface="Arial" fontsize="14" />
+<TITLE  x="220.0" y="151.0" color="#FFFFFF" text="a0 (gain)" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="342.0" y="154.0" color="#FFFFFF" text="a1" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="448.0" y="155.0" color="#FFFFFF" text="a2" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="563.0" y="156.0" color="#FFFFFF" text="b1" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="686.0" y="159.0" color="#FFFFFF" text="b2" fontface="MS Sans Serif" fontsize="10" />
+</PATCH>
+</OSW>
+

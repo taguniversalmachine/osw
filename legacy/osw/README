@@ -1,0 +1,141 @@
+
+March 1, 2001
+
+Thank you for your interest in Open Sound World.
+
+This document is arranged as follows:
+
+1.  COPYRIGHT NOTICE AND LICENCE AGREEMENT
+2.  REQUIREMENTS
+3.  INSTALLATION
+4.  READING THE DOCUMENTATION
+5.  CONTACT INFO
+6.  HOW TO HELP
+7.  HAVE FUN!
+
+
+This README file is maintained by Amar Chaudhary (amar@ptank.com)
+
+----------------
+1. COPYRIGHT NOTICE AND LICENCE AGREEMENT
+
+
+Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+       Andrew W. Schmeder (andy@a2hd.com)
+
+  
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+     
+
+--------------------
+
+2. REQUIREMENTS
+
+  OSW runs on Intel-compatible PC's running either Windows 2000/XP or 
+Linux, Apple Macintosh computers running OS X, and SGI workstations running 
+Irix 6.5 or later. A soundcard is also a good idea.  OSW will run without any 
+soundcard installed, but it is not very exciting.  Any sound hardware 
+supported by Windows (via ASIO or WDM), Mac OS X CoreAudio or Linux ALSA 
+drivers should work, although the latency and quality will vary.  Any sound 
+harware for SGI workstations supported by Irix should work as well.
+
+  Tcl/Tk 8.2.x or higher is also required.  Most Linux distributions should
+come with Tcl/Tk, consult the documentation of your distribution for more info.
+The Windows installer for OSW contains it's own version of Tcl/Tk to be 
+installed if not already present on your system.  Mac Tcl/TkAqua is available
+from Apple's software site (click "Get OS X Software" from the apple menu).
+For SGI versions, it is unfortunately necessary to download and compile the 
+source code because SGI only distributed a binary for Tcl/Tk 8.0.4.
+
+3. INSTALLATION
+
+If you are installing a binary distribution, it should have this file, 
+as well as files INSTALL.xxx (where xxx is your platform) 
+that contain the installation instructions for pre-compiled versions.
+
+3.1 COMPILING AND INSTALLING FROM THE SOURCE DISTRIBUTION
+
+If you are compiling a source distribution, first unpack the distribution
+(you've probably done that already) and proceed to the "src" directory.
+From this directory go to the appropriate platform directory "win", "linux",
+"macosx", or "sgi".  In the platform directory you will find a file named 
+"COMPILE.xxx" where "xxx" is the platform (same name as the directory).  
+Follow the platform-specific instructions in that file.
+
+4. READING THE DOCUMENTATION
+
+Once you have OSW up and running, you can get documentation by clicking on
+the Help menu and selecting "User Guide." which will automatically start your
+Web browser (Explorer or Netscape or whatever under Windows, or Netscape on
+Linux).  Since it just good old HTML, you can access the documentation from
+the "html" subdirectory inside the directory where you installed OSW.
+
+5. CONTACT INFO
+
+This is always a work in progress, so your feedback is very important 
+and very much appreciated.  Please send your comments and inquiries to
+Amar Chaudhary (peoplestank@users.sourceforge.net), and put "OSW" somewhere 
+in the subject to get a more timely response.
+
+6. HOW TO HELP
+
+  The best ways to help right now are:
+
+	1)  Try out OSW
+        2)  Join the mailing lists
+	3)  Report bugs/annoyances
+	4)  Write cool patches that can be used as tuturials
+        5)  Let us know about your projects, whether artist, research or
+            otherwise.
+
+
+7. HAVE FUN!
+
+  Need I say more?

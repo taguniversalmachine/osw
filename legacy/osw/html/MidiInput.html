@@ -1,0 +1,95 @@
+<html>
+<head>
+	<meta name="Author" content="Amar Chaudhary">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="Open Sound World MIDI Input">
+<title>MidiInput</title>
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">MidiInput <a href="http://localhost:7775/OSW_DIR/help_patches/help_MidiInput.osw"><font size="-1">[Help Patch]</font></a></h1>
+<p>Input MIDI messages</p>
+<h3 class="title">Syntax</h3>
+<p>MidiInput&nbsp;&nbsp;<i>options</i></p>
+<h3 class="title">Options</h3>
+<ul>
+<dl>
+<dt><b>-driver</b></dt>
+<dd>The name of a MIDI device to use for input.  MIDI input device names are of the form /midiIn/<i>n</i></dd>
+<dd>Type: String</dd>
+<dt><b>-channel</b></dt>
+<dd>Filter incoming messages by channel</dd>
+<dd>Type: Integer</dd>
+<dt><b>-status</b></dt>
+<dd>Filter incoming messages by status (message type)</dd>
+<dd>Type: String</dd>
+<dt><b>-parameter</b></dt>
+<dd>Filter incoming messages by parameter value (e.g., specific note or control number)</dd>
+<dd>Type: Integer</dd>
+</dl>
+</ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>channelOut</b></dt>
+<dd>Channel of incoming MIDI message (0-15)</dd>
+<dd>Type: Integer</dd>
+<dt><b>statusOut</b></dt>
+<dd>Status (message type), a number between 8 and 14</dd>
+<dd>Type: Integer</dd>
+<dt><b>firstOut</b></dt>
+<dd>First value byte of MIDI message (0-127)</dd>
+<dd>Type: Integer</dd>
+<dt><b>secondOut</b></dt>
+<dd>Second byte of MIDI message (0-127)</dd>
+<dd>Type: Integer</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>You can double click the MidiInput transform to see a list of available MIDI input devices, and select a device and optional channel, status and parameter filter values.</p>
+<p>The valid strings for the <b>-status</b> option are:</p>
+<bl>
+<li><b>noteoff</b>: Note-off messages</li>
+<li><b>noteon</b>: Note-on messages</li>
+<li><b>polyaftertouch</b>, <b>poly</b>: Polyphonic aftertouch</li>
+<li><b>control</b>: Control change</li>
+<li><b>program</b>: Program change</li>
+<li><b>aftertouch</b>: Channel aftertouch (standard aftertouch)</li>
+<li><b>pitchbend</b>: Pitch bend</li>
+<li><b>all</b>: All messages (default)</li>
+</bl>
+<h3 class="title">Known Issues</h3>
+MIDI Input is currently available on Windows and Linux platforms.
+<h3 class="title">See Also</h3>
+<a href="MidiOutput.html">MidiOutput</a><br>
+<a href="midi/MidiPack.html">MidiPack</a><br>
+<a href="midi/MidiPackBytes.html">MidiPackBytes</a><br>
+<a href="making_music.htm">Notes and MIDI</a><br>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

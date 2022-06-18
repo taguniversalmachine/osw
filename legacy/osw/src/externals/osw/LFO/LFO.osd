@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+<osw-external name="LFO" package="osw">
+<description>Low-frequency oscillator</description>
+<copyright>
+
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="timeIn" type="Time" description="Virtual time source" />
+<inlet name="shape" type="String" default="!quotsine!quot" description="LFO waveform (shape) to use" persistent="1" />
+<inlet name="frequency" type="Float" default="1.0" description="LFO frequency" persistent="1" />
+<outlet name="valueOut" type="Float" description="Output current value of LFO" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xlfo.SetShape(LFO&lt;Float>::ShapeType(GetShapeIndex(shape->c_str())));</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">LFO&lt;Float>  xlfo;
+
+Integer  GetShapeIndex(const char *shape) &#123;
+
+  for (int i = 0; s_waveforms&#91;i&#93;; ++i) &#123;
+    if (!stricmp(shape,s_waveforms&#91;i&#93;)) &#123;
+	return i;
+    &#125; 
+  &#125;
+  return -1;
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">static char *s_waveforms&#91;&#93; = &#123;
+  "random",
+  "sine",
+  "saw",
+  "square",
+  "triangle",
+  "pulse",
+  "pulse25",
+  "abssine",
+  "furry",
+  "sine1_2",
+  NULL
+&#125;;</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="shape_changed" activators="shape" order="0" >
+xlfo.SetShape(LFO&lt;Float>::ShapeType(GetShapeIndex(shape->c_str())));
+</activation>
+<activation name="do_lfo" activators="timeIn" order="0" >
+valueOut = xlfo(frequency * (Double)(timeIn));
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">LFO &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_LFO" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="LFO" name="lfo0" x="251.0" y="228.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="lfo0/shape" value="sine" />
+
+&lt;STATE name="lfo0/frequency" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="OptionBox" name="optionbox0" x="112.0" y="137.0" width="172" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="optionbox0/options" value="random sine saw square triangle pulse pulse25 abssine furry sine1_2" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="316.0" y="135.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="1" />
+
+&lt;STATE name="floatbox1/max" value="10" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="251.0" y="301.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Sinewave" name="sinewave0" x="360.0" y="455.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sinewave0/freq" value="391.46" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="366.0" y="560.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="DC" name="dc0" x="121.0" y="385.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="dc0/level" value="0.779361" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Scope" name="scope0" x="121.0" y="485.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="scope0/interval" value="0.1" />
+
+&lt;STATE name="scope0/zoom" value="1" />
+
+&lt;STATE name="scope0/background" value="black" />
+
+&lt;STATE name="scope0/foreground" value="green" />
+
+&lt;STATE name="scope0/resolution" value="100" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="expr0" x="292.0" y="378.0" width="143" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>Expr 220 + 220 *&amp;#36;f1&lt;/COMMAND>
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="lfo0/valueOut" inlet="fanout0/in" vertices="" />
+&lt;CONNECTION  outlet="optionbox0/selectOut" inlet="lfo0/shape" vertices="118.0 200.5 278.0 200.5" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="lfo0/frequency" vertices="322.0 199.5 299.0 199.5" />
+&lt;CONNECTION  outlet="fanout0/out1" inlet="dc0/level" vertices="257.0 361.5 163.0 361.5" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="expr0/f1" vertices="282.0 358.0 298.0 358.0" />
+&lt;CONNECTION  outlet="sinewave0/samplesOut" inlet="out0/mix" vertices="366.0 533.0 441.0 533.0" />
+&lt;CONNECTION  outlet="dc0/samplesOut" inlet="scope0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="expr0/out" inlet="sinewave0/freq" vertices="298.0 435.0 438.0 435.0" />
+&lt;TITLE  x="101.0" y="30.0" color="#FFFFFF" text="LFO" fontface="Arial" fontsize="14" />
+&lt;TITLE  x="179.0" y="112.0" color="#FFFFFF" text="waveform" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="371.0" y="110.0" color="#FFFFFF" text="frequency" fontface="MS Sans Serif" fontsize="10" />
+&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

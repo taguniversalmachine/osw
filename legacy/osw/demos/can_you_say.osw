@@ -1,0 +1,156 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="can_you_say" Version="1.1beta2" WindowSize="200 230" Background="#fefefe">
+<TRANSFORM  command="MessageBox" name="msgbox0" x="172.0" y="280.0" width="137" height="47" color="darkgrey" fontface="avant garde gothic" fontsize="24">
+
+<STATE name="msgbox0/message" value="S o u n d" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="138.0" y="210.0" width="127" height="47" color="darkgrey" fontface="avant garde gothic" fontsize="24">
+
+<STATE name="msgbox1/message" value="O p e n" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="207.0" y="351.0" width="132" height="47" color="darkgrey" fontface="avant garde gothic" fontsize="24">
+
+<STATE name="msgbox2/message" value="W o r l d" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin1" x="108.0" y="377.0" width="60" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Nth 1" name="nth0" x="108.0" y="430.0" width="37" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="nth0/index" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Dealer -outputs 3" name="dealer1" x="108.0" y="484.0" width="131" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox3" x="108.0" y="545.0" width="76" height="49" color="darkgrey" fontface="bookman" fontsize="40">
+
+<STATE name="msgbox3/message" value="O" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox4" x="205.0" y="546.0" width="74" height="49" color="darkgrey" fontface="bookman" fontsize="40">
+
+<STATE name="msgbox4/message" value="S" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox5" x="300.0" y="547.0" width="74" height="48" color="darkgrey" fontface="bookman" fontsize="40">
+
+<STATE name="msgbox5/message" value="W" />
+</TRANSFORM>
+<TRANSFORM  command="RandInt -min 0 -max 2" name="randint2" x="646.0" y="434.0" width="117" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="701.0" y="658.0" width="125" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OneShot  -at 1.0D" name="oneshot3" x="498.0" y="123.0" width="97" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OneShot -at 2.0D" name="oneshot4" x="610.0" y="123.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OneShot -at 3.0D" name="oneshot5" x="717.0" y="123.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="498.0" y="201.0" width="60" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin2" x="558.0" y="526.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Switch" name="switch0" x="498.0" y="320.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OptionBox" name="optionbox1" x="703.0" y="197.0" width="177" height="28" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="optionbox1/options" value="right wrong" />
+</TRANSFORM>
+<TRANSFORM  command="Counter -set -1" name="counter3" x="498.0" y="407.0" width="87" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="counter3/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="TimeMachine" name="tm0" x="667.0" y="11.0" width="60" height="62" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="498.0" y="63.0" width="60" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button1" x="795.0" y="12.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button1/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="% 3" name="mod0" x="498.0" y="469.0" width="32" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Put open" name="put0" x="494.0" y="772.0" width="52" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Put sound" name="put1" x="568.0" y="772.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Put world" name="put2" x="647.0" y="772.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout2" x="878.0" y="256.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="717.0" y="342.0" width="105" height="28" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="-1" />
+
+<STATE name="intbox0/max" value="-1" />
+
+<STATE name="intbox0/min" value="-1" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="855.0" y="337.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout3" x="558.0" y="579.0" width="60" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="== 0" name="eqeq0" x="494.0" y="659.0" width="32" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="== 1" name="eqeq1" x="564.0" y="658.0" width="32" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="== 2" name="eqeq2" x="626.0" y="658.0" width="32" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Truth" name="truth0" x="494.0" y="712.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Truth" name="truth1" x="564.0" y="711.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Truth" name="truth2" x="626.0" y="710.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get open" name="get3" x="263.0" y="151.0" width="52" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get sound" name="get4" x="307.0" y="221.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get world" name="get5" x="337.0" y="292.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanin1/in2" vertices="178.0 357.0 133.0 357.0" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="fanin1/in1" vertices="144.0 322.0 114.0 322.0" />
+<CONNECTION  outlet="msgbox2/messageOut" inlet="fanin1/in3" vertices="213.0 423.0 182.5 423.0 182.5 362.0 152.0 362.0" />
+<CONNECTION  outlet="fanin1/out" inlet="nth0/listIn" vertices="" />
+<CONNECTION  outlet="nth0/element" inlet="dealer1/in" vertices="" />
+<CONNECTION  outlet="dealer1/out0" inlet="msgbox3/messageIn" vertices="" />
+<CONNECTION  outlet="dealer1/out1" inlet="msgbox4/messageIn" vertices="178.0 531.5 211.0 531.5" />
+<CONNECTION  outlet="dealer1/out2" inlet="msgbox5/messageIn" vertices="242.0 532.0 306.0 532.0" />
+<CONNECTION  outlet="randint2/randOut" inlet="fanin2/in2" vertices="652.0 496.5 585.0 496.5" />
+<CONNECTION  outlet="oneshot3/tick" inlet="fanin0/in1" vertices="" />
+<CONNECTION  outlet="oneshot4/tick" inlet="fanin0/in2" vertices="616.0 178.5 523.0 178.5" />
+<CONNECTION  outlet="oneshot5/tick" inlet="fanin0/in3" vertices="723.0 178.5 542.0 178.5" />
+<CONNECTION  outlet="fanin0/out" inlet="switch0/in" vertices="" />
+<CONNECTION  outlet="fanin2/out" inlet="fanout3/in" vertices="" />
+<CONNECTION  outlet="switch0/out1" inlet="counter3/next" vertices="" />
+<CONNECTION  outlet="switch0/out2" inlet="randint2/nextnum" vertices="525.0 393.5 652.0 393.5" />
+<CONNECTION  outlet="optionbox1/indexOut" inlet="fanout2/in" vertices="" />
+<CONNECTION  outlet="counter3/intOut" inlet="mod0/param1" vertices="" />
+<CONNECTION  outlet="tm0/timeOut" inlet="fanout1/in" vertices="673.0 98.0 588.5 98.0 588.5 48.0 504.0 48.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="oneshot3/timeIn" vertices="" />
+<CONNECTION  outlet="fanout1/out2" inlet="oneshot4/timeIn" vertices="523.0 109.5 616.0 109.5" />
+<CONNECTION  outlet="fanout1/out3" inlet="oneshot5/timeIn" vertices="542.0 109.5 723.0 109.5" />
+<CONNECTION  outlet="button1/unitOut" inlet="tm0/zero" vertices="801.0 71.0 756.0 71.0 756.0 -4.0 711.0 -4.0" />
+<CONNECTION  outlet="mod0/result" inlet="fanin2/in1" vertices="504.0 514.0 564.0 514.0" />
+<CONNECTION  outlet="fanout2/out1" inlet="switch0/switch" vertices="884.0 304.5 547.0 304.5" />
+<CONNECTION  outlet="fanout2/out2" inlet="button0/trigger" vertices="905.0 313.0 861.0 313.0" />
+<CONNECTION  outlet="intbox0/intOut" inlet="counter3/set" vertices="723.0 393.5 589.0 393.5" />
+<CONNECTION  outlet="button0/unitOut" inlet="intbox0/unitIn" vertices="861.0 396.0 843.5 396.0 843.5 327.0 826.0 327.0" />
+<CONNECTION  outlet="fanout3/out1" inlet="eqeq0/param1" vertices="564.0 635.5 500.0 635.5" />
+<CONNECTION  outlet="fanout3/out2" inlet="eqeq1/param1" vertices="583.0 635.0 570.0 635.0" />
+<CONNECTION  outlet="fanout3/out3" inlet="eqeq2/param1" vertices="602.0 635.0 632.0 635.0" />
+<CONNECTION  outlet="eqeq0/result" inlet="truth0/test" vertices="" />
+<CONNECTION  outlet="eqeq1/result" inlet="truth1/test" vertices="" />
+<CONNECTION  outlet="eqeq2/result" inlet="truth2/test" vertices="" />
+<CONNECTION  outlet="truth0/trigger" inlet="put0/input" vertices="" />
+<CONNECTION  outlet="truth1/trigger" inlet="put1/input" vertices="570.0 758.0 574.0 758.0" />
+<CONNECTION  outlet="truth2/trigger" inlet="put2/input" vertices="632.0 757.5 653.0 757.5" />
+<CONNECTION  outlet="get3/value" inlet="msgbox1/sendnow" vertices="" />
+<CONNECTION  outlet="get4/value" inlet="msgbox0/sendnow" vertices="" />
+<CONNECTION  outlet="get5/value" inlet="msgbox2/sendnow" vertices="" />
+<STICKY  x="622.0" y="204.0" width="57.0" height="17.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Say it. . .</STICKY><STICKY  x="846.0" y="17.0" width="39.0" height="20.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Say it!</STICKY><STICKY  x="852.0" y="663.0" width="73.0" height="42.0" color="#FFFF77" fontface="Helvetica" fontsize="8">But make sure 
+you enable audio
+before you say it.</STICKY></PATCH>
+</OSW>
+

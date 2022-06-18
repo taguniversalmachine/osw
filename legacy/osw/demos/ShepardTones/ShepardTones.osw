@@ -1,0 +1,151 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="ShepardTones" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Ramp" name="ramp0" x="36.0" y="328.0" width="32" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="ramp0/gradient" value="0.26" />
+</TRANSFORM>
+<TRANSFORM  command="TimeMachine" name="tm0" x="36.0" y="207.0" width="60" height="62" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Table -name ampEnv" name="ampEnv" x="412.0" y="90.0" width="102" height="23" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		0 0 0 0 0 0 0 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.01 0.015 0.02 0.025 0.03 0.035 0.04 0.045 0.045 0.05 0.055 0.06 0.065 0.065 0.08 0.085 0.09 0.105 0.11 0.11 0.12 0.135 0.145 0.165 0.185 0.19 0.205 0.225 0.235 0.24 0.255 0.27 0.285 0.305 0.315 0.325 0.33 0.345 0.38 0.385 0.4 0.435 0.44 0.455 0.47 0.485 0.495 0.515 0.54 0.565 0.565 0.585 0.605 0.625 0.655 0.665 0.675 0.685 0.69 0.705 0.72 0.735 0.755 0.775 0.79 0.79 0.8 0.82 0.825 0.85 0.855 0.87 0.885 0.885 0.9 0.91 0.915 0.92 0.925 0.93 0.94 0.94 0.935 0.945 0.945 0.94 0.945 0.95 0.95 0.95 0.95 0.95 0.95 0.95 0.95 0.945 0.955 0.955 0.955 0.95 0.96 0.96 0.955 0.965 0.965 0.96 0.97 0.97 0.97 0.97 0.97 0.97 0.975 0.965 0.97 0.96 0.96 0.965 0.96 0.95 0.955 0.95 0.94 0.945 0.94 0.93 0.935 0.93 0.92 0.92 0.915 0.92 0.915 0.91 0.9 0.905 0.895 0.9 0.895 0.89 0.88 0.885 0.875 0.88 0.87 0.865 0.855 0.845 0.83 0.815 0.81 0.8 0.785 0.78 0.765 0.765 0.745 0.735 0.72 0.7 0.66 0.645 0.62 0.6 0.59 0.57 0.54 0.48 0.435 0.42 0.375 0.365 0.345 0.325 0.315 0.31 0.295 0.27 0.26 0.25 0.235 0.235 0.215 0.215 0.2 0.195 0.185 0.17 0.17 0.155 0.145 0.14 0.12 0.11 0.11 0.09 0.08 0.075 0.065 0.055 0.045 0.04 0.03 0.025 0.02 0 0 0 0 0 0 0 0 0 0 0 0 0 0.01 0 0.01 0.01 0 0.01 0 0 0 0 
+	</DATA>
+
+<STATE name="ampEnv/size" value="256" />
+
+<STATE name="ampEnv/min" value="0" />
+
+<STATE name="ampEnv/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Expr 1/(8*$f1)" name="expr2" x="214.0" y="281.0" width="82" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Put delay" name="put0" x="214.0" y="334.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="143.0" y="216.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="50.0" y="702.0" width="125" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="280.0" y="79.0" width="106" height="28" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="2" />
+
+<STATE name="floatbox1/max" value="10" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="543.0" y="79.0" width="106" height="28" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="200" />
+
+<STATE name="floatbox2/max" value="10000" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="10" />
+</TRANSFORM>
+<TRANSFORM  command="Put numOctaves" name="put1" x="280.0" y="147.0" width="82" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Put baseFreq" name="put2" x="543.0" y="147.0" width="72" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="143.0" y="147.0" width="106" height="28" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0.26" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="-1" />
+
+<STATE name="floatbox0/step" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice7" x="49.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="56.0" y="135.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="/ 8.0" name="div0" x="49.0" y="642.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="143.0" y="79.0" width="110" height="29" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="1" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get0" x="702.0" y="78.0" width="52" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get1" x="415.0" y="148.0" width="52" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get load" name="get2" x="280.0" y="192.0" width="52" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 1.0" name="mul0" x="173.0" y="641.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="286" y="630" width="56" height="56" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice9" x="168.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice10" x="285.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice11" x="404.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice12" x="521.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice13" x="637.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice14" x="755.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SupportFiles/ShepardTonesVoice" name="shepardtonesvoice15" x="873.0" y="423.0" width="93" height="22" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Mixer" name="mixer2" x="49" y="547" width="135" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="ramp0/samplesOut" inlet="shepardtonesvoice7/rampSignalIn" vertices="42.0 392.0 55.0 392.0" />
+<CONNECTION  outlet="tm0/timeOut" inlet="ramp0/timeIn" vertices="" />
+<CONNECTION  outlet="expr2/out" inlet="put0/input" vertices="" />
+<CONNECTION  outlet="fanout1/out1" inlet="ramp0/gradient" vertices="149.0 288.5 72.0 288.5" />
+<CONNECTION  outlet="fanout1/out2" inlet="expr2/f1" vertices="170.0 265.0 220.0 265.0" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="put1/input" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="put2/input" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="shepardtonesvoice7/signalOut" inlet="mixer2/channel0" vertices="" />
+<CONNECTION  outlet="shepardtonesvoice7/rampSignalOut" inlet="shepardtonesvoice9/rampSignalIn" vertices="146.0 470.0 160.0 470.0 160.0 408.0 174.0 408.0" />
+<CONNECTION  outlet="button0/unitOut" inlet="tm0/zero" vertices="62.0 193.0 80.0 193.0" />
+<CONNECTION  outlet="div0/result" inlet="mul0/param1" vertices="55.0 690.0 117.0 690.0 117.0 626.0 179.0 626.0" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="floatbox2/unitIn" vertices="708.0 126.0 680.5 126.0 680.5 64.0 653.0 64.0" />
+<CONNECTION  outlet="get1/value" inlet="floatbox1/unitIn" vertices="421.0 196.0 405.5 196.0 405.5 64.0 390.0 64.0" />
+<CONNECTION  outlet="get2/value" inlet="floatbox0/unitIn" vertices="286.0 240.0 269.5 240.0 269.5 132.0 253.0 132.0" />
+<CONNECTION  outlet="mul0/result" inlet="out0/mix" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="mul0/param2" vertices="292.0 711.0 253.0 711.0 253.0 626.0 214.0 626.0" />
+<CONNECTION  outlet="shepardtonesvoice9/signalOut" inlet="mixer2/channel1" vertices="174.0 501.0 71 501.0" />
+<CONNECTION  outlet="shepardtonesvoice9/rampSignalOut" inlet="shepardtonesvoice10/rampSignalIn" vertices="265.0 470.0 278.0 470.0 278.0 408.0 291.0 408.0" />
+<CONNECTION  outlet="shepardtonesvoice10/signalOut" inlet="mixer2/channel3" vertices="291.0 501.0 87 501.0" />
+<CONNECTION  outlet="shepardtonesvoice10/rampSignalOut" inlet="shepardtonesvoice11/rampSignalIn" vertices="382.0 470.0 396.0 470.0 396.0 408.0 410.0 408.0" />
+<CONNECTION  outlet="shepardtonesvoice11/signalOut" inlet="mixer2/channel4" vertices="410.0 501.0 103 501.0" />
+<CONNECTION  outlet="shepardtonesvoice11/rampSignalOut" inlet="shepardtonesvoice12/rampSignalIn" vertices="501.0 470.0 514.0 470.0 514.0 408.0 527.0 408.0" />
+<CONNECTION  outlet="shepardtonesvoice12/signalOut" inlet="mixer2/channel5" vertices="527.0 501.0 119 501.0" />
+<CONNECTION  outlet="shepardtonesvoice12/rampSignalOut" inlet="shepardtonesvoice13/rampSignalIn" vertices="618.0 470.0 630.5 470.0 630.5 408.0 643.0 408.0" />
+<CONNECTION  outlet="shepardtonesvoice13/signalOut" inlet="mixer2/channel6" vertices="643.0 501.0 135 501.0" />
+<CONNECTION  outlet="shepardtonesvoice13/rampSignalOut" inlet="shepardtonesvoice14/rampSignalIn" vertices="734.0 470.0 747.5 470.0 747.5 408.0 761.0 408.0" />
+<CONNECTION  outlet="shepardtonesvoice14/signalOut" inlet="mixer2/channel7" vertices="761.0 501.0 151 501.0" />
+<CONNECTION  outlet="shepardtonesvoice14/rampSignalOut" inlet="shepardtonesvoice15/rampSignalIn" vertices="852.0 470.0 865.5 470.0 865.5 408.0 879.0 408.0" />
+<CONNECTION  outlet="shepardtonesvoice15/signalOut" inlet="mixer2/channel8" vertices="879.0 501.0 167 501.0" />
+<CONNECTION  outlet="mixer2/mixed" inlet="div0/param1" vertices="" />
+<STICKY  x="542.0" y="10.0" width="105.0" height="37.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Frequency to start rising 
+from.</STICKY><STICKY  x="413.0" y="11.0" width="103.0" height="64.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Amplitude envelope of 
+each voice. You can 
+double click here to 
+alter the envelope.</STICKY><STICKY  x="281.0" y="11.0" width="106.0" height="39.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Number of octaves to rise
+through.</STICKY><STICKY  x="146.0" y="11.0" width="108.0" height="24.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Rate of rising.</STICKY><STICKY  x="478" y="244" width="405.0" height="48.0" color="#eacaea" fontface="Helvetica" fontsize="8">Roger Shepard is a professor of psychology and the inventor of many auditory and visual illusions. This is 
+an implementation of his 'Shepard's Tones' - a sound that is continually rising while staying in the same 
+frequency range- outlined in his paper "Circularity of Judgements of Relative Pitch". 
+See the links below for more information about Dr. Shepard and his illusions.</STICKY><STICKY  x="363.0" y="630.0" width="66.0" height="25.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Gain.</STICKY><HYPERLINK  x="695.0" y="355.0" color="#0000FF" link="http://www.cs.ubc.ca/nest/imager/contributions/flinn/Illusions/ST/st.html" fontface="Helvetica" fontsize="10" /><HYPERLINK  x="695.0" y="330.0" color="#0000FF" link="http://www.nsf.gov/od/lpa/news/publicat/frontier/6-96/6illusio.htm" fontface="Helvetica" fontsize="10" /></PATCH>
+</OSW>
+

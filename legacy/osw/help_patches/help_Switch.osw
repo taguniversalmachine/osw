@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Switch" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Switch" name="switch0" x="154.0" y="198.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="VSlider" name="vslider0" x="154.0" y="49.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="vslider0/min" value="0" />
+
+<STATE name="vslider0/max" value="1" />
+
+<STATE name="vslider0/resolution" value="0.01" />
+
+<STATE name="vslider0/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="248" y="114" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="69" y="269" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="195.0" y="270.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="92" y="378" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SyncSwitch" name="syncswitch0" x="179.0" y="379.0" width="76" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="switch0/out1" inlet="floatbox0/floatIn" vertices="160.0 251.0 75.0 251.0" />
+<CONNECTION  outlet="switch0/out2" inlet="floatbox1/floatIn" vertices="182.0 251.5 201.0 251.5" />
+<CONNECTION  outlet="vslider0/floatOut" inlet="switch0/in" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="switch0/switch" vertices="254 172.5 204.0 172.5" />
+<STICKY  x="262.0" y="181.0" width="92.0" height="61.0" color="#FFFF77" text="Like FanOut,
+Switch creates
+new outlets
+automatically" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="297.0" y="87.0" color="#FFFFFF" text="switch between outlet 0 or 1" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="68.0" y="34.0" color="#FFFFFF" text="Switch" fontface="Arial" fontsize="18" /><TITLE  x="165.0" y="349.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

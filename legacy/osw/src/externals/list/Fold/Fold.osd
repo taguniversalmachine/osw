@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<osw-external name="Fold" package="list">
+<description>reduce (&#92;"fold&#92;") a list into a single value using a binary function</description>
+<copyright>
+Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+
+
+
+
+</copyright>
+<inlet name="listIn" type="List" description="list to fold" />
+<inlet name="returnVal" type="Any" description="Return value from fold function" />
+<outlet name="result" type="Any" description="Final result of fold operation" synchronous="1" />
+<outlet name="left" type="Any" description="Left argument of function to evaluate" synchronous="1" />
+<outlet name="right" type="Any" description="Right (second) argument of function to evaluate" synchronous="1" />
+<state name="init" type="String" default="!quot!quot" description="placed before items in list in calculation, used as result if list is empty" persistent="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xhasinit = false;
+xinitVal = NULL;
+listIndex = 0;
+
+ParseInit();</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Boolean xhasinit;
+Untyped xinitVal;
+Integer listIndex;
+
+void ParseInit () &#123;
+  if ((String)init == "") &#123;
+     xhasinit = false;
+     xinitVal = NULL;
+     return;
+  &#125;
+  istringstream is(init);
+  List alist;
+  is >> alist;
+  if (alist.size() == 0) &#123;
+    Error("Could not parse init value: " + String(init));
+    xhasinit = false;
+    xinitVal = NULL;
+  &#125; else if (alist.size() == 1) &#123;
+    xhasinit = true;
+    xinitVal = alist.nth(0);
+  &#125; else &#123;
+    xhasinit = true;
+    xinitVal = new Datum&lt;List>(alist);
+  &#125;
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="init_changed" activators="init" order="0" >
+
+
+
+
+ParseInit();
+</activation>
+<activation name="do_next" activators="returnVal" order="0" >
+
+
+
+if (listIndex >= listIn->size()) &#123;
+  result = returnVal;
+&#125; else &#123;
+  left = returnVal;
+  right = listIn->nth(listIndex++);
+&#125;
+</activation>
+<activation name="do_fold" activators="listIn" order="0" >
+
+
+
+listIndex = 0;
+
+if (listIn->size() == 0) &#123;
+  if (xhasinit) &#123;
+    result = xinitVal;
+  &#125;
+&#125; else &#123;
+  if (xhasinit) &#123;
+    left = xinitVal;
+    ++listIndex;
+    right = listIn->nth(0);
+  &#125; else &#123;
+    if (listIn->size() > 1) &#123;
+       listIndex += 2;
+       left = listIn->nth(0);
+       right = listIn->nth(1);
+    &#125; else &#123;
+       result = listIn->nth(0);
+    &#125;
+  &#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Fold &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Fold" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="166.0" y="123.0" width="170" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="1 2 3 4" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="list::Fold" name="fold1" x="166.0" y="214.0" width="80" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="fold1/init" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="'+" name="qadd0" x="205.0" y="284.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="166.0" y="410.0" width="170" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="list::Map" name="map1" x="434" y="289" width="73" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="list::Accumulate" name="accumulate0" x="411.0" y="345.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="fold1/listIn" vertices="" />
+&lt;CONNECTION  outlet="fold1/result" inlet="msgbox1/messageIn" vertices="" />
+&lt;CONNECTION  outlet="fold1/left" inlet="qadd0/param1" vertices="" />
+&lt;CONNECTION  outlet="fold1/right" inlet="qadd0/param2" vertices="250.0 267.5 247.0 267.5" />
+&lt;CONNECTION  outlet="qadd0/result" inlet="fold1/returnVal" vertices="211.0 336.0 230.5 336.0 230.5 199.0 250.0 199.0" />
+&lt;TITLE  x="473.0" y="257.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="182" y="45" color="#FFFFFF" text="list::Fold" fontface="Arial" fontsize="14" />
+&lt;HYPERLINK  x="480.0" y="404.0" color="#0000FF" link="list/series_approx_1" fontface="MS Sans Serif" fontsize="10" />&lt;HYPERLINK  x="483.0" y="431.0" color="#0000FF" link="list/series_approx_general" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

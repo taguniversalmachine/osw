@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="LinesTest" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="TimeMachine" name="tm0" x="235.0" y="93.0" width="60" height="62" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="273.0" y="13.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="Lines" name="lines0" x="235.0" y="336.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="List 0.0 0.0 1.0 1.0 2.0 0.0" name="list1" x="397" y="275" width="152" height="23" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		0.00000 0.00000 1.00000 1.00000 2.00000 0.00000 
+	</DATA>
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="40.0" y="539.0" width="125" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OneShot -at 0.0" name="oneshot0" x="397.0" y="217.0" width="87" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="235.0" y="201.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MSlider" name="mslider0" x="235.0" y="495.0" width="104" height="123" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="mslider0/min" value="0" />
+
+<STATE name="mslider0/width" value="100" />
+
+<STATE name="mslider0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="235.0" y="404.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain -amp_scale 0" name="gain0" x="38.0" y="336.0" width="97" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="WhiteNoise" name="whitenoise0" x="38.0" y="76.0" width="82" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="tm0/timeOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="button0/unitOut" inlet="tm0/zero" vertices="" />
+<CONNECTION  outlet="lines0/floatOut" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="list1/listOut" inlet="lines0/line" vertices="403 322.0 276.0 322.0" />
+<CONNECTION  outlet="oneshot0/tick" inlet="list1/unitIn" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="lines0/timeIn" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="oneshot0/timeIn" vertices="262.0 249.0 332.5 249.0 332.5 202.0 403.0 202.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="gain0/amp_scale" vertices="241.0 452.0 190.0 452.0 190.0 321.0 139.0 321.0" />
+<CONNECTION  outlet="fanout1/out2" inlet="mslider0/floatIn" vertices="262.0 466.0 241.0 466.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="44.0 454.0 169.0 454.0" />
+<CONNECTION  outlet="whitenoise0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<STICKY  x="591.0" y="276.0" width="154.0" height="113.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Specify a list of
+breakpoints in the
+format:
+
+x0 t0 x1 t1 . . .
+
+Where tN is units of
+time in seconds.</STICKY><STICKY  x="370.0" y="14.0" width="174.0" height="43.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Click this button to
+"trigger" the envelope.</STICKY><STICKY  x="458" y="502" width="208.0" height="55.0" color="#FFFF77" fontface="Helvetica" fontsize="8">This Lines' output goes from
+0 to 1 in 1 second and back
+down from 1 to 0 in 1 second.</STICKY></PATCH>
+</OSW>
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="phaser1" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Allpass" name="allpass0" x="505.0" y="323.0" width="59" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="allpass0/gain" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="LFO -waveform triangle" name="lfo0" x="533.0" y="133.0" width="115" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="lfo0/shape" value="sine" />
+
+<STATE name="lfo0/frequency" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Samples -order -1" name="inlet0" x="429.0" y="61.0" width="41" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name freq" name="freq" x="645.0" y="48.0" width="33" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -name amp -type Float" name="amp" x="687.0" y="121.0" width="37" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="429.0" y="198.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Mixer" name="mixer0" x="429.0" y="450.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Samples -name out" name="out" x="429.0" y="515.0" width="28" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="- 0.5" name="sub0" x="534.0" y="258.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -type Float -name feedback" name="feedback" x="892" y="86" width="67" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="505.0" y="379.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="550.0" y="454.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="+" name="add0" x="457.0" y="266.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="fx::PhaseShifter" name="phaseshifter0" x="178.0" y="308.0" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="phaseshifter0/feedback" value="0" />
+
+<STATE name="phaseshifter0/lfo_freq" value="0.25" />
+
+<STATE name="phaseshifter0/lfo_depth" value="0.5" />
+</TRANSFORM>
+<TRANSFORM  command="*" name="mul0" x="533.0" y="192.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="allpass0/samplesOut" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="lfo0/valueOut" inlet="mul0/param1" vertices="" />
+<CONNECTION  outlet="inlet0_inlet/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="freq_inlet/out" inlet="lfo0/frequency" vertices="" />
+<CONNECTION  outlet="amp_inlet/out" inlet="mul0/param2" vertices="693.0 181.5 575.0 181.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="mixer0/channel0" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="add0/param1" vertices="460.0 250.5 463.0 250.5" />
+<CONNECTION  outlet="mixer0/mixed" inlet="out_outlet/in" vertices="" />
+<CONNECTION  outlet="sub0/result" inlet="allpass0/gain" vertices="540.0 309.0 568.0 309.0" />
+<CONNECTION  outlet="feedback_inlet/out" inlet="gain0/amp_scale" vertices="898.0 295.0 599.0 295.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="mixer0/channel1" vertices="511.0 433.0 456.0 433.0" />
+<CONNECTION  outlet="fanout1/out2" inlet="gain0/samplesIn" vertices="536.0 435.0 556.0 435.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="add0/param2" vertices="556.0 506.0 527.5 506.0 527.5 251.0 499.0 251.0" />
+<CONNECTION  outlet="add0/result" inlet="allpass0/samplesIn" vertices="463.0 313.0 511.0 313.0" />
+<CONNECTION  outlet="mul0/result" inlet="sub0/param1" vertices="539.0 243.5 540.0 243.5" />
+<TITLE  x="271.0" y="49.0" color="#FFFFFF" text="single stage phase shifter" fontface="Arial" fontsize="14" />
+<TITLE  x="238" y="239" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="240.0" y="261.0" color="#0000FF" link="audio/phaser6" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="241.0" y="280.0" color="#0000FF" link="audio/phase_shifter_6_demo" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

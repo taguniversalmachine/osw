@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<osw-external name="SpectralLimit" package="spectral">
+<description>Remove spectral frequencies outside a specified range</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inlet name="spectrumIn" type="Spectrum" description="input spectrum" />
+<inlet name="freq_low" type="Float" default="0" description="Lowest frequency to keep in output spectrum" persistent="1" />
+<inlet name="freq_high" type="Float" default="22050" description="Highest frequency to keep in spectm" persistent="1" />
+<outlet name="spectrumOut" type="Spectrum" description="output spectrum" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="filter_spectrum" activators="spectrumIn" order="0" >
+int bin_hi = spectrumIn->size() * freq_high * 2.0f / SampleRate;
+int bin_lo = spectrumIn->size() * freq_low * 2.0f / SampleRate;
+
+spectrumOut.SetWithoutActivating(spectrumIn);
+for (int i = 0; i &lt; spectrumOut->size(); ++i) &#123;
+   if (i &lt; bin_lo || i > bin_hi) &#123;
+	spectrumOut->real&#91;i&#93; = spectrumOut->imag&#91;i&#93; = 0.0f;	
+   &#125;
+&#125;
+
+spectrumOut = spectrumOut;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">SpectralLimit &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_SpectralLimit" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="SpectralLimit " name="spectrallimit0" x="125.0" y="203.0" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="spectrallimit0/freq_low" value="0" />
+
+&lt;STATE name="spectrallimit0/freq_high" value="8000" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Fft " name="fft0" x="123.0" y="138.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="fft0/window" value="rectangle" />
+
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WhiteNoise " name="whitenoise0" x="123" y="52" width="66" height="38" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SpectralScope " name="spectralscope0" x="278.0" y="327.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="spectralscope0/interval" value="0.1" />
+
+&lt;STATE name="spectralscope0/zoom" value="1" />
+
+&lt;STATE name="spectralscope0/vertical_zoom" value="30" />
+
+&lt;STATE name="spectralscope0/background" value="black" />
+
+&lt;STATE name="spectralscope0/foreground" value="green" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="93.0" y="471.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="256.0" y="136.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="245.0" y="88.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="125.0" y="268.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Ifft " name="ifft0" x="125.0" y="346.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="spectrallimit0/spectrumOut" inlet="fanout0/in" vertices="" />
+&lt;CONNECTION  outlet="fft0/spectrumOut" inlet="spectrallimit0/spectrumIn" vertices="129.0 188.0 131.0 188.0" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="fft0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="spectrallimit0/freq_low" vertices="262.0 186.0 177.0 186.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="spectrallimit0/freq_high" vertices="251.0 162.0 223.0 162.0" />
+&lt;CONNECTION  outlet="fanout0/out1" inlet="ifft0/spectrumIn" vertices="" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="spectralscope0/spectrumIn" vertices="153.0 315.0 284.0 315.0" />
+&lt;CONNECTION  outlet="ifft0/samplesOut" inlet="out0/mix" vertices="131.0 426.0 219.0 426.0" />
+&lt;TITLE  x="108.0" y="25.0" color="#FFFFFF" text="SpectralLimit" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="402.0" y="100.0" color="#FFFFFF" text="Highest frequency" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="404.0" y="148.0" color="#FFFFFF" text="lowest frequency" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

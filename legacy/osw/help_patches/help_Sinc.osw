@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Sinc" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Sinc" name="sinc0" x="106.0" y="202.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="106.0" y="137.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="106.0" y="278.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0.997985" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Triangle " name="triangle0" x="377.0" y="125.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="triangle0/frequency" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Sinc" name="sinc1" x="376.0" y="232.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="363.0" y="401.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="376.0" y="287.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.897859" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="497" y="209" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="* 3.14159" name="mul0" x="377.0" y="179.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="sinc0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="sinc0/in" vertices="" />
+<CONNECTION  outlet="triangle0/samplesOut" inlet="mul0/param1" vertices="" />
+<CONNECTION  outlet="mul0/result" inlet="sinc1/in" vertices="383.0 223.0 382.0 223.0" />
+<CONNECTION  outlet="sinc1/out" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="382.0 361.5 489.0 361.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="" />
+
+<STICKY  x="374.0" y="50.0" width="145.0" height="54.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Sinc is a useful function for 
+generating signals.</STICKY><TITLE  x="120.0" y="53.0" color="#FFFFFF" text="Sinc" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="529.0" y="189.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

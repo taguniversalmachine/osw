@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<osw-external name="Allpass" package="osw">
+<description>Allpass filter</description>
+<copyright>
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="Input samples" />
+<inlet name="gain" type="Float" description="input gain" persistent="1" />
+<outlet name="samplesOut" type="Samples" description="Output samples" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xallpass.SetGain(gain);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Allpass xallpass;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="do_comb" activators="samplesIn" order="0" >
+
+xallpass.SetGain(gain);
+samplesOut = xallpass(samplesIn);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Allpass &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>&lt;b>Allpass&lt;/b> is a special case of &lt;b>Comb&lt;/b>.  In the case of an allpass filter, the feed-forward and feedback gains are mirror images, that is, &lt;i>feed_forward&lt;/i> = -&lt;i>feedback.&lt;/i>.  Allpass filters have a flat frequency response, although they have phase responses that vary with frequency.
+&lt;/p>
+
+&lt;/p>
+&lt;p>More detailed information can be found in this &lt;a href="http://www-ccrma.stanford.edu/~jos/waveguide/Allpass_Filters.html">tutorial by Julius Smith.&lt;/a>&lt;/p>
+
+&lt;h4>Issues&lt;/h4>
+Currently only accepts a maximum delay of 0.25 seconds.  For greater delays, use the Delay transform.</xblock>
+<xblock name="Links">Comb Delay Biquad TwoPoleResonz</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch"></xblock>
+</osw-external>

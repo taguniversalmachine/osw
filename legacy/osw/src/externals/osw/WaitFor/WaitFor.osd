@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<osw-external name="WaitFor" package="osw">
+<description>Queue and send events whenever a signaling event is received</description>
+<copyright>
+</copyright>
+<inlet name="eventIn" type="Changeable" description="event to queue" />
+<inlet name="signal" type="Changeable" description="Signal: triggers output of event from queue" />
+<outlet name="eventOut" type="Any" description="Output event from queue" synchronous="1" />
+<outlet name="signalOut" type="Any" description="pass signal to output" synchronous="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">deque&lt;Any>  xqueue;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="unqueue_event" activators="signal" order="0" >
+Any result = xqueue.front();
+xqueue.pop_front();
+eventOut = result;
+signalOut = signal->MakeDatum();
+</activation>
+<activation name="queue_event" activators="eventIn" order="0" >
+
+xqueue.push_back(eventIn->MakeDatum());
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">WaitFor &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch"></xblock>
+</osw-external>

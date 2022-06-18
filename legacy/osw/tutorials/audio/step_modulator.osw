@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="step_modulator" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  name="frequency" x="87.0" y="71.0" width="57" height="37" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Inlet -type Float -name frequency -desc "Modulator Frequency"</COMMAND>
+</TRANSFORM>
+<TRANSFORM name="offset" x="230" y="72" width="36" height="37" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>
+Inlet -type Float -name offset -desc "Modulator Offset"
+</COMMAND>
+</TRANSFORM>
+<TRANSFORM name="width" x="333.0" y="75.0" width="35" height="37" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Inlet -type Float -name width -desc "Modulator Width"</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="230.0" y="150.0" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr 1 / $f1" name="expr0" x="88.0" y="147.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="RandInt " name="randint0" x="167.0" y="369.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Ticker" name="ticker0" x="92.0" y="216.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="ticker0/interval" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Integer -name value" name="value" x="167.0" y="445.0" width="36" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="+" name="add0" x="252.0" y="220.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="333.0" y="148.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="+" name="add1" x="333.0" y="216.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="268" y="293" width="45" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="frequency_inlet/out" inlet="expr0/f1" vertices="93.0 132.5 94.0 132.5" />
+<CONNECTION  outlet="offset_inlet/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="width_inlet/out" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="randint0/min" vertices="236.0 277.0 201.0 277.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="add0/param1" vertices="255.0 202.5 258.0 202.5" />
+<CONNECTION  outlet="fanout0/out3" inlet="add1/param2" vertices="274.0 200.5 371.0 200.5" />
+<CONNECTION  outlet="expr0/out" inlet="ticker0/interval" vertices="94.0 199.0 142.0 199.0" />
+<CONNECTION  outlet="randint0/randOut" inlet="value_outlet/in" vertices="" />
+<CONNECTION  outlet="ticker0/tick" inlet="randint0/nextnum" vertices="98.0 310.0 173.0 310.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="add1/param1" vertices="" />
+<CONNECTION  outlet="fanout1/out2" inlet="add0/param2" vertices="361.0 201.5 290.0 201.5" />
+<CONNECTION  outlet="add0/result" inlet="fanin0/in1" vertices="258.0 274.0 274 274.0" />
+<CONNECTION  outlet="add1/result" inlet="fanin0/in2" vertices="339.0 272.0 295 272.0" />
+<CONNECTION  outlet="fanin0/out" inlet="randint0/max" vertices="274 348.5 229.0 348.5" />
+<STICKY  x="404.0" y="211.0" width="90.0" height="67.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Return the
+sum when
+either inlet
+changes</STICKY><TITLE  x="147.0" y="37.0" color="#FFFFFF" text="Step Modulator" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

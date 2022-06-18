@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="echo_machine" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="96.0" y="426.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioInput 1 2" name="input0" x="98.0" y="124.0" width="76" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Delay" name="delay0" x="217.0" y="310.0" width="45" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="delay0/max" value="16384" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="238.0" y="199.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="382.0" y="197.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="238.0" y="121.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="1" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider1" x="382" y="125" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider1/min" value="0" />
+
+<STATE name="hslider1/max" value="1" />
+
+<STATE name="hslider1/resolution" value="0.01" />
+</TRANSFORM>
+<CONNECTION  outlet="input0/samplesOut0" inlet="delay0/samplesIn" vertices="104.0 242.5 223.0 242.5" />
+<CONNECTION  outlet="delay0/samplesOut" inlet="out0/mix" vertices="223.0 385.5 222.0 385.5" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="delay0/delay" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="delay0/feedback" vertices="388.0 270.0 265.0 270.0" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="hslider1/floatOut" inlet="floatbox1/floatIn" vertices="" />
+<TITLE  x="295.0" y="93.0" color="#FFFFFF" text="delay" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="440.0" y="94.0" color="#FFFFFF" text="feedback" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="150.0" y="56.0" color="#FFFFFF" text="Echo Machine" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

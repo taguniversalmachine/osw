@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="recording" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="AudioInput 1 2" name="input0" x="151.0" y="231.0" width="76" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SampleWriter " name="samplewriter0" x="142.0" y="321.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="samplewriter0/channels" value="1" />
+
+<STATE name="samplewriter0/format" value="s16" />
+</TRANSFORM>
+<TRANSFORM  command="Toggle" name="toggle0" x="107.0" y="92.0" width="40" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="107.0" y="166.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="input0/samplesOut0" inlet="samplewriter0/input0" vertices="157.0 301.5 234.0 301.5" />
+<CONNECTION  outlet="toggle0/toggleOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="samplewriter0/onoff" vertices="113.0 261.0 148.0 261.0" />
+<CONNECTION  outlet="fanout0/out2" inlet="input0/onoff" vertices="135.0 216.0 157.0 216.0" />
+<STICKY  x="255.0" y="321.0" width="90.0" height="39.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+select a file</STICKY><STICKY  x="172.0" y="96.0" width="112.0" height="50.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Press button
+to turn recording
+on and off</STICKY></PATCH>
+</OSW>
+

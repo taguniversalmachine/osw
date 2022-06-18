@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<osw-external name="Toggle" package="osw">
+<description>Switch toggles between true and false (or 0 and 1)</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="interactivedraw" />
+<inlet name="toggle" type="Changeable" description="Toggle the switch state" />
+<outlet name="toggleOut" type="Boolean" description="Current state of the switch" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<inherited-state name="widget" type="String" default="none" description="Tk Widget Name" />
+<xblock name="drawCodeTcl">HideName
+toggle &#36;drawingSpace.t -command &#91;list oswSet &#36;transform/toggleOut&#93;
+pack &#36;drawingSpace.t -fill both -expand yes</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">oswLoadScript toggle.tcl</xblock>
+<activation name="do_toggle" activators="toggle" order="" >
+
+toggleOut = !toggleOut;
+SetWidgetProperty(widget + ".t","-value",&amp;toggleOut);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">default</xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Toggle" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="177.0" y="252.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="BrownNoise " name="brownnoise0" x="236.0" y="152.0" width="70" height="38" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Toggle" name="toggle0" x="177.0" y="157.0" width="40" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="32.0" y="232.0" width="91" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Toggle" name="toggle1" x="32.0" y="160.0" width="40" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="brownnoise0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="toggle0/toggleOut" inlet="out0/onoff" vertices="" />
+&lt;CONNECTION  outlet="toggle1/toggleOut" inlet="msgbox0/messageIn" vertices="" />
+&lt;STICKY  x="33.0" y="76.0" width="120.0" height="37.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Switch between true and False&lt;/STICKY>&lt;STICKY  x="179.0" y="76.0" width="114.0" height="53.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Toggles are useful
+for turning things on
+and off&lt;/STICKY>&lt;TITLE  x="79.0" y="39.0" color="#FFFFFF" text="Toggle" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

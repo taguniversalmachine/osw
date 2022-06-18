@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Gcd" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Gcd" name="gcd0" x="86.0" y="215.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gcd" name="gcd1" x="372.0" y="232.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="86.0" y="157.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="193.0" y="158.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleBox " name="doublebox0" x="372.0" y="160.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublebox0/max" value="1" />
+
+<STATE name="doublebox0/min" value="0" />
+
+<STATE name="doublebox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleBox" name="doublebox1" x="511.0" y="163.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublebox1/max" value="1" />
+
+<STATE name="doublebox1/min" value="0" />
+
+<STATE name="doublebox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleBox" name="doublebox2" x="372.0" y="304.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublebox2/max" value="1" />
+
+<STATE name="doublebox2/min" value="0" />
+
+<STATE name="doublebox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="86.0" y="302.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="4" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="gcd0/out" inlet="intbox2/intIn" vertices="" />
+<CONNECTION  outlet="gcd1/out" inlet="doublebox2/doubleIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="gcd0/a" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="gcd0/b" vertices="199.0 203.0 124.0 203.0" />
+<CONNECTION  outlet="doublebox0/doubleOut" inlet="gcd1/a" vertices="" />
+<CONNECTION  outlet="doublebox1/doubleOut" inlet="gcd1/b" vertices="517.0 214.0 410.0 214.0" />
+<TITLE  x="104.0" y="53.0" color="#FFFFFF" text="Gcd" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

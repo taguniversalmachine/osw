@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="feedback_loop" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  name="pinknoise0" x="265.0" y="141.0" width="75" height="41" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>PinkNoise</COMMAND>
+</TRANSFORM>
+<TRANSFORM  command="+" name="add0" x="265.0" y="228.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="332.0" y="354.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0" />
+</TRANSFORM>
+<TRANSFORM  name="vslider0" x="453.0" y="138.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>VSlider</COMMAND>
+
+<STATE name="vslider0/min" value="0" />
+
+<STATE name="vslider0/max" value="1" />
+
+<STATE name="vslider0/resolution" value="0.01" />
+
+<STATE name="vslider0/showvalue" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="223.0" y="299.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain1" x="220.0" y="477.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain1/amp_scale" value="0.153213" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="448.0" y="352.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="197.0" y="546.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  name="lowpass0" x="140.0" y="353.0" width="66" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Lowpass</COMMAND>
+
+<STATE name="lowpass0/cutoff" value="10000" />
+</TRANSFORM>
+<TRANSFORM  command="Tanh" name="tanh1" x="140.0" y="414.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Delay" name="delay0" x="399.0" y="547.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="delay0/max" value="16384" />
+
+<STATE name="delay0/fractional" value="0" />
+</TRANSFORM>
+<TRANSFORM  name="flanger0" x="383.0" y="602.0" width="94" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>fx::Flanger</COMMAND>
+
+<STATE name="flanger0/delay" value="2" />
+
+<STATE name="flanger0/lfo_freq" value="0.25" />
+
+<STATE name="flanger0/lfo_depth" value="1" />
+
+<STATE name="flanger0/max" value="16384" />
+</TRANSFORM>
+<CONNECTION  outlet="pinknoise0/samplesOut" inlet="add0/param1" vertices="" />
+<CONNECTION  outlet="add0/result" inlet="fanout0/in" vertices="271.0 282.0 229.0 282.0" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="add0/param2" vertices="338.0 406.0 322.5 406.0 322.5 213.0 307.0 213.0" />
+<CONNECTION  outlet="vslider0/floatOut" inlet="gain0/amp_scale" vertices="459.0 307.0 374.0 307.0" />
+<CONNECTION  outlet="fanout0/out1" inlet="lowpass0/samplesIn" vertices="229.0 344.5 146.0 344.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="gain0/samplesIn" vertices="254.0 345.0 338.0 345.0" />
+<CONNECTION  outlet="gain1/samplesOut" inlet="out0/mix" vertices="226.0 530.0 272.0 530.0" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain1/amp_scale" vertices="454.0 448.5 262.0 448.5" />
+<CONNECTION  outlet="lowpass0/samplesOut" inlet="tanh1/in" vertices="" />
+<CONNECTION  outlet="tanh1/out" inlet="gain1/samplesIn" vertices="146.0 464.0 226.0 464.0" />
+<STICKY  x="36.0" y="409.0" width="82.0" height="51.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Prevents
+clipping</STICKY>
+<STICKY  x="123.0" y="199.0" width="101.0" height="57.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use async +
+to create
+feedback loop</STICKY>
+<TITLE  x="191.0" y="46.0" color="#FFFFFF" text="Feedback loop" fontface="Arial" fontsize="14" />
+<TITLE  x="479.0" y="114.0" color="#FFFFFF" text="feedback" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="482.0" y="320.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="428.0" y="492.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="433" y="516" color="#0000FF" link="audio/feed_back" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

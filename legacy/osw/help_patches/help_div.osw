@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_mod" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="/" name="mod0" x="106.0" y="154.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="106.0" y="83.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="228.0" y="83.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="3" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="106.0" y="224.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="384.0" y="82.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="10" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="511.0" y="82.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="1.5" />
+
+<STATE name="floatbox1/max" value="10" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="/" name="mod1" x="384.0" y="147.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="384.0" y="219.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0.04" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="'/" name="qmod0" x="390.0" y="356.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="%" name="div0" x="445.0" y="355.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="*" name="mul0" x="498.0" y="355.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr" name="expr0" x="548.0" y="356.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="/ 2" name="mod2" x="109.0" y="390.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="109" y="329" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="0" />
+
+<STATE name="floatbox3/max" value="1" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox4" x="109.0" y="459.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox4/floatIn" value="0" />
+
+<STATE name="floatbox4/max" value="1" />
+
+<STATE name="floatbox4/min" value="0" />
+
+<STATE name="floatbox4/step" value="0.01" />
+</TRANSFORM>
+<CONNECTION  outlet="mod0/result" inlet="intbox2/intIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="mod0/param1" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="mod0/param2" vertices="234.0 135.0 144.0 135.0" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="mod1/param1" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="mod1/param2" vertices="517.0 131.0 422.0 131.0" />
+<CONNECTION  outlet="mod1/result" inlet="floatbox2/floatIn" vertices="" />
+<CONNECTION  outlet="mod2/result" inlet="floatbox4/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox3/floatOut" inlet="mod2/param1" vertices="" />
+<STICKY  x="238.0" y="169.0" width="112.0" height="68.0" color="#00ffff" fontface="MS Sans Serif" fontsize="8">Output when data
+received via left
+(active) inlet.   Right 
+inlet is passive</STICKY><STICKY  x="220.0" y="367.0" width="115.0" height="73.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Can supply an
+optional argument
+to initialize the right
+inlet</STICKY><TITLE  x="63.0" y="36.0" color="#FFFFFF" text="/" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="210.0" y="55.0" color="#FFFFFF" text="integers" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="499.0" y="58.0" color="#FFFFFF" text="real numbers" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="490.0" y="323.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

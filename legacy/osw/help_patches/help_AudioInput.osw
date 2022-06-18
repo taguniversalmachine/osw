@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_AudioInput" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="AudioInput 1 2" name="input0" x="160.0" y="124.0" width="76" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Scope" name="scope0" x="160" y="262" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="1" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<CONNECTION  outlet="input0/samplesOut0" inlet="scope0/samplesIn" vertices="" />
+<TITLE  x="170.0" y="63.0" color="#FFFFFF" text="Audio Input" fontface="Arial" fontsize="16" /><TITLE  x="227.0" y="459.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="231.0" y="488.0" color="#0000FF" link="audio/recording" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

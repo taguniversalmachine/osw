@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="signal_compare" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Scope " name="scope0" x="239.0" y="349.0" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="1" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="145.0" y="346.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="136.0" y="421.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut " name="fanout0" x="145.0" y="266.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Phasor " name="phasor0" x="145.0" y="134.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="phasor0/frequency" value="440" />
+</TRANSFORM>
+<TRANSFORM  command=";gt;" name="gt0" x="145.0" y="205.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="285.0" y="142.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="1" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="285.0" y="83.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="1" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="32.0" y="290.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="151.0 400.5 211.0 400.5" />
+<CONNECTION  outlet="fanout0/out1" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="176.0 324.5 245.0 324.5" />
+<CONNECTION  outlet="phasor0/samplesOut" inlet="gt0/param1" vertices="" />
+<CONNECTION  outlet="gt0/result" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="gt0/param2" vertices="291.0 190.0 183.0 190.0" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="38.0 373.0 110.5 373.0 110.5 331.0 183.0 331.0" />
+<TITLE  x="67.0" y="272.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="341.0" y="66.0" color="#FFFFFF" text="modify signal" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="276.0" y="23.0" color="#FFFFFF" text="Signal generation/modification with comparison operators" fontface="MS Sans Serif" fontsize="14" /><TITLE  x="550" y="226" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="554.0" y="246.0" color="#0000FF" link="audio/pulse_train" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="556.0" y="265.0" color="#0000FF" link="audio/signal_compare_sync" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

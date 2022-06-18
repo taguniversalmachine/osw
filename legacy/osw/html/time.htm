@@ -1,0 +1,111 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body bgcolor="white" lang=EN-US style='tab-interval:.5in'>
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<div class=Section1>
+<div align="Center">
+<h1 class="title">7. Explicit Time Control in OSW</h1>
+</div>
+<p class=MsoNormal>Many real-time computer-music systems employ two different
+notions of time: “physical time” that is associated with hardware clocks and low-level scheduling, and “virtual time”
+which can be scaled or otherwise controlled by the user. OSW provides a unified
+user-configurable view of physical and virtual time that encompasses both
+system functions (such as scheduling and sample clocks) and user control.</p>
+
+<p class=MsoNormal>All transforms that depend on time, such as the <a class="transform" href="osw/Sinewave.html">Sinewave</a> transform, a sample playback
+transform or a MIDI sequencer are automatically synchronized to a single clock
+(by default, the clock of an audio device being used). Users can gain more explicit control over time
+by optionally connecting such time-dependent components to <i><a href="TimeMachine.html">time machines</a></i>,
+special transforms that map physical time from clocks to virtual time, or scale
+virtual time output from other time machines. Time machines include parameters
+for scaling virtual time or resetting to a specified value (i.e., &quot;go to
+this time&quot;), thus allowing users to control the flow of time in the
+connected signal-processing components. The control functions can be
+arbitrarily complex, and include user input from MIDI or high-resolution
+gestural input devices. Consider the
+following example that uses two time machines:</p>
+
+<img width=343 height=323 src="./time_files/image001.png">
+
+<p class=MsoNormal>Both <span style='font-family:Arial,Helvetica'>Sinewave </span>transforms
+are explicitly synchronized to the same time source via time machine tm0.
+However, while slow is directly connected to tm0, fast is connected to tm0
+through a second time machine, tm1, which scales time by a factor of 1.5 (i.e.,
+time at tm1 “runs 1.5 times faster”).<span style="mso-spacerun: yes"> 
+</span>Even though both fast and slow are set to the same frequency (261Hz or
+Middle C), the explicit speedup of time into fast will cause it to sound 1.5
+times (or a perfect fifth) higher.  A similar example is used in the <a href="http://localhost:7775/OSW_DIR/tutorials/time/rate_controls_pitch.osw">“rate controls pitch”</a> tutorial.</p>
+
+<p class=MsoNormal>Time machines can be used to mimic the speed control on
+profession record players or tape decks (see the <a href="http://localhost:7775/OSW_DIR/tutorials/audio/loop.osw">sample loop tutorial example</a>), or as an expressive tempo controller
+when playing scores.</p>
+
+<h3 class="title">7.1. Controlling Signals with Time Machines</h3>
+
+<p class=MsoNormal>When you connect a signal generator, such as a <a class="transform" href="osw/Sinewave.html">Sinewave</a></span> or a noise generator, to an audio output, it will
+continuously generate samples as long as the audio output is turned on. However, if a <span class="transform">Sinewave</span> transform is connected to a time machine, it will only
+generate output when it receives time input. Thus, time machines can be used to switch signals on and off even while
+the audio output is on:</p>
+
+<img src="./time_files/switcheroo1.png">
+
+<p class=MsoNormal>Turning the <a class="transform" href="osw/Toggle.html">Toggle</a>
+on sets the <a class="transform" href="Switch.html">Switch</a> to 1, routing time
+output from the time machine <span class="transform">tm1</span> to the <a class="transform" href="osw/BrownNoise.html">BrownNoise</a> transform, which then outputs samples. If the <span class="transform">Switch
+</span>is set to 0 (by turning the toggle off), then output from the time machine will no
+longer be routed to the noise generator, which is effectively shut off.</p>
+
+<p>You can also use time machines to switch among several potential signals in a patch:</p>
+
+<img width=356 height=503 src="./time_files/switcheroo2.png">
+
+<p class=MsoNormal>Setting the <span class="transform">Switch</span>
+from 0, 1 or 2 switches on the sinewave, phasor or noise generator.</p>
+<p>Open the <a href="http://localhost:7775/OSW_DIR/tutorials/time/switcheroo.osw">switcheroo</a> tutorial to try out the examples in this section.</p>
+</div>
+
+<h3 class="title">7.2 Using Time to Control Events</h2>
+
+<p>Implicit and explicit time machines can be used to control not only signals, but events as well.  The most general method for synchronizing events to the OSW time system is through the <a class="transform" href="osw/Ticker.html">Ticker</a> transform.  The <span class="transform">Ticker</span> transform can be used to emit <span class="transform">Units</span> at regular time intervals that can be controlled by the user. Tickers can be used to design systems based on regular events, such as complex music sequencers.  It is also used by transforms such as <a class="transform" href="input/Wacom.html">Wacom</a> (the graphics-tablet interface) that poll input devices at regular intervals.</p>
+
+<p>Music-playing transforms, such as the <a class="transform"  href="midi/Sequencer.html">MidiSequencer</a> for standard sequencing of MIDI files and the <a class="transform" href="note/PlayScore.html">PlayScore</a> for the more general OSW score format, can be controled via time machines (see <a href="making_music.htm">chapter 4</a> for more details on the OSW score system).  Time machines allow expressive control of both the tempo and control of such musical sequencers.  Patches can also sequence events stored in OSW lists by attaching a <span class="transform">Ticker</span> to a <a class="transform" href="list/Sequence.html">list::Sequence</a> transform.</p>
+
+<p><span class="transform">Ticker</span> allows users to synchronize events to regular time intervals.  Events that happen at specific times rather than regular intervals can be triggered using the <a class="transform" href="osw/OneShot.html">OneShot</a> transform.  <span class="transform">OneShot</span> emits a <span class="transform">Unit</span> value when its time input (either an implicit connection to the main clock or an explicit connection to a time machine) reaches a specified time.  <span class="transform">OneShot</span> is useful for events that happen only once at a specific time during a program's execution, or at irregular intervals by explicit control via a time machine.</p>
+
+
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

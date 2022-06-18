@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<osw-external name="Threshold" package="osw">
+<description>Emit a Unit when a signal threshhold is reached</description>
+<copyright></copyright>
+<inlet name="samplesIn" type="Samples" description="Signal to test to threshold" />
+<inlet name="level" type="Float" default="0.5" description="Threshold level" persistent="1" />
+<outlet name="unitOut" type="Unit" description="Unit emitted whenever signal exceeds level" synchronous="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xprevSample = numeric_limits&lt;Float>::min();</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Float xprevSample;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">
+&#125;
+#include &lt;limits>
+
+namespace osw &#123;
+</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="samplesIn" order="0" >
+
+
+
+
+for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+  if (xprevSample &lt; level &amp;&amp; samplesIn&#91;i&#93; >= level) &#123;
+	unitOut = unitOut;
+  &#125;
+  xprevSample = samplesIn&#91;i&#93;;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Threshold &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">Threshold emits a Unit whenever the input signal exceeds the specified amplitude level.  This is very
+useful for triggering events.  Combined with a Phasor, it can be used as an "analog sequencer."  You
+can also use it to trigger events from live input.</xblock>
+<xblock name="Links">Phasor</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Threshold" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Threshold " name="threshold0" x="143.0" y="323.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="threshold0/level" value="0.5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Phasor " name="phasor0" x="143.0" y="226.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="phasor0/frequency" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print0" x="68.0" y="435.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Ticker" name="ticker0" x="451.0" y="364.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="ticker0/interval" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="186.0" y="148.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="1" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="188.0" y="75.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="0" />
+
+&lt;STATE name="hslider0/max" value="100" />
+
+&lt;STATE name="hslider0/resolution" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="243.0" y="228.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="129.0" y="491.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="102.0" y="372.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SamplePlayer " name="sampleplayer0" x="189.0" y="427.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sampleplayer0/loop_start" value="0" />
+
+&lt;STATE name="sampleplayer0/loop_length" value="0" />
+
+&lt;STATE name="sampleplayer0/loop" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SampleBuffer -name kik" name="kik" x="438" y="97" width="142" height="25" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA src="KICK7.wav" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="247.0" y="353.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="kik/0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get0" x="295.0" y="298.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="threshold0/unitOut" inlet="fanout0/in" vertices="149.0 365.0 108.0 365.0" />
+&lt;CONNECTION  outlet="phasor0/samplesOut" inlet="threshold0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="phasor0/frequency" vertices="192.0 203.5 172.0 203.5" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="194.0 132.0 192.0 132.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="threshold0/level" vertices="249.0 292.0 217.0 292.0" />
+&lt;CONNECTION  outlet="fanout0/out1" inlet="print0/to_print" vertices="108.0 421.0 74.0 421.0" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="sampleplayer0/reset" vertices="130.0 417.0 216.0 417.0" />
+&lt;CONNECTION  outlet="sampleplayer0/samplesOut" inlet="out0/mix" vertices="195.0 476.5 255.0 476.5" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="sampleplayer0/table" vertices="253.0 407.0 237.0 407.0" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="301.0 343.0 401.0 343.0" />
+&lt;TITLE  x="483.0" y="329.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="76.0" y="44.0" color="#FFFFFF" text="Threshold" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="242.0" y="54.0" color="#FFFFFF" text="set frequency (tempo)" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="298.0" y="215.0" color="#FFFFFF" text="set threshold amplitude" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+<xblock name="HelpPatchSupportFiles">KICK7.wav</xblock>
+</osw-external>

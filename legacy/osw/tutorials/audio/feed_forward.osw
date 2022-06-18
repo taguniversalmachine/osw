@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="feed_forward" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Comb" name="comb0" x="65.0" y="238.0" width="75" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="comb0/gain" value="1" />
+
+<STATE name="comb0/forward" value="1" />
+
+<STATE name="comb0/feedback" value="0" />
+
+<STATE name="comb0/delay" value="0.24" />
+</TRANSFORM>
+<TRANSFORM  command="Impulse" name="impulse0" x="65.0" y="146.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="65.0" y="75.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="1.0" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="63" y="398" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="471.0" y="158.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0.24" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Toggle" name="toggle0" x="266.0" y="75.0" width="40" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="471.0" y="75.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="0" />
+
+<STATE name="hslider0/max" value="0.24" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="266.0" y="146.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="1" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="comb0/samplesOut" inlet="out0/mix" vertices="71.0 335.0 189.0 335.0" />
+<CONNECTION  outlet="impulse0/samplesOut" inlet="comb0/samplesIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="impulse0/impulse" vertices="71.0 127.5 121.0 127.5" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="comb0/delay" vertices="477.0 214.5 143.0 214.5" />
+<CONNECTION  outlet="toggle0/toggleOut" inlet="intbox0/intIn" vertices="" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="comb0/forward" vertices="272.0 208.5 107.0 208.5" />
+<TITLE  x="143.0" y="54.0" color="#FFFFFF" text="press button for impulse" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="341.0" y="55.0" color="#FFFFFF" text="turn on feed-forward tap" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="540.0" y="54.0" color="#FFFFFF" text="set feed-forward delay" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="128.0" y="23.0" color="#FFFFFF" text="Feed-forward Comb Filter" fontface="MS Sans Serif" fontsize="16" /><HYPERLINK  x="544.0" y="394.0" color="#0000FF" link="http://www-ccrma.stanford.edu/~jos/waveguide/Feedforward_Comb_Filters.html" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="545.0" y="415.0" color="#0000FF" link="audio/feed_back" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<osw-external name="List2Raw" package="raw">
+<description>Convert list of integers and strings to raw data bytes</description>
+<copyright></copyright>
+<inlet name="listIn" type="List" description="List to convert" />
+<outlet name="rawOut" type="Raw" description="raw data output" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="convert" activators="listIn" order="0" >
+
+
+string rawString;
+for (List::iterator p = listIn->begin();
+     p != listIn->end();
+     ++p) &#123;
+     Untyped datum = *p;
+     if (datum->TypeOf() == typeid(Integer)) &#123;
+	rawString += char(Extract&lt;Integer>(datum));
+     &#125; else if (datum->TypeOf() == typeid(String)) &#123;
+	rawString += Extract&lt;String>(datum);
+     &#125; else &#123;
+	Error ("List elements must be integers or strings");
+     &#125;
+&#125;
+if (rawString.size() > 0) &#123;
+   rawOut = Raw(rawString.size(),(void *)ptrfunc(rawString));
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">List2Raw &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">List2Raw converts a list of integers and strings into a stream of raw data types, useful for network protocols or MIDI system exclusive messages.  Integers are converted in the corresponding byte (e.g.,
+the integer 41 is converted to byte value 41,  the character "A"), while strings are appended directly
+to the data stream (e.g., the string "OSW" appends the characters "O", "S" and "W").  Elements
+of other data types return errors and do not affect the data stream output.</xblock>
+<xblock name="Links">Raw2List UDPSend UDPListen</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_List2Raw" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="151" y="186" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="1 2 3" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List2Raw " name="list2raw0" x="151.0" y="255.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print0" x="151.0" y="325.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="409.0" y="196.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="4 banana 5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="List2Raw " name="list2raw1" x="409" y="265" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print1" x="409.0" y="333.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Raw2List " name="raw2list0" x="249" y="446" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="list2raw0/listIn" vertices="" />
+&lt;CONNECTION  outlet="list2raw0/rawOut" inlet="print0/to_print" vertices="" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="list2raw1/listIn" vertices="" />
+&lt;CONNECTION  outlet="list2raw1/rawOut" inlet="print1/to_print" vertices="" />
+&lt;STICKY  x="225.0" y="106.0" width="181.0" height="43.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Press buttons and see raw
+byte streams on console.&lt;/STICKY>&lt;TITLE  x="285.0" y="419.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="177.0" y="63.0" color="#FFFFFF" text="List2Raw" fontface="MS Sans Serif" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

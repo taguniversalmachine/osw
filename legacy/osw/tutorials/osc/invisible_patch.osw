@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="invisible_patch" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCDispatch " name="oscdispatch1" x="122.0" y="408.0" width="82" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="122.0" y="107.0" width="152" height="29" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="/patch/add-transform AudioOutput out0 1 2" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="154.0" y="157.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="/patch/add-transform osw::BrownNoise bn1" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="122.0" y="346.0" width="90" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox3" x="122" y="484" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox3/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="BrownNoise " name="brownnoise0" x="548.0" y="484.0" width="70" height="38" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="178.0" y="203.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="/patch/bn1/samplesOut/connect /patch/out0/mix" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox4" x="209.0" y="246.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox4/message" value="/patch/out0/onoff true" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox5" x="240" y="294" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox5/message" value="/patch/out0/onoff false" />
+</TRANSFORM>
+<CONNECTION  outlet="oscdispatch1/messageOut" inlet="msgbox3/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanin0/in1" vertices="" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="fanin0/in2" vertices="160.0 268.5 145.0 268.5" />
+<CONNECTION  outlet="fanin0/out" inlet="oscdispatch1/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox2/messageOut" inlet="fanin0/in3" vertices="184.0 291.5 162.0 291.5" />
+<CONNECTION  outlet="msgbox4/messageOut" inlet="fanin0/in4" vertices="215.0 313.0 179.0 313.0" />
+<CONNECTION  outlet="msgbox5/messageOut" inlet="fanin0/in5" vertices="246.0 337.0 196.0 337.0" />
+<STICKY  x="547.0" y="358.0" width="151.0" height="101.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">This is here to auto-
+load the external.  You
+can also load externals
+with the load-osx OSC
+message and the full path
+of your external.</STICKY><TITLE  x="131.0" y="42.0" color="#FFFFFF" text="Build a patch using OSC" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="344.0" y="120.0" color="#FFFFFF" text="create AudioOutput" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="386.0" y="164.0" color="#FFFFFF" text="create noise generator" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="418.0" y="215.0" color="#FFFFFF" text="connect the transforms" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="419.0" y="258.0" color="#FFFFFF" text="turn on audio" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="452.0" y="307.0" color="#FFFFFF" text="turn off audio" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

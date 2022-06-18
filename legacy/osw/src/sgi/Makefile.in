@@ -1,0 +1,234 @@
+
+#Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+#Copyright (c) 1998-2001 Regents of the University of California.
+#All rights reserved.
+#
+#     ``The contents of this file are subject to the Open Sound World Public
+#     License Version 1.0 (the "License"); you may not use this file except in
+#     compliance with the License. A copy of the License should be included
+#     in a file named "License" or "License.txt" in the distribution from 
+#     which you obtained this file. 
+#
+#     Software distributed under the License is distributed on an "AS IS"
+#     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#     License for the specific language governing rights and limitations
+#     under the License.
+#
+#     The Original Code is Open Sound World (OSW) software.
+#
+#     The Initial Developer of the Original Code is Amar Chaudhary.
+#     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+#     Regents of the University of California and Amar Chaudhary. 
+#     All Rights Reserved.
+#
+#     Contributor(s):
+
+include ../generic/Version.mak
+
+#Ugly comments in this file are mostly gcc options being commented out
+
+CXX=@CXX@
+CC=@CC@
+
+BIN_DIR = @prefix@/bin
+INSTALL_DIR = @prefix@/lib/osw
+OSW_SOURCE_DIR = @ac_srcdir_abs@/../..
+TCL_INCLUDE_DIR = @TCL_INCLUDE_DIR@
+TK_INCLUDE_DIR = @TK_INCLUDE_DIR@
+TCL_BIN = @TCL_BIN@
+
+CFLAGS = @CFLAGS@ @TCL_INCLUDE_DIR@ $(VERSIONOPTS)
+CXXFLAGS = @CXXFLAGS@
+
+OBJ = o
+
+SGIOBJECTS=oswSGIThread.o oswSGIMutex.o oswSGISock.o oswSGISelect.o oswSGIAudio.o oswSGILoadOSX.o oswSGIHiResTimer.o oswSGIFileUtils.o oswSGIPrefs.o oswSGIInit.o
+
+LD_LIBRARYN32_PATH=$(LD_LIBRARYN32_PATH):/usr/lib32/cmplrs
+
+LIBFLAGS =  -elf -rdata_shared -n32 -no_unresolved
+#-ipa -IPA:echo=on -IPA:plimit=1000
+
+LIBRARIES = @LIBS@ 
+
+################
+# Default is all
+
+all: libosw.so oswbin
+
+###################
+
+#special rule to avoid optimizer-overload
+
+oswBinop4a.$(OBJ) : ../generic/oswBinop4a.cpp $(REQUIRED_H) \
+	../include/oswLex.h ../include/oswBinop.h
+	$(CXX)  $(CFLAGS) -OPT:Olimit=10000 -c ../generic/oswBinop4a.cpp 
+
+oswOSCServer.$(OBJ) : ../generic/oswOSCServer.cpp ../include/oswOSCPacket.h \
+	../include/oswOSCTypes.h $(REQUIRED_H)
+	$(CXX) $(CFLAGS) -OPT:Olimit=10000 -c ../generic/oswOSCServer.cpp
+
+###################
+# Generic C++ files
+
+include ../generic/Generic.mak
+
+########################
+#libraries / executables
+
+libosw.so : $(OBJECTS) $(SGIOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS)
+#	g++ -o libosw.so -Wl,-soname,libosw.so $(LIBFLAGS) $(SDIF_OBJECTS)  -L. -L/usr/local/lib $(LIBRARIES) 
+	$(CXX) -o libosw.so -shared $(LIBFLAGS) $(OBJECTS) $(SGIOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS) -L. -L/usr/local/lib $(LIBRARIES)
+
+
+oswbin : $(OBJECTS) $(SGIOBJECTS) $(SDIF_OBJECTS) $(OSC_OBJECTS)
+	$(CXX) -o oswbin  $(LIBFLAGS) -L. -L/usr/local/lib -losw -lpthread -lm
+
+## No STL port lib necessary when using SGI compiler
+
+########################
+# SGI-specific C++ files
+
+oswSGIThread.o : oswSGIThread.cpp ../include/osw.h ../include/oswThread.h ../include/oswSched.h
+	$(CXX) $(CFLAGS) -c oswSGIThread.cpp
+
+oswSGIMutex.o : oswSGIMutex.cpp ../include/oswMutex.h
+	$(CXX) $(CFLAGS) -c oswSGIMutex.cpp
+
+oswSGISock.o : oswSGISock.cpp ../include/oswSock.h ../include/oswSelect.h
+	$(CXX) $(CFLAGS) -c oswSGISock.cpp
+
+oswSGISelect.o : oswSGISelect.cpp ../include/oswSelect.h
+	$(CXX) $(CFLAGS) -c oswSGISelect.cpp
+
+oswSGILoadOSX.o : oswSGILoadOSX.cpp 
+	$(CXX) $(CFLAGS) -c oswSGILoadOSX.cpp
+
+oswSGIAudio.o : oswSGIAudio.cpp oswSGIAudio.h ../include/oswAudio.h
+	$(CXX) $(CFLAGS) -c oswSGIAudio.cpp
+
+oswSGIFileUtils.o : oswSGIFileUtils.cpp ../include/oswFileUtils.h
+	$(CXX) $(CFLAGS) -c oswSGIFileUtils.cpp
+
+oswSGIPrefs.o : oswSGIPrefs.cpp ../include/oswPrefs.h
+	$(CXX) $(CFLAGS) -c oswSGIPrefs.cpp
+
+oswSGIHiResTimer.o : oswSGIHiResTimer.cpp ../include/oswHiResTimer.h
+	$(CXX) $(CFLAGS) -c oswSGIHiResTimer.cpp
+
+oswSGIInit.o : oswSGIInit.cpp ../include/osw.h ../include/oswSched.h ../include/oswInit.h 
+	$(CXX) $(CFLAGS) -c oswSGIInit.cpp
+
+
+########################
+# Cleanup & Installation
+
+
+clean:
+	rm *.o
+	rm *.so
+
+execlean:
+	rm libosw.so	
+
+install: libosw.so oswbin
+	echo "#!/usr/bin/csh" > osw
+	echo "setenv OSW_DIR $(INSTALL_DIR)" >> osw
+	echo 'setenv LD_LIBRARY_PATH .:$(INSTALL_DIR):/usr/local/lib:/usr/lib:/lib' >> osw
+	echo 'setenv LD_LIBRARYN32_PATH .:$(INSTALL_DIR):/usr/local/lib:/usr/lib:/lib' >> osw
+	echo 'setenv LD_RUN_PATH=.:$(INSTALL_DIR):/usr/local/lib:/usr/lib:/lib' >> osw
+	echo "wish8.3 $(INSTALL_DIR)/oswinit.tcl" '$$1' >> osw
+	chmod a+x osw
+	cp osw $(BIN_DIR)	
+	echo "OSWSourceDir $(OSW_SOURCE_DIR)/src" > ../../externalizer/preferences.txt
+	echo "OSWInstallDir $(INSTALL_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTclInclude $(TCL_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWTkInclude $(TK_INCLUDE_DIR)" >> ../../externalizer/preferences.txt
+	echo "OSWLibs @LIBS@" >> ../../externalizer/preferences.txt
+	echo "#!/usr/bin/csh" > root-osw
+	echo "setenv OSW_DIR $(INSTALL_DIR)" >> root-osw
+	echo 'setenv LD_LIBRARY_PATH .:$(INSTALL_DIR):/usr/local/lib:/usr/lib:/lib' >> root-osw
+	echo 'setenv LD_LIBRARYN32_PATH .:$(INSTALL_DIR):/usr/local/lib:/usr/lib:/lib' >> root-osw
+	echo 'setenv LD_RUN_PATH=.:$(INSTALL_DIR):/usr/local/lib:/usr/lib:/lib' >> root-osw
+	echo "unlimit -h" >> root-osw
+	echo "unlimit" >> root-osw
+	echo "limit" >> root-osw
+	echo "wish8.3 $(INSTALL_DIR)/oswinit.tcl" '$$1' >> root-osw
+	chmod a+x root-osw
+	cp root-osw $(BIN_DIR)	
+
+
+	if test ! -d $(INSTALL_DIR); then \
+	  mkdir $(INSTALL_DIR); \
+	fi
+	cp libosw.so $(INSTALL_DIR)/..
+	cp oswbin $(BIN_DIR)
+	cp -r ../../scripts $(INSTALL_DIR)
+	cp -r ../../bitmaps $(INSTALL_DIR)
+	cp -r ../../externalizer $(INSTALL_DIR)
+	cp -r ../../html $(INSTALL_DIR)
+	cp -r ../../help_patches $(INSTALL_DIR)
+	cp -r ../../tutorials $(INSTALL_DIR)	
+	cp -r ../../demos $(INSTALL_DIR)	
+	cp -r ../../oswinit.tcl $(INSTALL_DIR)
+	cp -r ../../TclXML-1.2 $(INSTALL_DIR)
+	echo "#!$(TCL_BIN)" > externalizer
+	echo "set env(OSW_DIR) $(INSTALL_DIR)" >> externalizer
+	echo 'source $$env(OSW_DIR)/externalizer/externalizer.tcl' >> externalizer
+	chmod a+x externalizer
+	cp externalizer $(BIN_DIR)
+	cp INSTALL.sgi $(INSTALL_DIR)
+	cp ../win/INSTALL.win $(INSTALL_DIR)
+	cp ../linux/INSTALL.linux $(INSTALL_DIR)
+	cp ../macosx/INSTALL.macosx $(INSTALL_DIR)
+	cp INSTALL.sgi $(INSTALL_DIR)/html
+	cp README.sgi $(INSTALL_DIR)
+	cp ../../README $(INSTALL_DIR)
+	cp ../../License $(INSTALL_DIR)
+	if test ! -d $(INSTALL_DIR)/src; then \
+	  mkdir $(INSTALL_DIR)/src; \
+	fi
+	cp -r ../include $(INSTALL_DIR)/src
+	cp -r ../types $(INSTALL_DIR)/src	
+
+
+externals:
+	OSW_DIR=$(OSW_SOURCE_DIR)
+	export OSW_DIR
+	if test ! -d $(INSTALL_DIR)/externals ; then \
+	   mkdir $(INSTALL_DIR)/externals ; \
+        fi
+	externalizer -batch -nogui ../externals/blob
+	externalizer -batch -nogui ../externals/osw
+	externalizer -batch -nogui ../externals/list
+	externalizer -batch -nogui ../externals/note
+	externalizer -batch -nogui ../externals/midi
+	externalizer -batch -nogui ../externals/sdif
+	externalizer -batch -nogui ../externals/table
+	externalizer -batch -nogui ../externals/cnmat
+	externalizer -batch -nogui ../externals/sinusoids
+	externalizer -batch -nogui ../externals/spectral
+	externalizer -batch -nogui ../externals/raw
+	externalizer -batch -nogui ../externals/fx
+	externalizer -batch -nogui ../externals/patented
+
+external_clean:
+	rm ../externals/*/*/*.o
+	rm ../externals/*/*/*.osx
+
+dist:
+	tar -cf osw.tar install.sh
+	tar -uf osw.tar -C $(INSTALL_DIR) .
+	tar -uf osw.tar oswbin
+	tar -uf osw.tar libosw.so
+	#tar --delete lib/osw/externals/patented/*
+	gzip osw.tar
+
+patented-dist:
+	tar -uf osw.tar install.sh
+	tar -uf osw.tar oswbin
+	tar -uf osw.tar -C $(INSTALL_DIR) .
+	gzip osw.tar
+
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="dust" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="WhiteNoise " name="whitenoise0" x="66.0" y="64.0" width="66" height="38" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Inlet -name dustiness -type Float" name="dustiness" x="199.0" y="68.0" width="54" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr 1 - 0.001 * $f1" name="expr0" x="199.0" y="150.0" width="130" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command=";gt;=" name="gteq0" x="66.0" y="242.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -name samplesOut -type Samples" name="samplesOut" x="66.0" y="325.0" width="65" height="37" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="whitenoise0/samplesOut" inlet="gteq0/param1" vertices="" />
+<CONNECTION  outlet="dustiness_inlet/out" inlet="expr0/f1" vertices="" />
+<CONNECTION  outlet="expr0/out" inlet="gteq0/param2" vertices="205.0 213.5 104.0 213.5" />
+<CONNECTION  outlet="gteq0/result" inlet="samplesOut_outlet/in" vertices="" />
+<TITLE  x="87.0" y="27.0" color="#FFFFFF" text="Dust" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

@@ -1,0 +1,699 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0051)http://www.a2hd.com/research/osw-osc/osw-osc-03.php -->
+<HTML><HEAD><TITLE>a2hd.com: /research/osw-osc/osw-osc-03.php</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><LINK 
+href="/a2hd-2.ico" rel="SHORTCUT ICON">
+<META content="A2HD - Corpus Electronica of Andy Schmeder" type="description">
+<META content="Andrew, Andy, Water, Schmeder, a2hd" type="keywords">
+
+<META content="MSHTML 6.00.2716.2200" name=GENERATOR></HEAD>
+<BODY>
+
+      <H1 align=center>Appendix A. Implementation of a Scalable and Dynamic Interface for 
+      Open Sound World using Open Sound Control</H1>
+      <P align=center><STRONG>Andrew W. Schmeder (andy at a2hd dot 
+      com)</STRONG></P>
+      <P align=left></P>
+      <P>
+      <H3>Abstract:</H3>
+      <DIV class=ABSTRACT>This document describes the nature and use of Open 
+      Sound Control within a Open Sound World, a complex and dynamic musical 
+      application written by Amar Chaudhary and others. We describe in detail 
+      the process of constructing Open Sound Control namespaces at runtime and 
+      performing manipulations and queries in that space via network messages. 
+      </DIV>
+      <P><BR>
+      <HR>
+<!--Table of Child-Links--><A name=CHILD_LINKS></A>
+      <UL class=ChildLinks>
+        <LI><A 
+        href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00010000000000000000" 
+        name=tex2html1>Introduction to OSC and OSW</A> 
+        <UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00011000000000000000" 
+          name=tex2html2>Use of Hierarchy</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00012000000000000000" 
+          name=tex2html3>Control System Requirements and Goals</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00013000000000000000" 
+          name=tex2html4>Conventions in this Document</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00014000000000000000" 
+          name=tex2html5>Testing the Implementation with OSW-CLI</A> 
+</LI></UL><BR>
+        <LI><A 
+        href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00020000000000000000" 
+        name=tex2html6>The Implementation</A> 
+        <UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00021000000000000000" 
+          name=tex2html7>Server Discovery</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00022000000000000000" 
+          name=tex2html8>Transaction Methodology</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00022100000000000000" 
+            name=tex2html9>Every Input Has a Reply</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00022200000000000000" 
+            name=tex2html10>Glob Expansion</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00022300000000000000" 
+            name=tex2html11>Reply Address matches Input Address</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00022400000000000000" 
+            name=tex2html12>Return Codes</A> </LI></UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00023000000000000000" 
+          name=tex2html13>Documentation</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00024000000000000000" 
+          name=tex2html14>Namespace Exploration</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00025000000000000000" 
+          name=tex2html15>Type Signatures</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00025100000000000000" 
+            name=tex2html16>Container / Non-readable Types</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00025200000000000000" 
+            name=tex2html17>Extended Type Information</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00025300000000000000" 
+            name=tex2html18>Extra Types</A> </LI></UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00026000000000000000" 
+          name=tex2html19>Current Value Queries</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00027000000000000000" 
+          name=tex2html20>Set Value Commands</A> </LI></UL><BR>
+        <LI><A 
+        href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00030000000000000000" 
+        name=tex2html21>Interfacing with OSW</A> 
+        <UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031000000000000000" 
+          name=tex2html22>Builtin Objects and Global Commands</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031100000000000000" 
+            name=tex2html23>/patch</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031200000000000000" 
+            name=tex2html24>/advance-clock</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031300000000000000" 
+            name=tex2html25>/osw-quit and /osw-restart</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031400000000000000" 
+            name=tex2html26>/osc_server</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031500000000000000" 
+            name=tex2html27>/load-osx</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031600000000000000" 
+            name=tex2html28>/transform-types</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031700000000000000" 
+            name=tex2html29>Audio Drivers</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031800000000000000" 
+            name=tex2html30>Threads</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00031900000000000000" 
+            name=tex2html31>Miscellaneous</A> </LI></UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00032000000000000000" 
+          name=tex2html32>Transform Methods</A> 
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00033000000000000000" 
+          name=tex2html33>set-name</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00033100000000000000" 
+            name=tex2html34>get-inlets</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00033200000000000000" 
+            name=tex2html35>get-outlets</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00033300000000000000" 
+            name=tex2html36>persistent-states</A> </LI></UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00034000000000000000" 
+          name=tex2html37>Patch Methods</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00034100000000000000" 
+            name=tex2html38>add-transform</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00034200000000000000" 
+            name=tex2html39>delete-transform</A> </LI></UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00035000000000000000" 
+          name=tex2html40>State Methods</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00035100000000000000" 
+            name=tex2html41>get-coactivators</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00035200000000000000" 
+            name=tex2html42>get-effects</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00035300000000000000" 
+            name=tex2html43>set-name</A> </LI></UL>
+          <LI><A 
+          href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00036000000000000000" 
+          name=tex2html44>Miscellaneous</A> 
+          <UL>
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00036100000000000000" 
+            name=tex2html45>Extended Types</A> 
+            <LI><A 
+            href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00036200000000000000" 
+            name=tex2html46>Large Messages</A> </LI></UL></LI></UL><BR>
+        <LI><A 
+        href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00040000000000000000" 
+        name=tex2html47>Conclusion</A> 
+        <LI><A 
+        href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00050000000000000000" 
+        name=tex2html48>References</A> 
+        <LI><A 
+        href="http://www.a2hd.com/research/osw-osc/osw-osc-03.php#SECTION00060000000000000000" 
+        name=tex2html49>About this document ...</A> </LI></UL><!--End of Table of Child-Links--><BR>
+      <HR>
+
+      <P>
+      <H1><A name=SECTION00010000000000000000>Introduction to OSC and OSW</A> 
+      </H1>
+      <P>Open Sound World (OSW) is a visual/dataflow programming environment for 
+      real-time stream-based multimedia processing, especially audio. It is 
+      similar to PD, jMax, Max/MSP, and numerous programs. OSW is implemented in 
+      C++ using powerful generic templates and OO-oriented methods. Open Sound 
+      Control (OSC) is a general protocol for encapsulating and organizing 
+      control among multi-layered systems for musical applications. OSC is 
+      developed at The Center for New Music and Audio Technology (CNMAT) at UC 
+      Berkeley by Matt Wright and others. 
+      <P>
+      <H2><A name=SECTION00011000000000000000>Use of Hierarchy</A> </H2>
+      <P>A "patch" or "program" in OSW consists of a collection of configured 
+      objects. The basic primitive object is a Transform. A Transform may have a 
+      number binding sites for data I/O which are called Inlets, Outlets and 
+      States. Some Transforms may also be Containers, in that they may contain 
+      other Transforms. The Patch is a Container and a Transform that the user 
+      interacts with (in a graphical representation, the Patch is referred to as 
+      the "canvas"). Via the GUI, a user places arbitrary Transforms into the 
+      Patch, and within that Patch may create Connections among the Inlets and 
+      Outlets. Connections are constrained and directional such that that an 
+      Outlet may only connect to an Inlet provided that the types are compatible 
+      (a discussion of the OSW type system would also merit a significant 
+      document). A Patch may contain another Patch (i.e. a "subpatch"), which 
+      leads us to a program in OSW represented as a hierarchical structure of 
+      Transforms. 
+      <P>In OSC, messages are constructed using a simple syntax denoting an 
+      address and a set of typed arguments. The address is formulated in a 
+      hierarchical fashion similar to a URL or a Unix-style path. There is a 
+      natural coupling between the hierarchy of objects which the user sets up 
+      in OSW to an OSC address space. This map is automatically constructed at 
+      runtime as the user "builds a patch", and makes possible for OSC messages 
+      to interact with this space via UDP networking. 
+      <P>
+      <H2><A name=SECTION00012000000000000000>Control System Requirements and 
+      Goals</A> </H2>
+      <P>We desire to make the OSC interface to OSW powerful enough so that it 
+      can be used as a substitute for the GUI, i.e. that every possible action 
+      ("patching operation") within the GUI is possible using only OSC 
+      messaging. This enables us to turn OSW into a networked application 
+      server. The fact that this is at all possible is predicated upon the fact 
+      that the design of OSW adheres to the model-view-controller pattern (The 
+      OSW server is the model). The benefits of this design are increased 
+      stability, scalability via clustering, multi-user interaction, ease of 
+      integration with external software, and better debugging and regression 
+      testing capability due to complete separation of the UI. At CNMAT, we are 
+      especially interested in researching clustering and automation which is 
+      possible using special networked clients. Finally, it is worth noting that 
+      the jMax project uses a similar design, in that the synthesis server, Fts, 
+      is separated from the GUI via a network messaging system. However, we 
+      prefer strongly to use OSC for a number of reasons; it is well documented, 
+      and it is an accepted standard with support in many applications and 
+      programming languages. 
+      <P>Our requirements are such that we will, by necessity, test and 
+      implement nearly the full range of functionality described in the OSC 
+      specification. In addition to the basics of constructing and parsing, 
+      sending and receiving OSC messages, we require namespace searches, 
+      documentation, and type signature queries. In some cases we have chosen to 
+      go beyond what the OSC specification describes, particularly in the area 
+      of transaction semantics and type extensions. The full details of what has 
+      been done, where OSC conformance is present and where we extend it, is 
+      described the the following sections. We hope that this model may serve as 
+      an inspirational source, as proof that use of OSC to control complex 
+      musical systems is a feasible and worthwhile goal. Furthermore we hope 
+      that this document may help clarify effective use at a high level of OSC 
+      for programmers and users of OSW. 
+      <P>
+      <H2><A name=SECTION00013000000000000000>Conventions in this Document</A> 
+      </H2>
+      <P>In this document, we give numerous examples of hypothetical message 
+      exchanges between a client and an OSW server. We use some conventions in 
+      formatting to help make these examples clear. OSC messages are enclosed 
+      with brackets [, ], and begin with an OSC address, followed by zero or 
+      more arguments, each separated by a space. The types of the arguments are 
+      implied by the use of quotes for strings, or numeric characters for 
+      various numeric types. In some cases, details will be omitted, signified 
+      by using an ellipsis (...). Some special types will be enclosed in curly 
+      braces {, }, with a prefix naming the type, e.g. blob:{...}. A message may 
+      be prefixed by &gt; or &lt;, which is an indicator of the transmission 
+      direction; &gt; implies the message is transmitted from client to server, 
+      and &lt; implies the opposite. Finally, time always progresses downwards, 
+      i.e. when multiple messages are presented, the messages further down the 
+      page are transmitted at a later time. The following shows an example: <PRE>&gt; [ /foo/bar "hello" 1 2 3 blob:{...} ]
+&lt; [ /bar/baz "Got hello and some numbers and a blob" ]
+</PRE>
+      <P>
+      <H2><A name=SECTION00014000000000000000>Testing the Implementation with 
+      OSW-CLI</A> </H2>
+      <P>A simple test program is provided, which makes use of the features 
+      described in this document. This program, called osw-cli, is available as 
+      open source from <a href="http://www.a2hd.com/research">http://www.a2hd.com/research<a/>. This program presents a 
+      command-line interface, vaguely similar to a Unix-style shell, which is 
+      capable of controlling one or more OSW servers using OSC messages (Note: 
+      "OSW server" refers to OSW running in "bin" mode, i.e. launched using the 
+      oswbin command.). Refer to the above website for details. 
+      <P>We also note that in several cases, examples of interaction with the 
+      OSW server will not be entirely accurate, or will omit important details, 
+      when compared with what the message would look like in an actual 
+      interaction. The interested reader is referred to examine the above 
+      program. 
+      <P>
+      <H1><A name=SECTION00020000000000000000>The Implementation</A> </H1>
+      <P>
+      <H2><A name=SECTION00021000000000000000>Server Discovery</A> </H2>
+      <P>The first step of establishing a connection between client and server 
+      is the discovery of the server's presence on the local area network. To do 
+      this, the OSW server periodically sends a UDP packet to the broadcast 
+      address on port 7706, containing some basic statistical information. The 
+      client listens for these packets and uses the stream to determine several 
+      things about the server; its network address (by examining the return 
+      address), the amount of time that the server has been running (uptime), 
+      and the activity level (expressed in Activations per second). The client 
+      can then communicate with the server using OSC messages over UDP. The 
+      server listens for these messages on port 7707 and routes its reply 
+      messages to the client on port 7708. 
+      <P>
+      <H2><A name=SECTION00022000000000000000>Transaction Methodology</A> </H2>
+      <P>The control session between client and server consists of an exchange 
+      of OSC messages. The OSC specification does not define much about how this 
+      exchange should take place, however we felt that a greater formalization 
+      would be useful. In the following discussion we refer to the "input 
+      message" as a command or query originating from the client, and the "reply 
+      message" as the server response which is routed back to the client. 
+      <P>
+      <H3><A name=SECTION00022100000000000000>Every Input Has a Reply</A> </H3>
+      <P>Because we use UDP, the physical delivery of both input and reply 
+      messages is not assured. We require that every input message generates a 
+      reply message which can be used to confirm the receipt of the message. 
+      This presents a minor problem to the design of OSC, in that OSC is 
+      intended to be a nearly-stateless protocol ("nearly" because there are 
+      some implicit assumptions that the OSC namespace does not change too 
+      quickly (however even this is subject to debate)). In our experience, UDP 
+      packets are in fact never lost when sent over a relatively quite local 
+      network, however we note that our transaction Al semantics do not require 
+      the server to be stateful, and require minimal state retention on the 
+      client side. 
+      <P>
+      <H3><A name=SECTION00022200000000000000>Glob Expansion</A> </H3>
+      <P>When an input address uses a pattern-matching glob, that pattern is 
+      compared against the internal map. For each match, the server generates a 
+      new simulated message who's address is the explicit match. In this sense, 
+      the use of a globbing target is equivalent to sending a set of explicit 
+      messages. The system also will return the glob-message along with the 
+      number of matches found; <PRE>&gt; [ */documentation ]
+&lt; [ */documentation 24 ]
+&lt; [ /main_clock/documentation 0 "The Main Clock" ]
+&lt; [ /osw-quit/documentation 0 "Force this server to exit" ]
+&lt; ... (22 additional reply messages) ...
+</PRE>
+      <P>
+      <H3><A name=SECTION00022300000000000000>Reply Address matches Input 
+      Address</A> </H3>
+      <P>We use the convention that the address of reply messages matches the 
+      address of the input. <PRE>&gt; [ /hello/osw "How are you?" ]
+&lt; [ /hello/osw "Okay." ]
+</PRE>Most significantly, consistent use of the full input address means 
+      that the client does not need to engage in a stateful wait cycle after 
+      each transmit in order to correlate the reply message. 
+      <P>We note that the OSC specification describes a different reply format 
+      for builtin query types, such as: <PRE>&gt; [ /hello/osw/documentation ]
+&lt; [ /documentation "/hello/osw" "Returns a greeting" ]
+</PRE>However, in our implementation, this would be: <PRE>&gt; [ /hello/osw/documentation ]
+&lt; [ /hello/osw/documenation 0 "Returns a greeting" ]
+</PRE>The difference is something of triviality, but we feel that our 
+      system is more elegant. The initial zero is explained next. 
+      <P>
+      <H3><A name=SECTION00022400000000000000>Return Codes</A> </H3>
+      <P>We introduce the convention that each reply message contains, as its 
+      first argument, a return code. The return code is an integer, and similar 
+      to the use of return codes in the C language, we define that if the 
+      integer is less than zero, it signifies an error response. Therefore, a 
+      return code of zero or greater indicates a successful processing of the 
+      message. The numeric semantics enable the client to quickly sort errors 
+      from non-errors. The following shows the results of a query against an 
+      invalid address. <PRE>&gt; [ /hello/foo/documentation ]
+&lt; [ /hello/foo/documentation -1 "Invalid address" ]
+</PRE>It may be worth considering the use of predefined error codes to 
+      indicate common errors, for example, -1 for a general error, -2 for 
+      invalid address, -4 for incompatible type, -8 for insufficient arguments, 
+      etc. For now, we always use -1 as an error code and include a short 
+      message to describe the problem. 
+      <P>The OSC specification does not define how to handle error conditions. 
+      <P>
+      <H2><A name=SECTION00023000000000000000>Documentation</A> </H2>
+      <P>Documentation is important for making the interface clear to the human 
+      user, even if that user is only the occasional programmer. We are careful 
+      to provide some documentation for every part of the system. We also 
+      include a documentation string for the root address (/), which gives the 
+      program name and version number: <PRE>&gt; [ /documentation ]
+&lt; [ /documentation 0 "Open Sound World 1.1beta2" ]
+</PRE>The present OSC specification does not describe the role of root 
+      documentation. 
+      <P>
+      <H2><A name=SECTION00024000000000000000>Namespace Exploration</A> </H2>
+      <P>Because we expect OSW to have a namespace which changes dynamically, we 
+      must implement namespace queries. <PRE>&gt; [ / ]
+&lt; [ / 25 "advance-clock" "alsa" "casts" ... "thread" "transform-types" ... ]
+</PRE>In this case, we use the return code to indicate the number of 
+      sub-addresses found immediately below the query address. The client may 
+      use this information to recursively map out the OSW namespace. In the 
+      following example, the client can find out how many threads are running on 
+      the OSW server in question <PRE>&gt; [ /thread/ ]
+&lt; [ /thread/ 4 "set-name" "task0" "task1" "watchdog" ]
+</PRE>This shows that there are three threads running, task0, task1 and a 
+      watchdog (the set-name entry is explained later). The client might guess 
+      that this means OSW is running on a dual-CPU machine (which is correct for 
+      this example). 
+      <P>
+      <H2><A name=SECTION00025000000000000000>Type Signatures</A> </H2>
+      <P>Type signature queries enable the client to determine what argument 
+      types the server expects as inputs to particular target addresses. We 
+      implement this in a fairly obvious way: <PRE>&gt; [ /osc-address/type-signature ]
+&lt; [ /osc-address/type-signature 0 string:{...an OSC type tag here...} ]
+</PRE>
+      <P>
+      <H3><A name=SECTION00025100000000000000>Container / Non-readable Types</A> 
+      </H3>
+      <P>In several cases, there are addresses which do not have a type which 
+      can be set or queried (see discussion of set-value and current-value 
+      queries elsewhere). Essentially, these are non-readable addresses. These 
+      cases are also analogous to directories in a file system. For these cases, 
+      a type-signature query will return the Nil type (N). 
+      <P>The OSC specification does not describe how to handle non-readable or 
+      container addresses with respect to type signatures. Use of Nil is one 
+      option which we currently use, another reasonable option is to return an 
+      error message. 
+      <P>
+      <H3><A name=SECTION00025200000000000000>Extended Type Information</A> 
+</H3>
+      <P>In many cases, an addresses also corresponds to an object at the C++ 
+      level (e.g. Transform, Patch, Container, State, etc). An object may have 
+      more than one of these properties due to multiple inheritance or 
+      compositing. Here we examine the main clock, which is a State&lt;Time&gt; 
+      object. <PRE>&gt; [ /main_clock/type-signature ]
+&lt; [ /main_clock/type-signature 0 "t" "State" "Time" "Activator" ]
+</PRE>Next we examine the OSC message dispatcher, which is a Transform: <PRE>&gt; [ /osc_server/dispatcher/type-signature ]
+&lt; [ /osc_server/dispatcher/type-signature 0 "N" "Transform" "N3osw11OSCDispatchE" ]
+</PRE>First, we note that a C++ class name symbol is visible. Second, we 
+      note that a Transform is actually a kind of container for States and 
+      Activations, therefore a Transform is non-readable address (see above) of 
+      Nil type. 
+      <P>
+      <H3><A name=SECTION00025300000000000000>Extra Types</A> </H3>
+      <P>In a few cases, we needed to extend the basic type system, but did not 
+      want to use the blob/string method above. We added the following, 
+      non-standard, types to our system: 
+      <P>A complex number: (C), as two floats packed together. 
+      <P>A vector of samples: (v), in floating point format. The correct vector 
+      length (e.g. 64) can be determined by queries against AudioOutput 
+      transforms or the AudioDriver objects. <PRE>&gt; [ /patch/output0/mix/type-signature ]
+&lt; [ /patch/output0/mix/type-signature 0 "v" "State" "Samples" ]
+</PRE>In some cases the type of an address is a mutable type but has no 
+      simple mapping into the OSC type framework, and is not given an extended 
+      type tag either. A raw data transport framework is implemented whereby the 
+      OSC type is "bs" (blob, string) where the blob is expected to contain the 
+      raw binary (machine dependent) data, and the string the name of the type. 
+      For example, we have lookup tables for Sine, Sinc and Cosine functions: <PRE>&gt; [ /sinc/type-signature ]
+&lt; [ /sinc/type-signature 0 "bs" "State" "FloatTable" ]
+</PRE>
+      <P>
+      <H2><A name=SECTION00026000000000000000>Current Value Queries</A> </H2>
+      <P>This is a rather simple matter of determining the current value of an 
+      address. <PRE>&gt; [ /patch/output0/sample_rate/current-value ]
+&lt; [ /patch/output0/sample_rate/current-value 0 44100.0 ]
+</PRE>In some cases, a target will have a mutable type but no current 
+      value. For example, the input to an AudioOutput before audio is turned on. 
+      In this case the returned type will be Nil. 
+      <P>Non-readable (container) types (which have type-signature Nil) cannot 
+      give any sane response to a current-value query and is therefore return an 
+      error. <PRE>&gt; [ /current-value ]
+&lt; [ /current-value -1 "Address does not have a readable type" ]
+</PRE>
+      <P>
+      <H2><A name=SECTION00027000000000000000>Set Value Commands</A> </H2>
+      <P>A set-value command is terminology which we have invented to describe 
+      normal use of OSC messages to transmit input to a target. This can be 
+      thought of as assignment, e.g.: <PRE>&gt; [ /patch/sine0/freq 440.0 ]
+&lt; [ /patch/sine0/freq 0 ]
+</PRE>or as a function invocation (see also discussion of /advance-clock 
+      below), e.g.: <PRE>&gt; [ /advance-clock ]
+&lt; [ /advance-clock 0 ]
+</PRE>The type-tags of the input must match the expected value (which is 
+      defined by the type-signature). <PRE>&gt; [ /patch/sine0/freq &quot;440.0 ]
+&lt; [ /patch/sine0/freq -1 &quot;Cannot set incompatible data type&quot; ]
+</PRE>Similar to current-value queries, set-value commands cannot be used 
+      on non-readable types, typically non-terminal containers: <PRE>&gt; [ /patch ]
+&lt; [ /patch -1 &quot;Target object is not an OSW state.&quot; ]
+</PRE>
+      <P>
+      <H1><A name=SECTION00030000000000000000>Interfacing with OSW</A> </H1>
+      <P>This section describes the basics of using the interface for productive 
+      tasks, primarily for building patches, manipulating transforms, loading 
+      transforms, etc. Using this information it should be possible to build a 
+      new GUI or other experimental client type for OSW via the OSC interface. 
+      <P>
+      <H2><A name=SECTION00031000000000000000>Builtin Objects and Global 
+      Commands</A> </H2>
+      <P>A number of objects are created at runtime in the OSW server. None of 
+      these objects can be removed. Renaming is possible but not recommended 
+      (see above). There are also a few addresses at the root level which give 
+      access to global commands. 
+      <P>
+      <H3><A name=SECTION00031100000000000000>/patch</A> </H3>
+      <P>The base patch for user constructed patches. The root of the namespace 
+      (/) is not addressable as an object because it is nameless, therefore it 
+      is necessary to create a singleton Patch object as a base for loading and 
+      running user programs. 
+      <P>
+      <H3><A name=SECTION00031200000000000000>/advance-clock</A> </H3>
+      <P>A global command which advances the clock by one frame. All 
+      TimeDomainTransforms will be triggered by this action, causing them to 
+      process a sample block (even if your AudioInput/Output transforms are 
+      off). This is provided mainly for debugging purposes, and secondly it may 
+      be used to slave systems together which are cooperating on a network. 
+      <P>
+      <H3><A name=SECTION00031300000000000000>/osw-quit and /osw-restart</A> 
+      </H3>
+      <P>Quit will force the server to exit. Restart will restart the server 
+      (not implemented yet?). 
+      <P>
+      <H3><A name=SECTION00031400000000000000>/osc_server</A> </H3>
+      <P>A patch containing the OSCCommunicator and OSCDispatch transforms 
+      necessary to engage in OSC communication. This is is actually another 
+      Patch at the root level, however the client should not interact with this 
+      area. 
+      <P>
+      <H3><A name=SECTION00031500000000000000>/load-osx</A> </H3>
+      <P>This global command will load a .osx file on the server. Presently you 
+      must specify the complete path to the file. <PRE>&gt; [ /load-osx "/usr/local/osw/externals/cnmat/Resonators.osx" ]
+&lt; [ /load-osx 0 ]
+</PRE>
+      <P>
+      <H3><A name=SECTION00031600000000000000>/transform-types</A> </H3>
+      <P>Returns a list of all builtin and loaded transforms which can be 
+      created. <PRE>&gt; [ /transform-types ]
+&lt; [ /transform-types 118 "!=" "%" ... "Abs" "Acos" ... "FanOut" ... "Gamma" "Gate" ... ]
+</PRE>
+      <P>
+      <H3><A name=SECTION00031700000000000000>Audio Drivers</A> </H3>
+      <P>There may be one or more AudioDrivers present, e.g. /alsa, /oss, etc. 
+      It is not usually necessary to interact with these. 
+      <P>
+      <H3><A name=SECTION00031800000000000000>Threads</A> </H3>
+      <P>It is possible to see how many threads are running on the server by 
+      doing a namespace query in /thread. The task threads are the ones which 
+      are capable of doing processing work in the OSW system. The watchdog 
+      thread is always present and is necessary to terminate the program in a 
+      scheduler-FIFO-lockup. 
+      <P>
+      <H3><A name=SECTION00031900000000000000>Miscellaneous</A> </H3>
+      <P>There are a number of root level objects which may be of interest to 
+      OSW's core C++ developers. They are, /casts, /implicit_time_manager, 
+      /scheduler, /sinc, /sine, /cosine, /exp, /overhead, /ui_granularity, 
+      /net_granularity, /is-auto-nameable (?). 
+      <P>
+      <H2><A name=SECTION00032000000000000000>Transform Methods</A> </H2>
+      <P>Every instance of a transform will have the following methods, in 
+      addition to containing zero or more States, Inlets and Outlets. 
+      <P>
+      <H2><A name=SECTION00033000000000000000>set-name</A> </H2>
+      <P>Renames the transform (alters the namespace). 
+      <P>
+      <H3><A name=SECTION00033100000000000000>get-inlets</A> </H3>
+      <P>Return a list of inlets for this transform. Inlets also have an 
+      activation order property which is an integer. Inlets with a lower 
+      activation order will trigger Activations earlier than those with higher 
+      numbers. Reply message is a return code indicating the number of inlets 
+      times two, followed by a list of (activation order, inlet name) pairs. <PRE>&gt; [ /patch/output0/get-inlets ]
+&lt; [ /patch/output0/get-inlets 4 0 "/patch/output0/onoff" 1000 "/patch/output0/mix" ]
+</PRE>Here we see that onoff has activation order 0 and mix has activation 
+      order 1000. 
+      <P>
+      <H3><A name=SECTION00033200000000000000>get-outlets</A> </H3>
+      <P>Same as get-inlets. Outlets also have an activation order associated 
+      (?). 
+      <P>
+      <H3><A name=SECTION00033300000000000000>persistent-states</A> </H3>
+      <P>The OSW server does not save patches on its own; it is up to the client 
+      to save and reconstruct the patch for later use. Some Transforms have 
+      States which are so-called persistent. These are states that the client 
+      should remember and restore when the patch is reloaded. Currently this 
+      returns a string naming all of the persistent states. (this should 
+      probably be a list instead...) <PRE>&gt; [ /osc_server/communicator/persistent-states ]
+&lt; [ /osc_server/communicator/persistent-states 0 "basePort" ]
+</PRE>The client is expected to use a current-value to get the value of 
+      the state prior to saving, and to use set-value to restore the state when 
+      restoring the patch. 
+      <P>
+      <H2><A name=SECTION00034000000000000000>Patch Methods</A> </H2>
+      <P>A Patch has methods to deal with creating and destroying Transforms 
+      which it contains. 
+      <P>
+      <H3><A name=SECTION00034100000000000000>add-transform</A> </H3>
+      <P>Adds a transform to the current patch. The third argument is optional 
+      and specifies the arguments to be passed in (always a string). This action 
+      will create a new address in the namespace immediately below the Patch. <PRE>&gt; [ /patch/add-transform "AudioOutput" "aout" "1 2 3 4" ]
+&lt; [ /patch/add-transform 0 ]
+&gt; [ /patch/ ]
+&lt; [ /patch/ 12 "aout" "add-transform" "delete-transform" ... ]
+</PRE>
+      <P>
+      <H3><A name=SECTION00034200000000000000>delete-transform</A> </H3>
+      <P>Deletes a transform from the current patch, and removes its address. <PRE>&gt; [ /patch/delete-transform "aout" ]
+&lt; [ /patch/delete-transform 0 ]
+&gt; [ /patch/ ]
+&lt; [ /patch/ 11 "add-transform" ... ]
+</PRE>
+      <P>
+      <H2><A name=SECTION00035000000000000000>State Methods</A> </H2>
+      <P>A State is a composite template object, usually a wrapper around a 
+      basic type such as a string, number, list, etc. Outlet and Inlet are also 
+      types of State. 
+      <P>
+      <H3><A name=SECTION00035100000000000000>get-coactivators</A> </H3>
+      <P>A State is may be connected to trigger an Activation (a special method 
+      of its Transform). In some cases, more than one state must change before 
+      an Activation is triggered. This set is the co-activation set. In most 
+      cases, there is only one member in the set. Return code is the number of 
+      members and is followed by the addresses of each member. 
+      <P>
+      <H3><A name=SECTION00035200000000000000>get-effects</A> </H3>
+      <P>When a State (or set of States) triggers an Activation which generates 
+      output to an Outlet, we say that State "effects" the Outlet. This returns 
+      the set of Outlets which the State may cause to change. Return code is the 
+      size of this set. 
+      <P>
+      <H3><A name=SECTION00035300000000000000>set-name</A> </H3>
+      <P>Changes the name of the state. 
+      <P>
+      <H2><A name=SECTION00036000000000000000>Miscellaneous</A> </H2>
+      <P>This is section contains some extra notes regarding the author's 
+      interpretation of OSC, OSW, missing features, implementation details and 
+      theoretical discussion. These viewpoints are presented as opinions only 
+      and are open to debate. 
+      <P>
+      <H3><A name=SECTION00036100000000000000>Extended Types</A> </H3>
+      <P>We should consider making the (v) type machine-independent floating 
+      point format. 
+      <P>We have a type which is a vector of 2-byte integer samples (3), but do 
+      not currently use it. 
+      <P>We need an unsigned integer type, or a way to let unsigned integer 
+      targets use an integer (perhaps by throwing an error if the input is 
+      negative). Currently this uses blob/string but is rather annoying. 
+      <P>The Boolean type is a little bit awkward. There is a type for True (T) 
+      and a type for False (F), but no type for Boolean (i.e. True -or- False). 
+      This means that boolean typed targets will have mutable type signatures, 
+      which is a little bit weird (however not entirely out of place since some 
+      OSW types are mutable also via automatic type casting). For example, when 
+      we look at the onoff switch of an AudioOutput when it is off: <PRE>&gt; [ /patch/output0/onoff/type-signature ]
+&lt; [ /patch/output0/onoff/type-signature 0 "F" "State" "Boolean" "Activator" ]
+</PRE>However, when it is on, the type changes to "T". 
+      <P>
+      <H3><A name=SECTION00036200000000000000>Large Messages</A> </H3>
+      <P>The possibility has arisen that in some cases the size of a message may 
+      exceed the capacity for transmission in a single UDP packet (greater than 
+      64kb). There may be several ways to work around the restriction. One 
+      suggestion is to create a special address #split which contains a fragment 
+      number, fragment count and a blob which contains the corresponding chunk 
+      of the binary encoded message. <PRE>&gt; [ #split 0 3 blob:{ [ /message ... ] } ]
+&gt; [ #split 1 3 blob:{ ... } ]
+&gt; [ #split 2 3 blob:{ ... } ]
+&lt; [ /message 0 ]
+</PRE>
+      <P>
+      <H1><A name=SECTION00040000000000000000>Conclusion</A> </H1>
+      <P>We are very pleased with Open Sound Control's capability and 
+      scalability which enable it to encapsulate nearly all of our interface 
+      requirements. Our implementation is powerful and nearly complete, yet a 
+      few items remain to be done before we can claim full support of the OSC 
+      protocol, mainly we have yet to deal with time tags on input messages; 
+      this can be implemented with a sort of priority queue with timed release 
+      of future messages. Furthermore, there are a few rough edges in our 
+      implementation which lead to minor inconsistencies in the reply messages. 
+      We are looking forward to new possibilities which may open up as a result 
+      of the increased flexibility of a functional network interface. 
+      <P>Thanks to Amar Chaudhary for making the OSW architecture integrate so 
+      well with OSC, to Matt Wright, David Wessel, Adrian Freed and the CNMAT 
+      community for creating and supporting OSC, and to all the members of the 
+      OSC mailing list and greater community. 
+      <P>
+      <H1><A name=SECTION00050000000000000000>References</A> </H1>
+      <P>
+      <UL>
+        <LI>Open Sound World, software by Amar Chaudhary and others. <A 
+        href="http://osw.sourceforge.net/" 
+        target=ext>http://osw.sourceforge.net/</A> 
+        <LI>Open Sound Control, Matt Wright, CNMAT. <A 
+        href="http://cnmat.berkeley.edu/OSC" 
+        target=ext>http://cnmat.berkeley.edu/OSC</A> 
+        <LI>Andrew W. Schmeder, personal website, download for osw-cli. <A 
+        href="http://www.a2hd.com/">http://www.a2hd.com/</A> </LI></UL>
+      <P>
+      <H1><A name=SECTION00060000000000000000>About this document ...</A> 
+      </H1><STRONG>Implementation of a Scalable and Dynamic Interface for Open 
+      Sound World using Open Sound Control</STRONG>
+      <P>This document was generated using the <A 
+      href="http://www-texdev.mpce.mq.edu.au/l2h/docs/manual/"><STRONG>LaTeX</STRONG>2<TT>HTML</TT></A> 
+      translator Version 2K.1beta (1.48) 
+      <P>Copyright © 1993, 1994, 1995, 1996, <A 
+      href="http://cbl.leeds.ac.uk/nikos/personal.html">Nikos Drakos</A>, 
+      Computer Based Learning Unit, University of Leeds. <BR>Copyright © 1997, 
+      1998, 1999, <A href="http://www.maths.mq.edu.au/~ross/">Ross Moore</A>, 
+      Mathematics Department, Macquarie University, Sydney. 
+      <P>The command line arguments were: <BR><STRONG>latex2html</STRONG> 
+      <TT>-subdir -split 2 -nonavigation -no_show_section_numbers -noimages 
+      -latex -notex_defs -html_version 4.0 -toc_depth 3 osc-doc.tex</TT> 
+      <P>
+      <ADDRESS>andy at a2hd dot com 2003-05-27 </ADDRESS>
+</BODY>
+</HTML>

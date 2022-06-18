@@ -1,0 +1,246 @@
+<?xml version="1.0" ?>
+<osw-external name="Resonators" package="cnmat">
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+	Adrian Freed	
+	
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.  Based on resonator code for HTM
+by Adrian Freed.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<description>Bank of resonant filters</description>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" />
+<inlet name="resonances" type="Resonances" />
+<inlet name="panic" type="Unit" description="Reset the internal state of the filter" />
+<outlet name="samplesOut" type="Samples" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright">Resonators.  
+Based on resonator filterbank implementation by Adrian Freed.
+Adapted for OSW by Amar Chaudhary.
+(c) 1999 Regents of the University of California</xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">a = stl::vector&lt;float>(1,0.0f);
+b1 = stl::vector&lt;float>(1,0.0f);
+b2 = stl::vector&lt;float>(1,0.0f);
+out1 = stl::vector&lt;float>(256,0.0f);
+out2 = stl::vector&lt;float>(256,0.0f);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">stl::vector&lt;float>   a,b1,b2,out1,out2;
+
+
+void SampleRateHasChanged () &#123;
+    resonances = resonances;
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">
+#define M_PIf          (3.14159265358979323846f)</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation2" activators="resonances" order="" >
+
+if (a.size() != resonances->size()) &#123;
+ a.resize(resonances->size());
+ b1.resize(resonances->size());
+ b2.resize(resonances->size());
+ out1.resize(resonances->size());
+ out2.resize(resonances->size());
+&#125;
+
+
+for (int i = 0; i &lt; a.size(); ++i) &#123;
+    float r = exp(-1.0f / SampleRate * resonances->decay&#91;i&#93;);
+    a&#91;i&#93; = resonances->amp&#91;i&#93;
+	   * sin(resonances->freq&#91;i&#93; * 2.0f * M_PIf / SampleRate);
+    b1&#91;i&#93; = 2.0f * r * (float) cos(resonances->freq&#91;i&#93; * 2.0f * M_PIf / SampleRate);
+    b2&#91;i&#93; = -r*r;
+&#125;
+</activation>
+<activation name="panic_now" activators="panic" order="" >
+
+
+for (int i = 0; i &lt; out1.size(); ++i) &#123;
+   out1&#91;i&#93; = out2&#91;i&#93; = 0.0f;
+&#125;
+</activation>
+<activation name="activation1" activators="samplesIn" order="" >
+
+
+Samples samples(samplesIn->size());
+float i0,i1,i2,i3,o0,o1,o2,o3,yn,yo;
+
+//resonances.Lock();
+
+const int n = a.size();
+//cout &lt;&lt; n &lt;&lt; ' ' &lt;&lt; resonances->size() &lt;&lt; endl;
+
+for (int j = 0; j &lt; samples.size(); j += 4) &#123;
+   i0 = samplesIn&#91;j&#93;;
+   i1 = samplesIn&#91;j+1&#93;;
+   i2 = samplesIn&#91;j+2&#93;;
+   i3 = samplesIn&#91;j+3&#93;;
+
+   o0 = o1 = o2 = o3 = 0.0f;
+
+   for (int i = 0; i &lt; n; ++i) &#123;
+         yn = out1&#91;i&#93;;
+         yo = out2&#91;i&#93;;
+
+         yo = b1&#91;i&#93; * yn + b2&#91;i&#93; * yo  + a&#91;i&#93; * i0;
+         yn = b1&#91;i&#93; * yo + b2&#91;i&#93; * yn  + a&#91;i&#93; * i1;
+         o0 += yo;
+         o1 += yn;
+
+         yo = b1&#91;i&#93; * yn + b2&#91;i&#93; * yo  + a&#91;i&#93; * i2;
+         yn = b1&#91;i&#93; * yo + b2&#91;i&#93; * yn  + a&#91;i&#93; * i3;
+         out2&#91;i&#93; = yo;
+         out1&#91;i&#93; = yn;
+         o2 += yo;
+         o3 += yn;
+
+      &#125;
+
+      samples&#91;j&#93; = o0;
+      samples&#91;j+1&#93; = o1;
+      samples&#91;j+2&#93; = o2;
+      samples&#91;j+3&#93; = o3;
+   &#125;
+   
+//resonances.Unlock();
+
+for (int i = 0; i &lt; n; ++i) &#123;
+  	if (out2&#91;i&#93; > -0.0000000001f &amp;&amp; out2&#91;i&#93; &lt; 0.0000000001f)
+        	out2&#91;i&#93; = 0.0f;
+   	if (out1&#91;i&#93; > -0.0000000001f &amp;&amp; out1&#91;i&#93; &lt; 0.0000000001f)
+       	out1&#91;i&#93; = 0.0f;
+&#125;
+  
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Resonators &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Resonators" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="List2Resonances " name="list2resonances2" x="265.0" y="138.0" width="106" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="265.0" y="71.0" width="187" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="440.0 0.4 1.0 670.0 0.4 1.0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Resonators " name="resonators0" x="174.0" y="228.0" width="76" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Impulse " name="impulse0" x="138.0" y="153.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="136.0" y="98.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="1" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="134.0" y="31.0" width="42" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="174.0" y="287.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="0.117416" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="18.0" y="346.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="320.0" y="201.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Get load" name="get0" x="266.0" y="17.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="sdif::ToResonances " name="toresonances0" x="296" y="369" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="list2resonances2/resonances" inlet="resonators0/resonances" vertices="271.0 200.5 217.0 200.5" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="list2resonances2/partials" vertices="" />
+&lt;CONNECTION  outlet="resonators0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="impulse0/samplesOut" inlet="resonators0/samplesIn" vertices="144.0 208.0 180.0 208.0" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="impulse0/impulse" vertices="142.0 142.0 200.0 142.0" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="floatbox0/unitIn" vertices="140.0 85.5 229.0 85.5" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="180.0 334.0 144.0 334.0" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="326.0 278.0 212.0 278.0" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/sendnow" vertices="272.0 61.5 456.0 61.5" />
+&lt;STICKY  x="20.0" y="120.0" width="97.0" height="96.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">You can send
+any signal to
+Resonators, but
+an Impulse works
+well for percussive
+instruments.&lt;/STICKY>&lt;STICKY  x="404.0" y="118.0" width="122.0" height="68.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Resonances are 
+sequences of
+amplitude, frequency
+and decay-rate values&lt;/STICKY>&lt;TITLE  x="99.0" y="-6.0" color="#FFFFFF" text="cnmat::Resonators" fontface="Arial" fontsize="16" />&lt;TITLE  x="345.0" y="348.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>
+
+

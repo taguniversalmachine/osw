@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Log10" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Log" name="log0" x="104" y="190" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Log10" name="log100" x="238.0" y="192.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="104.0" y="126.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.2" />
+
+<STATE name="floatbox0/min" value="0.1" />
+
+<STATE name="floatbox0/max" value="10" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="238.0" y="128.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.5" />
+
+<STATE name="floatbox1/min" value="0.1" />
+
+<STATE name="floatbox1/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="104.0" y="260.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="-inf" />
+
+<STATE name="floatbox2/step" value="0.01" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox3" x="238.0" y="259.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox3/floatIn" value="0" />
+
+<STATE name="floatbox3/step" value="0.01" />
+
+<STATE name="floatbox3/min" value="0" />
+
+<STATE name="floatbox3/max" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="log0/out" inlet="floatbox2/floatIn" vertices="" />
+<CONNECTION  outlet="log100/out" inlet="floatbox3/floatIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="log0/in" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="log100/in" vertices="" />
+<STICKY  x="83.0" y="321.0" width="262.0" height="46.0" color="#FFFF77" text="Log and Log10 can be used with audio samples, but
+life might get unpleasant when sample values are
+zero or negative..." fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="79.0" y="37.0" color="#FFFFFF" text="Log / Log10" fontface="Arial" fontsize="18" /><TITLE  x="153.0" y="96.0" color="#FFFFFF" text="Natural logarithm" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="284.0" y="95.0" color="#FFFFFF" text="Base 10 logarithm" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

@@ -1,0 +1,149 @@
+<?xml version="1.0" ?>
+<osw-external name="SampleGet" package="osw">
+<description>Return a single indexed sample from a signal</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="Input samples" />
+<inlet name="index" type="Integer" default="0" persistent="1" />
+<outlet name="sampleValue" type="Float" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="checkIndex" activators="index" order="" >
+
+if (index &lt; 0 || index > NumberOfSamples) &#123;
+  Error(" sample index is out of range.");
+  index.SetWithoutActivating(0); 
+&#125;
+</activation>
+<activation name="activation1" activators="samplesIn" order="" >
+
+sampleValue = samplesIn&#91;index&#93;;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">SampleGet &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"> Returns the sample at the position corresponding to &lt;b>index&lt;/b> in the current sample vector.  Note that this transform is explicitly tied to the notion of sample vectors in OSW, in which sampled signals are transmitted as fixed-length vectors.  The easiest thing to do here is just leave the index at 0 and take the sample that you get.</xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"> sample, vector, peek</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_SampleGet" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Phasor" name="phasor0" x="168.0" y="78.0" width="48" height="38" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="phasor0/frequency" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WhiteNoise" name="whitenoise0" x="54.0" y="155.0" width="66" height="38" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="SampleGet -index 0" name="sampleget1" x="168.0" y="150.0" width="118" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sampleget1/index" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Biquad" name="biquad0" x="54.0" y="248.0" width="92" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="biquad0/gain" value="1" />
+
+&lt;STATE name="biquad0/zero1" value="0" />
+
+&lt;STATE name="biquad0/zero2" value="0.0984127" />
+
+&lt;STATE name="biquad0/pole1" value="0" />
+
+&lt;STATE name="biquad0/pole2" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain -amp_scale 0.1" name="gain1" x="54.0" y="315.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain1/amp_scale" value="0.0673147" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="231" y="236" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="46" y="417" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="phasor0/samplesOut" inlet="sampleget1/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="biquad0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="sampleget1/sampleValue" inlet="biquad0/zero2" vertices="" />
+&lt;CONNECTION  outlet="biquad0/samplesOut" inlet="gain1/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="gain1/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain1/amp_scale" vertices="" />
+&lt;STICKY  x="261.0" y="38.0" width="105.0" height="72.0" color="#FFFF77" text="Use one
+sample per
+vector as a numeric
+value" fontface="" fontsize="8">&lt;/STICKY>&lt;TITLE  x="81.0" y="7.0" color="#FFFFFF" text="SampleGet" fontface="Arial" fontsize="18" />&lt;TITLE  x="81.0" y="7.0" color="#FFFFFF" text="SampleGet" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>
+
+
+

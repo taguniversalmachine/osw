@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="osc_server" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCListen " name="osclisten0" x="179" y="141" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="osclisten0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="OSCDispatch " name="oscdispatch0" x="179.0" y="202.0" width="82" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OSCSend -port 7006" name="oscsend0" x="179.0" y="265.0" width="118" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend0/host" value="localhost" />
+</TRANSFORM>
+<CONNECTION  outlet="osclisten0/messageOut" inlet="oscdispatch0/messageIn" vertices="" />
+<CONNECTION  outlet="oscdispatch0/messageOut" inlet="oscsend0/messageIn" vertices="" />
+<STICKY  x="389.0" y="139.0" width="102.0" height="52.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Use sendOSC
+to send messages
+to this server</STICKY><STICKY  x="389.0" y="229.0" width="137.0" height="71.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">If you want to 
+simply view incoming
+messages instead of
+dispatching, try dumpOSC</STICKY><TITLE  x="131.0" y="39.0" color="#FFFFFF" text="OSC Server on port 7005" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="261.0" y="387.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="186.0" y="420.0" color="#0000FF" link="osc/sendOSC" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="273.0" y="419.0" color="#0000FF" link="osc/dumpOSC" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="358.0" y="419.0" color="#0000FF" link="osc/autoserver" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

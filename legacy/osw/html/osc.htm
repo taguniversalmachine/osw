@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>OSW Manual OpenSound Control (OSC)</title>
+<link href="css/text.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<div align="Center">
+<h1 class="title">9. OpenSound Control (OSC)</h1>
+<br>
+<br>
+</div>
+<p>OpenSound Control (OSC) is &quot;a protocol for communication among computers, sound synthesizers, and other multimedia devices that is optimized for modern networking technology.&quot;  It has several features that one does not find in traditional music-oriented protocol like MIDI, including a hierarchical dynamic URL-style addressing scheme (i.e., similar to the naming of patches, transforms and variables in OSW) and the ability to send just about any kind of data.  Using OSC, you can bundle up messages to send between different patches, including patches running on different computers (indeed, you can communicate between OSW patches running on different platforms).  You can also use OSC to communicate between OSW and other applications such as Max/MSP, Pd and Csound.  More information about OSC, including a detailed specification and a list of applications that support it, can be found at the <a href="http://www.cnmat.berkeley.edu/OSC">OpenSound Control home page</a>.</p>
+<h3 class="title">9.1. Creating OSC Messages</h3>
+<p>An OSC message consists of an <i>address</i> followed by one or more arguments. The address and arguments are represented in OSW as a list. For example, the following list represents an OSC message with address <i>/fruit/pear</i> and arguments 4 and 5:</p>
+
+<center><img src="osc_files/osc_new_message_pair.png" width=173 height=66></center>
+<p>The address is a hierarchical, URL-style name beginning with a forward-slash (&quot;/&quot;) character, and the arguments are any valid OSW types.  Since OSC messages are lists, you can dynamically build complex messages using list transforms, such as <a class="transform" href="Pack.html">Pack</a> and <a class="transform" href="list/Append.html">Append</a>.</p>
+
+<h3 class="title">9.1.1.  Creating OSC Bundles</h3>
+<p>OpenSound Control allows several messages to be bundled together into a single packet.  Use the <a class="transform" href="OSCBundle.html">OSCBundle</a> transform if you want to group several messages together.</p>
+
+<h3 class="title">9.2. Using OSC Messages</h3>
+<p>OK, so now you can create all sorts of exciting OSC messages, but what can you do with them?  You may have noticed the obvious similarities between OSC addresses and the hierarchical names of OSW transforms, patches, and variables.  OSC messages can be routed to OSW variables of the same name using the <a class="transform" href="OSCDispatch.html">OSCDispatch</a> transform:</p>
+<center>
+<img src="osc_files/oscdispatch1.png" width=223 height=302>
+</center>  
+<p>Since the address of the OSC message is <b>/foo</b>, the <span class="transform">OSCDispatch</span> transform will match the variable <b>/foo</b> in the <a class="transform" href="Get.html">Get</a> transform and set the value of the variable <b>/foo</b> to the argument of the OSC message (in this case, the floating-point number 3.14159).</p>
+<center>
+<img src="osc_files/oscdispatch1success.png" width=220 height=304>
+</center>
+<p>The output of OSCDispatch is a <i>return message</i>.  When an OSC message is handled, a message can be returned to the sender.  In this example, the message is used to set the value of a variable, so the return message is simply an acknowledgement that the operation was successful.</p>
+
+<p>Of course, you could do this more easily using the <a class="transform" href="Put.html"><span class="transform">Put</span></a> transform.  But OpenSound Control does have some advantages when you start using wildcard characters in addresses.  Consider the following example:</p>
+<center>
+<img src="osc_files/oscdispatch2.png" width=179 height=287>
+</center>  
+<p>The OSC address contains asterisk (&quot;*&quot) characters, which can be used to match any number of characters in the corresponding OSW variable.  The address can match any patch name plus any transform whose name begins with &quot;intbox&quot; and contains a variable named <b>intIn</b>.  Now it just happens that the integer boxes at the bottom of the patch are named <b>/somepatch/intbox1</b> and <b>/somepatch/intbox2</b> and (like all IntBoxes) each have an inlet named <b>intIn</b>.  Thus, both IntBoxes have inlets that match the pattern and will be set to the argument of the message (i.e., the integer 8).</p>
+<p>The following wildcard characters are supported in OSC addresses:</p>
+<ol>
+<li>'?' in the OSC Address Pattern matches any single character </li>
+<li>'*' in the OSC Address Pattern matches any sequence of zero or more characters</li>
+<li>A string of characters in square brackets (e.g., "[string]") in the OSC Address Pattern matches any character in the string. Inside square brackets, the minus sign (-) and exclamation point (!) have special meanings: 
+<ul>
+<li>Two characters separated by a minus sign indicate the range of characters between the given two in ASCII collating sequence. (A minus sign at the end of the string has no special meaning.)</li>
+<li>An exclamation point at the beginning of a bracketed string negates the sense of the list, meaning that the list matches any character not in the list. (An exclamation point anywhere besides the first character after the open bracket has no special meaning.)</li>
+</ul>
+<li>A comma-separated list of strings enclosed in curly braces (e.g., "{foo,bar}") in the OSC Address Pattern matches any of the strings in the list.</li>
+<p>
+</ol>
+<p>Any other combination of characters in an OSC address can only match those characters (Refer to the <a href="http://www.cnmat.berkeley.edu/OSC/OSC-spec.html">OSC Specification</a> for a more complete discussion of address pattern matching in OSC).</p>
+<p>Now that you have been thoroughly convinced that OSC pattern matching is extremely cool, we are going to advise you <i>not</i> to use <span class="transform">OSCDispatch</span>.  If you want to use OSC pattern matching within a group of patches running together (i.e., with one or more OSW patches on the same computer), use <a class="transform" href="Putmul.html">Put*</a> instead.  <span class="transform">Put*</span> supports the full range of OSC pattern matching with one additional feature: like Put, you can use relative paths that do not begin with a '/' character.  Additionally, you do not pay the performance penalty of constructing and parsing OSC packets.</p>
+<h3 class="title">9.3. Using OSC for inter-process communication</h3>
+<p>So when should you use <span class="transform">OSCDispatch</span>?  Suppose you wanted to communicate between OSW patches running on different computers, or between OSW and another application.  OpenSound Control acts as a form of <i>inter-process communication</i> using the networking protocol UDP.  You can set up patches to act as OSC <i>clients</i> that send messages and <i>servers</i> that listen for incoming messages and dispatch them to the appropriate transforms:</p>
+<center>
+<img src="osc_files/oscserver.png" width=156 height=189>
+</center>
+<p>The <span class="transform"><a class="transform" href="OSCListen.html">OSCListen</a></span> transform waits for incoming packets on network port 7005 and sends them to <span class="transform">OSCDispatch</span>.  Assuming the incoming packets are well-formed OSC packets, they will then be routed to any transforms inlets/outlets or variables that match the address pattern(s).  Acknowledgement messages will be returned via port 7006.</p>
+<p>Visit the <a href="http://localhost:7775/OSW_DIR/tutorials/osc/sendOSC.osw">sendOSC</a> patch for an example client and <a href="http://localhost:7775/OSW_DIR/tutorials/osc/osc_server.osw">osc_server</a> patch for an example server.  If you want to simply view incoming OSC messages instead of dispatching them, you can try the <a href="http://localhost:7775/OSW_DIR/tutorials/osc/dumpOSC.osw">dumpOSC</a> server example.</p>
+<p>If you want to receive and dispatch OSC messages, you don't even have to create your own server patch!  OSW includes a built-in OSC dispatcher on port <b>7707</b>.  So you can have your OSW patches respond to OSC packets from any application that can send OSC messages (e.g., Max/MSP) by routing packets to UDP port 7707, as well as from OSW patches using <span class="transform">OSCSend</span>.  Visit the <a href="http://localhost:7775/OSW_DIR/tutorials/osc/autoserver.osw">autoserver</a> tutorial for examples using the built-in OSC server.</p>
+<p>As demonstrated in the autoserver tutorial, the built-in dispatcher responds to a number of commands beyond those for querying and setting variables.  For example, you can list all the transform types, load new externals, quit the application, and even build patches entirely using OSC messages (see the <a href="http://localhost:7775/OSW_DIR/tutorials/osc/invisible_patch.osw">invisible_patch</a> tutorial).  The full set of available remote commands for OSW and strategies for building dynamic interfaces using these commands are discussed in <a href="osc2.html">Appendix A</a>.</p> 
+<h3 class="title">9.. OSCRoute</h3>
+<p>You can use the <span class="transform"><a class="transform" href="OSCRoute.html">OSCRoute</a></span> transform to route messages with different addresses to different paths.  Unlike <span class="transform">OSCDispatch</span> (or <span class="transform">Put*</span>), the addresses need not correspond to any OSW transform or variable.  But like <span class="transform">OSCDispatch</span>, it can be used along with <span class="transform">OSCListen</span> to receive and route OSC messages from other processes or computers.</p>
+<h3 class="title">9.5. OSC and data types</h3>
+<p>As long as you are communicating exclusively between OSW patches, you can use any valid OSW data type as an argument to an OSC message.  The arguments are automatically converted to and from their corresponding OSC formats.  However, if you communicate with other applications, you will probably want to limit yourself to the standard data types, such as integer, floating-point numbers and strings.  Refer to the <a href="http://www.cnmat.berkeley.edu/OSC/OSC-spec.html">OSC Specification</a> for a complete list of supported data types. <b>OSW can only communicate with applications that support OSC type tags!</b></p>
+<p>Since audio signals are a valid OSW data type, just like integers or strings, you can <a href="http://localhost:7775/OSW_DIR/tutorials/osc/osc_signal.osw">route audio signals</a> between OSW patches using OSC messages, even on different computers.  Routing of audio signals between OSW and other applications is not currently supported.</p>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

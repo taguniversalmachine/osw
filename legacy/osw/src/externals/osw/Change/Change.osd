@@ -1,0 +1,174 @@
+<?xml version="1.0" ?>
+<osw-external name="Change" package="osw">
+<description>Passes on an a value when it is different (i.e., reflects a change) from the previous value.</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+
+
+
+
+</copyright>
+<inlet name="valueIn" type="Changeable" />
+<outlet name="valueOut" type="Any" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xprev = NULL;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">BaseDatum* xprev;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="valueIn" order="0" >
+
+
+
+if(xprev != NULL &amp;&amp; *(valueIn->MakeDatum()) == *(xprev)) &#123;
+	return;
+&#125;
+if (xprev) &#123;
+  xprev->RemoveRef();
+&#125;
+if (valueIn->TypeOf() == typeid(Any)) &#123;
+  xprev = ((State&lt;Any> &amp;)*valueIn)->GetDatum();
+  xprev->AddRef();
+  valueOut = (State&lt;Any> &amp;)*valueIn;
+&#125; else &#123;
+ xprev = valueIn->MakeDatum();
+ valueOut = valueIn->MakeDatum();
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Change &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"> &lt;b>Change&lt;/b> compares an input value to its previous input.  If they are different, the value is output, otherwise nothing is output.</xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"> change, integer</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Change" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command=";gt; 0.5" name="gt0" x="75.0" y="157.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="75.0" y="97.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="0" />
+
+&lt;STATE name="hslider0/max" value="1" />
+
+&lt;STATE name="hslider0/resolution" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Change" name="change0" x="75.0" y="209.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print0" x="75.0" y="264.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="String Can't" name="string0" x="332.0" y="98.0" width="72" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="string0/string_value" value="Can't" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="String Get" name="string4" x="423.0" y="98.0" width="62" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="string4/string_value" value="Get" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="String Enough" name="string3" x="504.0" y="98.0" width="77" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="string3/string_value" value="Enough" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Change" name="change1" x="332.0" y="205.0" width="42" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print3" x="332.0" y="261.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="332" y="32" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button1" x="423" y="32" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button1/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button2" x="504" y="32" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button2/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanIn" name="fanin1" x="332.0" y="151.0" width="60" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="gt0/result" inlet="change0/valueIn" vertices="" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="gt0/param1" vertices="" />
+&lt;CONNECTION  outlet="change0/valueOut" inlet="print0/to_print" vertices="" />
+&lt;CONNECTION  outlet="string0/stringOut" inlet="fanin1/in1" vertices="" />
+&lt;CONNECTION  outlet="string4/stringOut" inlet="fanin1/in2" vertices="429.0 141.0 357.0 141.0" />
+&lt;CONNECTION  outlet="string3/stringOut" inlet="fanin1/in3" vertices="510.0 141.0 376.0 141.0" />
+&lt;CONNECTION  outlet="change1/valueOut" inlet="print3/to_print" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="string0/unitIn" vertices="" />
+&lt;CONNECTION  outlet="button1/unitOut" inlet="string4/unitIn" vertices="" />
+&lt;CONNECTION  outlet="button2/unitOut" inlet="string3/unitIn" vertices="" />
+&lt;CONNECTION  outlet="fanin1/out" inlet="change1/valueIn" vertices="" />
+&lt;STICKY  x="161.0" y="162.0" width="96.0" height="73.0" color="#FFFF77" fontface="lucida" fontsize="10">A new value
+will only be
+printed when
+the slider crosses
+0.5&lt;/STICKY>&lt;STICKY  x="449.0" y="162.0" width="125.0" height="61.0" color="#FFFF77" fontface="lucida" fontsize="10">Change works for all
+basic data types,
+including strings.&lt;/STICKY>&lt;TITLE  x="60" y="36" color="#FFFFFF" text="Change" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

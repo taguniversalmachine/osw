@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<osw-external name="OnRepeat" package="osw">
+<description>Emit a unit when a number of repetitions are observed</description>
+<copyright></copyright>
+<inlet name="input" type="Changeable" description="Input to check for repetition" />
+<inlet name="repeat" type="Integer" default="2" description="Number of repetitions" persistent="1" />
+<outlet name="found" type="Any" description="Repeated value that triggered sequence" synchronous="1" />
+<outlet name="foundUnit" type="Unit" description="Unit value emitted when repetition is found" synchronous="1" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xrepeats = (Integer) repeat;
+xprevInput = input->CloneState("prevInput",this,"previous input value (for comparison)");</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">if (xprevInput) &#123;
+   delete xprevInput;
+&#125;</xblock>
+<xblock name="Private">Integer xrepeats;
+BaseState *xprevInput;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="input" order="0" >
+
+
+
+
+
+
+
+if (*input == *xprevInput) &#123;
+   --xrepeats;
+   if (xrepeats ==0) &#123;
+	xrepeats = repeat;
+	found = input->MakeDatum();
+	foundUnit = foundUnit;
+   &#125;
+&#125; else &#123;
+   xrepeats = repeat - 1;
+   if (input->TypeOf() == xprevInput->TypeOf()) &#123;
+	*xprevInput = *input;
+   &#125; else &#123;
+	delete xprevInput;
+	xprevInput = input->CloneState("prevInput",this,"previous input value (for comparison)");
+   &#125;
+&#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">OnRepeat &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;b>OnRepeat&lt;/b> looks for a sequence of repeated inputs.  The length of the sequence is determined by the parameter or inlet &lt;i>repeat&lt;/i>.  Once such a sequence is discovered, the repeated value is emitted.  For example, if &lt;i>repeat&lt;/i> is set to 5, then a succession of five equal inputs of any type will trigger an output.  See the help patch for more examples.&lt;/p>
+&lt;p>If the actual repeated value is not necessary, the &lt;i>foundUnit&lt;/i> outlet can be used instead of the &lt;i>found&lt;/i> outlet.  &lt;i>foundUnit&lt;/i> always emits a value of unit type that can be easily used to trigger other actions in response to the repetition.  Both outlets may be used simultaneously.&lt;/p></xblock>
+<xblock name="Links">Change IntRange TypeFilter Multitrigger</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_OnRepeat" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="OnRepeat " name="onrepeat0" x="160.0" y="265.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="onrepeat0/repeat" value="2" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="284.0" y="169.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="2" />
+
+&lt;STATE name="intbox0/max" value="100" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print0" x="184.0" y="335.0" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox1" x="160.0" y="94.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox1/message" value="1 1 1 1 1 2 2 2 2 3 4 5 6 6 6" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="ForEach" name="foreach0" x="160.0" y="172.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Accumulate " name="accumulate0" x="160.0" y="412.0" width="76" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox2" x="160" y="478" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox2/message" value="" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="onrepeat0/found" inlet="accumulate0/element" vertices="" />
+&lt;CONNECTION  outlet="onrepeat0/foundUnit" inlet="print0/to_print" vertices="228.0 317.5 190.0 317.5" />
+&lt;CONNECTION  outlet="intbox0/intOut" inlet="onrepeat0/repeat" vertices="290.0 233.5 228.0 233.5" />
+&lt;CONNECTION  outlet="msgbox1/messageOut" inlet="foreach0/listIn" vertices="" />
+&lt;CONNECTION  outlet="foreach0/elementOut" inlet="onrepeat0/input" vertices="" />
+&lt;CONNECTION  outlet="foreach0/endOfList" inlet="accumulate0/endoflist" vertices="216.0 309.5 240.0 309.5" />
+&lt;CONNECTION  outlet="accumulate0/listOut" inlet="msgbox2/messageIn" vertices="" />
+&lt;STICKY  x="297.0" y="335.0" width="93.0" height="69.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Unit is output 
+to console if
+repetition is
+found.&lt;/STICKY>&lt;STICKY  x="325.0" y="459.0" width="86.0" height="63.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">All the 
+numbers with
+sufficient
+repetitions&lt;/STICKY>&lt;TITLE  x="327.0" y="152.0" color="#FFFFFF" text="number of repeitions" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="231.0" y="74.0" color="#FFFFFF" text="hit the button to run test" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="192.0" y="28.0" color="#FFFFFF" text="OnRepeat" fontface="MS Sans Serif" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

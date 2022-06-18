@@ -1,0 +1,238 @@
+<?xml version="1.0" ?>
+<osw-external name="Flanger" package="fx">
+<description>Flange effect</description>
+<copyright>
+Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+
+
+
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" />
+<inlet name="delay" type="Float" default="2" description="delay time (in msec)" persistent="1" />
+<inlet name="feedback" type="Float" default="0.0" description="add this much of the previous output to the current input" />
+<inlet name="lfo_freq" type="Float" default="0.25" description="Frequency of LFO sweeper" persistent="1" />
+<inlet name="lfo_depth" type="Float" default="1.0" description="modulation depth" persistent="1" />
+<outlet name="samplesOut" type="Samples" />
+<state name="max" type="Integer" default="16384" description="maximum delay length in samples" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xdelay.set_max(max);
+xlastoutput = 0;
+xlfo.SetShape(LFO&lt;Float>::TRIANGLE);
+xphase = 0.0f;
+krate = UInteger(NumberOfSamples) / Float(SampleRate);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">DelayLine   xdelay;
+Float       xlastoutput;
+LFO&lt;Float>  xlfo;
+Float       krate, xphase;
+
+
+
+void SampleRateHasChanged () &#123;
+   krate = UInteger(NumberOfSamples) / Float(SampleRate);
+&#125;
+
+void NumberOfSamplesHasChanged () &#123;
+   krate = UInteger(NumberOfSamples) / Float(SampleRate);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="samplesIn" order="" >
+
+
+
+
+
+
+
+xphase += lfo_freq *  krate;
+Float my_delay = 0.001 * delay * lfo_depth * SampleRate * xlfo(xphase);
+xdelay.set_delay(my_delay);
+
+Samples samples(samplesIn->size());
+for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+   xlastoutput = samples&#91;i&#93; = 
+	xdelay.interpolate(samplesIn&#91;i&#93; + feedback * xlastoutput);
+&#125; 
+samplesOut = 0.5 * (samplesIn + samples);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">fx::Flanger &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">
+&lt;p>&lt;i>Flanging&lt;/i> involves mixing the output of a short delay line with the dry incoming signal, producing a &lt;i>comb filter&lt;/i> that cancels multiple frequencies from the original sound.  The delay line is between 1ms and 10ms, and varies contiuously using a low frequency oscillator.  The result is the characteristic flanging or &amp;quot;whooshing&amp;quot; sound as frequency notches move up and down the spectrum.&lt;/p>
+
+&lt;p>For more information about flanging, visit &lt;a href="http://www.harmony-central.com/Effects/Articles/Flanging/">this tutorial&lt;/a>.&lt;/p>
+
+&lt;p>Note that delay time for this transform is measured in milliseconds rather than seconds.&lt;/p></xblock>
+<xblock name="Links">       Comb Delay fx::PhaseShifter</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">       delay</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Flanger" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="fx::Flanger" name="flanger0" x="188.0" y="250.0" width="94" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="flanger0/delay" value="2" />
+
+&lt;STATE name="flanger0/lfo_freq" value="0.25" />
+
+&lt;STATE name="flanger0/lfo_depth" value="1" />
+
+&lt;STATE name="flanger0/max" value="16384" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="119.0" y="411.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="188.0" y="333.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="211.0" y="164.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0" />
+
+&lt;STATE name="floatbox0/max" value="10" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="333.0" y="162.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox2" x="451.0" y="162.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox2/floatIn" value="0" />
+
+&lt;STATE name="floatbox2/max" value="1" />
+
+&lt;STATE name="floatbox2/min" value="0" />
+
+&lt;STATE name="floatbox2/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox3" x="567.0" y="161.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox3/floatIn" value="0" />
+
+&lt;STATE name="floatbox3/max" value="1" />
+
+&lt;STATE name="floatbox3/min" value="0" />
+
+&lt;STATE name="floatbox3/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="PinkNoise" name="pinknoise0" x="91.0" y="162.0" width="75" height="41" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="380.0" y="294.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="phaseshifter0" x="525" y="350" width="129" height="27" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>fx::PhaseShifter&lt;/COMMAND>
+
+&lt;STATE name="phaseshifter0/feedback" value="0" />
+
+&lt;STATE name="phaseshifter0/lfo_freq" value="0.25" />
+
+&lt;STATE name="phaseshifter0/lfo_depth" value="0.5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Delay" name="delay0" x="558.0" y="406.0" width="45" height="27" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="delay0/max" value="16384" />
+
+&lt;STATE name="delay0/fractional" value="0" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="flanger0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="flanger0/delay" vertices="" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="flanger0/feedback" vertices="339.0 224.0 240.0 224.0" />
+&lt;CONNECTION  outlet="floatbox2/floatOut" inlet="flanger0/lfo_freq" vertices="457.0 224.0 263.0 224.0" />
+&lt;CONNECTION  outlet="floatbox3/floatOut" inlet="flanger0/lfo_depth" vertices="573.0 223.5 286.0 223.5" />
+&lt;CONNECTION  outlet="pinknoise0/samplesOut" inlet="flanger0/samplesIn" vertices="97.0 231.5 194.0 231.5" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="386.0 377.0 308.0 377.0 308.0 318.0 230.0 318.0" />
+&lt;TITLE  x="135.0" y="52.0" color="#FFFFFF" text="fx::Flanger" fontface="Arial" fontsize="14" />
+&lt;TITLE  x="261.0" y="144.0" color="#FFFFFF" text="delay (ms)" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="386.0" y="144.0" color="#FFFFFF" text="feedback" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="502.0" y="143.0" color="#FFFFFF" text="lfo freq" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="618.0" y="139.0" color="#FFFFFF" text="lfo depth" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="418.0" y="266.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="588.0" y="323.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+&lt;HYPERLINK  x="591.0" y="468.0" color="#0000FF" link="audio/flanger_demo" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

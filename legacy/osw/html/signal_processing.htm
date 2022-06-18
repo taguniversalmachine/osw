@@ -1,0 +1,284 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<title>Signal Processing in OSW</title>
+<link href="css/text.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body bgcolor="white" lang=EN-US style='tab-interval:.5in'>
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<div class=Section1>
+
+<center><h1 class="title">5. Signal Processing in OSW</h1></center>
+
+<p>This chapter describes the use of OSW programs to define and manipulate audio signals.  Using OSW, you can synthesize musical sounds, process audio input, route signals to audio outputs or convert it into other data types.  This chapter describes how OSW treats signals and some of the functions you can use to manipulate them.</p>
+
+<h3 class="title">5.1. Audio Signals</h3>
+
+<p>A sound is commonly modeled as a <I>waveform</I> signal, that is a function <SPAN CLASS="MATH"><I>y</I>(<I>t</I>)</SPAN> representing the amplitude of the sound at time <SPAN CLASS="MATH"><I>t</I></SPAN>:</p>
+
+<center>
+<img src="signal_processing_files/waveform.png" width="461" height="175" />
+</center>
+
+<p>In digital systems, the continuous time variable <SPAN CLASS="MATH"><I>t</I></SPAN> is replaced by a discrete variable <SPAN CLASS="MATH"><I>n</I></SPAN>.  The resulting digital waveform <SPAN CLASS="MATH"><I>y</I>(<I>n</I>/<I>S</I>)</SPAN> represents the amplitude <I>sampled</I> at time <SPAN CLASS="MATH"><I>n</I>/<I>S</I></SPAN> where <SPAN CLASS="MATH"><I>S</I></SPAN> is the sampling rate.  However, it is common practice to assume the relationship between sample index <SPAN CLASS="MATH"><I>n</I></SPAN>, time <SPAN CLASS="MATH"><I>t</I></SPAN>, and sampling rate <SPAN CLASS="MATH"><I>S</I></SPAN> and refer to the digital waveform as <SPAN CLASS="MATH"><I>y</I>(<I>n</I>)</SPAN> [<a href="bibliography.html#Cha2001">Chaudhary 2001</a>].</p>
+
+<h3 class="title">5.1.1 The Samples data type.</h3>
+
+<p>Most OSW transforms that manipulate audio signals have inlets and/or outlets of type Samples.  &quot;Samples&quot; is an OSW data type that represents digitally sampled signals as vectors of 32-bit floating-point numbers.  You can recognize the presence of the Samples data type by red inlets, outlets and wires.</p>
+<center>
+<img src="signal_processing_files/samples_type.png" width="173" height="209" />
+</center>
+<p>For those rare instances where one absolutely must have an integer representation of signals, there are additional data types IntegerSamples, Integer16Samples and ByteSamples for 32-bit, 16-bit and 8-bit integers, respectively.</p>
+
+<p>The audio-signal data types are nothing to be particularly afraid of.  They work like any other data type in OSW.  You can connect outlets of type Samples to inlets of type Samples.  You can also print them, and even store them in Lists or Blobs.</p>
+
+<h3 class="title">5.1.2  Sample rate and format</h3>
+
+<p>OSW automatically determines the sample rate for a particular signal based on the input and/or output devices to which it is connected.  Most of the time, this is 44.1kHz, sometimes 48kHz.  Signals are usually transmitted in blocks (otherwise known as vectors) of 64 samples.  Both the sampling rate and block size can be dynamically adjusted by the user via the Audio Devices dialog box (under the Options menu). The format of the samples are always 32-bit floating-point numbers (unless you use a signal type other than Samples).  OSW automatically converts between floating-point and the native format of your audio devices.</p>
+
+<p>Because OSW dynamically determines sample rates and block sizes and converts between its floating-point Samples and the native sample format, you will probably not have to worry about these issues in your patches.  Most signal-processing transforms are written to automatically adjust for changes in sampling rate or block size.  You can test this out with the help patch for the <span
+style='font-family:Arial,Helvetica,sans-serif'><a class="transform" href="osw/Sinewave.html">Sinewave</a></span> transform.  Adjust the sample rate using the Options/Audio Devices menu option and notice that the frequency of the sine wave remains the same.</p>
+<p>On issue that programmers should be aware of, however, is that floating-point values greater than 1 or less than -1 are <i>clipped</i>, so you should try to keep your signals between 1 and -1, at least when they reach an <a class="transform" href="AudioOutput.html">AudioOutput</a> transform.  Other than output clipping, users are free to use the entire dynamic range available.</p>
+
+<h3 class="title">5.2 Audio Input and Output</h3>
+
+<p>If you have made it this far through the documentation, you have likely already encounted the <a class="transform" href="AudioOutput.html">AudioOutput</a> transform.  This is one of the most important transforms in OSW, and the only way to get signals from OSW patches out to your audio hardware.</p>
+<p>For standard stereo or mono output, you can simply click on the instance of AudioOutput available in the docked transform toolbar and drag it onto your patch.</p>
+<center>
+<img src="signal_processing_files/dragaudio.png" width="366" height="253" />
+</center>
+<p>The AudioOutput transform has a button on it to turn it on or off.  Turning on an AudioOutput transform opens your audio hardware for output and starts sending signals.  You can also connect an Integer or a Boolean (e.g., the output of a <a class="transform" href="osw/Toggle.html">Toggle</a> transform) to the left-most inlet of the AudioOutput to turn it on or off from somewhere else in your patch.</p>
+<p>Now lets make some noise, literally!  Create a <a class="transform" href="osw/WhiteNoise.html">WhiteNoise</a> transform and connect it to the right-most inlet of your AudioOutput transform.
+<center>
+<img src="signal_processing_files/whitenoise_mix.png" width="179" height="228" alt="WhiteNoise to AudioOutput mix inlet" />
+</center>
+<p>If the AudioOutput is on, you should start hearing the noise immediately, if not, turn it on to hear the noise.  Assuming you have stereo speakers, you should be hearing the noise from both speakers.  The right-most inlet of AudioOutput, called <b>mix</b>, always sends the signal to all channels associated with the output transform.  To send a signal to each of the channels individually, use the remaining inlets between the on/off inlet on the left and the mix on the right.  You can try it right now by disconnecting the WhiteNoise transform (select the wire and press Delete) and connecting it first to the left channel (second inlet) and then to the right channel (third inlet).  You should first hear noise from your left speaker and then from your right speaker (if not, there is probably something wrong with your speaker wires).
+<center>
+<table border="0">
+<tr>
+<td align="center">
+<img src="signal_processing_files/whitenoise_left.png" width="170" height="242" alt="WhiteNoise to AudioOutput left" />
+</td>
+<td align="center">
+<img src="signal_processing_files/whitenoise_right.png" width="185" height="226" alt="WhiteNoise to AudioOutput right" />
+</td>
+</tr>
+</table>
+</center>
+<h3 class="title">5.2.1 Multichannel Output</h3>
+<p>Stereo is fine for many applications (even mono is good enough sometimes), but many modern soundcards can support more channels of audio.  It is not uncommon to see four or eight channels in pro-music hardware, and 5.1 or 6.1 surround-sound is becoming more common in the consumer market.</p>
+<p>OSW allows you to take advantage of additional channels supported by your audio hardware.  Instead of using the default AudioOutput transform provided on the toolbar, type &quot;AudioOutput&quot; followed by the numbers of the channels you want to support.  For example, to support four channels, type: &quot;AudioOutput 1 2 3 4&quot;</p>
+ 
+<center>
+<img src="signal_processing_files/four_channel_1.png" width="163" height="65" />
+</center>
+
+<p>Assuming channels 1 through 4 are indeed available, you will be presented with an AudioOutput transform with extra inlets for the additional channels.</p>
+
+<center>
+<img src="signal_processing_files/four_channel_2.png" width="193" height="114" />
+</center>
+
+<p>Similar to the stereo example, the left inlet is used for remote switching of the audio output and the far right inlet is used to mix all the channels (in this case, all four channels).  The channels selected for an AudioOutput transform need not be contiguous or in any order.  For example, if your audio hardware supports eight channels, you could create an AudioOutput transform that accesses only the even-numbered channels.</p>
+
+<center>
+<img src="signal_processing_files/eight_channel.png" width="166" height="58" />
+</center>
+
+<p>If you have more than one audio device (e.g., two or more soundcards), the channel numbers are continued across devices so that you can use them all from OSW.  For example, if you have both a stereo soundcard and a soundcard with four channels, channels 1 and 2 might correspond to the first card and channels 3 through 6 to the second.  You can learn more about the audio devices in your system, including channel assignments, by selecting the &quot;Audio Devices&quot; menu item under Preferences.</p>
+
+<h3 class="title">5.2.2 Audio Input</h3>
+
+<p>OSW supports incoming audio via the <a class="transform" href="AudioInput.html">AudioInput</a> transform.  This transform is also available on the toolbar and easily recognizable by its microphone icon:
+
+<center>
+<img src="signal_processing_files/input.png" width="146" height="101" alt="AudioInput" />
+</center>
+
+<p>AudioInput works similar to AudioOutput, including default support for stereo sources and optional support for multiple channels (should you be lucky enough to own audio hardware with multiple inputs) via channel specifications.  Also similar to AudioInput, it has a button to turn the signal on and off and an optional inlet to control its state from elsewhere in your patch.  Of course, the channel ports are outlets instead of inlets, and there is no notion of a &quot;mix&quot; channel for audio input.</p>
+
+<h3 class="title">5.3 Basic Sound Synthesis: Oscillators</h3>
+
+<p>OSW includes many ways to generate signals.  You have already encountered two: <a class="transform" href="osw/Sinewave.html">Sinewave</a> and <a class="transform" href="osw/WhiteNoise.html">WhiteNoise</a>.  Both of these transforms fall into a general class called <i>oscillators</i> that generate synthetic waveforms based on various mathematical functions.  Additional oscillator transforms in OSW include:
+<ul>
+<li><a class="transform" href="osw/Phasor.html">Phasor</a>, a sawtooth-wave generator.</a></li>
+<li><a class="transform" href="osw/Square.html">Square</a>, a square-wave generator.</a></li>
+<li><a class="transform" href="osw/Triangle.html">Triangle</a>, a triange-wave generator.</li>
+<li><a class="transform" href="osw/PinkNoise">PinkNoise</a>, a pink (1/<i>f</i>) noise generator.</li>
+<li><a class="transform" href="osw/BrownNoise.html">BrownNoise</a>, a brown-noise (1/<i>f</i><sup>2</sup>, or Brownian motion) generator.</li>
+<li><a class="transform" href="osw/Impulse.html">Impulse</a>, a signal that is switched on for a single sample and off otherwise.  It is often used to test the response of signal-processing systems or provide a single burst of energy into those systems.  In signal processing textbooks, this is sometimes refered to as a <i>delta function</i>.</li>
+</ul>
+
+<p>From these transforms, you can generate even more oscillators such as <a href="http://localhost:7775/OSW_DIR/tutorials/audio/pulse_train.osw">pulse trains</a>.  Explore the help and tutorial patches referenced in this section to get a feel for the some of the basic sounds you can make.  Keep in mind these are only building blocks, you can combine them, or apply filters or functions to create a wide variety of sounds.</p>
+
+
+<h3 class="title">5.4 Playing sound files</h3>
+
+<p>So now you have synthesized some sounds in OSW, but what about using all those sounds you have on your computer that you generated in other programs, ripped of off CDs, or obtained by other means?  OSW includes several transforms for working with such audio files.  The simplest of these is <a class="transform" href="osw/SampleStreamer.html">SampleStreamer</a>, which allows you to play audio files from beginning to end.  If this is all you want to do with a particular audio file, especially if that file is large, SampleStreamer is the way to go (remember, there is nothing preventing your use of additional processing downstream).  However, if you want to manipulate your sound files in ways requiring more flexible access- such as looping or jumping- you will want to use <a class="transform" href="osw/SampleBuffer.html">SampleBuffer</a> and <a class="transform" href="osw/SamplePlayer.html">SamplePlayer</a>.  SampleBuffer loads a sound file into memory as a series of <i>tables</i>, one for each channel in the file.  For example, if you load a stereo sound into a SampleBuffer named <b>foo</b>, you will have two tables <b>foo/0</b> and <b>foo/1</b>.  You can then play these individually or in stereo with SamplePlayer transforms.<p>
+
+<center>
+<img src="signal_processing_files/sample_player.png" width="312" height="354" />
+</center>
+
+<p>SamplePlayers stream audio from tables.  You can easily start and stop streaming, define loop points, and vary the speed of streaming like on an old record or tape player.  For more information and examples, visit the <a href="http://localhost:7775/OSW_DIR/help_patches/osw/help_SamplePlayer.osw">help patches</a> for SamplePlayer and SampleBuffer, the <a href="http://localhost:7775/OSW_DIR/tutorials/audio/looping.osw">looping tutorial</a> and the chapter on <a href="time.htm">time in OSW</a>.
+
+<h3 class="title">5.5 Scaling and Amplification</h3>
+
+<p>If you have tried out some of the oscillators or sample-playing functions in the previous section, you have no doubt learned the usefulness of scaling or amplifying your signals (especially scaling them <i>down</i>).  After AudioOutput, the most important signal-processing transform in OSW is <a class="transform" href="osw/Gain.html">Gain</a> transform, which allows you to scale a signal up or down a factor, much like a volume knob on audio hardware.  Use it often!</p>
+
+<center>
+<img src="signal_processing_files/sinewave_gain.png" width="204" height="321" />
+</center>
+
+<h3 class="title">5.6 Mixing and Panning</h3>
+
+<p>Multiple signals can be mixed together using the <a class="transform" href="osw/Mixer.html">Mixer</a> transform.</p>
+<center>
+<img src="signal_processing_files/mixer.png" width="355" height="403" />
+</center>
+<p>Note that Mixers only combine (i.e., add) signals.  If you need fader controls to balance the signals, you can add Gain and slider transforms to inputs of the Mixer, as shown above.</p>
+<p>One common use of mixer-and-amplifier configurations is to pan mono signals among several channels.  OSW provides two transforms for panning input signals to multiple outputs.  <a class="transform" href="osw/Pan.html">Pan</a> works much like a stereo panner a traditional mixer or hi-fi system, while <a class="transform" href="osw/PanHandler.html">PanHandler</a> provides the ability to position a source in a multi-channel speaker configuration.</p>
+
+<center>
+<img src="signal_processing_files/pan.png" width="296" height="294" />
+</center>
+
+<h3 class="title">5.7 Viewing Signals</h3>
+<p>OSW includes a transform, <a class="transform" href="osw/Scope.html">Scope</a> that displays audio signals in a traditional &quot;oscilloscope&quot;view.</p>
+
+<center>
+<img src="signal_processing_files/scope.png" width="274" height="196" alt="Scope View" />
+</center>
+
+<p>You can use scopes to help visually debug signals, or test audio inputs prior to a performance, or otherwise help avoid embarassing situations.  For more intense viewing and debugging of signals, you can dump the actual sample values to the console using the <a class="transform" href="osw/Print.html">Print</a> transform or to a text file using the <a class="transform" href="osw/TextOut.html">TextOut</a> transform.</p>
+
+
+<h3 class="title">5.8 Delays</h3>
+<p>We have so far covered the basics of how to get sound in and out of OSW, generate signals from simple synthesizers or audio files, scale them and move them around in various ways.  However, this is really only the beginning.  We now explore basic methods for modifying signals within OSW.</p>
+<p>Among the basic building blocks are digital signal processing are <i>delays</i>, elements that shift signals backwards in time.  Given a digital signal <i>x</i>(<i>n</i>) as defined above, the signal <i>y</i>(<i>n</i>) delayed by <i>M</i> samples can be described using the following equation:</p>
+<p align="center"><i>y</i>(<i>n</i>) = <i>x</i>(<i>n-M</i>)</p>
+<p>In signal-processing diagrams, you will often see delay units labeled with <i>z<sup>-M</sup></i> where <i>M</i> is the number of samples to delay the signal.  Consider the following signal-flow containing such a delay element:</p>
+<center>
+<img src="signal_processing_files/feed_forward.png" width="423" height="124" />
+</center>
+<p>In this signal flow network, a signal is split into two identical copies, one of which is delayed.  The two signals are then summed to create the feed-forward signal.  Such a signal-flow network is called a <i>feed-forward</i> network, or <i>feed-forward comb filter</i> [<a href="bibliography.html#Smi2003">Smith 2003</a>].  An <a class="transform" href="osw/Impulse.html">Impulse</a> sent into this signal will be heard twice with a delay of <i>M</i> samples between the two impulses.  You can experiment with the <a href="http://localhost:7775/OSW_DIR/tutorials/audio/feed_forward.osw">feed-forward comb filter tutorial patch</a> in OSW.  Note that OSW comb filters implemented using the <a class="transform" href="osw/Comb.html">Comb</a> transform have one significant difference from the convention comb filter described above: the delay units are given in seconds rather than samples.  This is an OSW convention that allows signal-processing elements to function independent of sample rate and use more intuitive controls.</p>
+
+<center>
+<img src="signal_processing_files/osw_feed_forward.png" width="482" height="374" />
+</center>
+
+<p>If the tap is placed after the delay and the result is mixed with the original signal before the delay, a <i>feed-back comb filter</i> is created.</p>
+<center>
+<img src="signal_processing_files/feed_back.png" width="423" height="124" />
+</center>
+<p>Without the amplifier in the feedback loop (indicated a triangle in the above diagram), the signal would loop back on itself forever.  The amplifier is used to attenuate the signal and avoid infinite feedback.  An impulse sent to such an attenuated feedback system would produce an output containing series of delaying impulses.  Try experimenting with the <a href="http://localhost:7775/OSW_DIR/tutorials/audio/feed_back.osw">feed-back comb filter tutorial patch</a>.  Change the duration of the delay.  With short durations, the impulses are close together and you will perceive a single decaying tone, with longer durations, you will hear separate impulses, each one softer than its predecessor.  A feed-back comb filter can be used to create echo or reverberation effects, as demonstrated by the <a href="http://localhost:7775/OSW_DIR/tutorials/audio/echo_machine.osw">echo machine tutorial</a>. <a href="http://localhost:7775/OSW_DIR/tutorials/audio/flanger_demo"><i>Flangers</i></a> also make use of comb filters, but with variable delays.</p>
+
+<h3 class="title">5.9 Filters</h3>
+
+<p>The <a class="transform" href="osw/Comb.html">Comb</a> transform used in the previous section is but one of a large class of signal-processing transforms called <i>filters</i>.  Most filters can be described using a signal-processing network with delays and amplifiers, or using equations with delay and scaling variables.  Below are the equation and signal diagram for a common filter called a <i>biquad filter</i>:</p>
+<center>
+<i>y</i>(<i>n</i>) = <i>a</i><sub>0</sub><i>x</i>(<i>n</i>) + <i>a</i><sub>1</sub><i>x</i>(<i>n</i>-1) + <i>a</i><sub>2</sub><i>x</i>(<i>n</i>-2) + <i>b</i><sub>1</sub><i>y</i>(<i>n</i>-1) + <i>b</i><sub>2</sub><i>y</i>(<i>n</i>-2)
+</center>
+<center>
+<img src="signal_processing_files/biquad_diagram.png" width="336" height="213" />
+</center>
+<p>The biquad filter contains two feed-forward and two feed-back sub-filters with one-sample delays.  The delay durations are fixed, but there are five variables for the amplifier elements, also known as <i>filter coefficients</i>.  You can experiment with the coefficients of a biquad filter directly using the <a class="transform" href="osw/Biquad.html">Biquad</a> transform in OSW.  However, you will likely find that its coefficients are less than intuitive.  OSW provides several variations on the biquad filter that have more intuitive frequency-based controls.  To understand frequency controls, recall that sounds are composed of many frequency components, indeed research has shown that this is essentially how the human ear perceives sound [<a href="bibliography.html#Hel1875">Helmholtz 1875</a>].  Thus, a waveform <i>y</i>(<i>n</i>) has a corresponding <i>frequency-domain</i> representation <i>Y</i>(&omega;), where &omega; is a &quot;sample&quot; of the frequency spectrum of a sound:
+
+<center>
+<b>Time Domain <i>y</i>(<i>n</i>)</b><br>
+<img src="signal_processing_files/time_domain.png" width="523" height="179"/>
+<br>
+<br>
+<b>Frequency Domain <i>Y</i>(&omega;)</b><br>
+<img src="signal_processing_files/freq_domain.png" width="457" height="188"/>
+</center>
+
+<p>Frequency-domain representations will be described in greater detail in later chapters, for now the important concept to understand is that sections of the frequency-domain representation can be amplified or attenuiated.  Think of the sliders on a graphic equalizer in a stereo system; raising or lowering the an equalizer fader amplifies or attenuates the sound in a particular range of frequencies.</p>
+
+<p>The simplest filters that use frequency controls are <a class="transform" href="osw/Hipass.html">Hipass</a> and <a class="transform" href="osw/Lowpass.html">Lowpass</a>, both of which take a single parameter called a <i>cutoff frequency</i>.  In Hipass, frequencies below the cutoff are attenuated while frequencies above the cutoff are maintained.  In Lowpass, the opposite occurs, frequencies below the cutoff are preserved while frequencies above the cutoff are attenuated.</p>
+
+<center>
+<b>Hipass Filter</b><br>
+<img src="signal_processing_files/image002.gif" width="458" height="218" /><br>
+<b>Lowpass Filter</b><br>
+<img src="signal_processing_files/image003.gif" width="458" height="218" /><br>
+</center>
+
+<p>
+Another filter kind of filter, called a <i>resonant filter</i>, has two parameters, a <i>center frequency</i> and <i>bandwidth</i>.  The center frequency works similar to the cutoff frequencies in hi-pass and low-pass filters, amplifying frequencies around the center frequency and attenuating frequencies farther away (both lower and higher).  The bandwidth parameter defines the area around the center frequency that will be amplified.  A narrow (low-valued) bandwidth means more amplification around the center frequency and more atenuation for other frequencies, while a larger bandwidth means more frequencies are preserved but less amplification (or &quot;peaking&quot;) around the center frequency.
+</p>
+<center>
+<img src="signal_processing_files/image001.gif" width="458" height="219" />
+</center>
+
+<p>OSW includes two transforms <a class="transform" href="osw/Bandpass">Bandpass</a> and <a class="transform" href="osw/TwoPoleResonz.html">TwoPoleResonz</a> that implements a single resonant filter.  Individual resonant filters or chains in series can be placed after frequency-rich sound sources, such as Phasors, noise oscillators or sampled sounds to change the timbre of the source sounds.  This is a commonly-used sound-synthesis technique called <i>subtractive synthesis</i>.  Resonant filters can also be grouped together into a parallel bank to produce complex and interesting sounds through another synthesis technique called <i>resonance modeling</i>.  The <a class="transform" href="cnmat/Resonantors.html">Resonators</a> transform implements an arbitrarily large bank of parallel filters to use in resonance modeling.  Both subtractive synthesis and resonance modeling will be described in greater detail in the chapter on advanced sound synthesis.</p>
+
+<p>It is interesting to note that Lowpass, Hipass, Bandpass and TwoPoleResonz are all implemented as special cases of Biquad; they convert the frequency-based controls to biquad coefficients.</p>
+
+<h3 class="title">5.9.1.  Frequency Response</h3>
+<p>As noted above, frequency response is important in understanding the behavior of filters.  Some filters, such as low-pass filters, have relatively simple and intuitive frequency responses, while others are more complex.  In fact, it is often difficult to predict the frequency response of a biquad filter from inspection of coefficients.  Open Sound World includes a transform <a href="osw/FrequencyResponse.html">FrequencyResponse</a> that can be used to explore the frequency response of filters.  It takes a list of biquad coefficients and produces a frequency-amplitude plot of the response.  In addition to raw biquads, several filter transforms, including <span class="transform">Bandpass</span> and <span class="transform">TwoPoleResonz</span> output coefficients that can be used by <span class="transform">FrequencyResponse</span>.</p>
+
+<center>
+<img src="signal_processing_files/frequency_response.png" width="464" hieght="461" />
+</center>
+
+<h3 class="title">5.9.2. Allpass Filters</h3>
+<p>We have seen how several different kinds of filters respond to frequencies. So what about the comb filters explored in the previous sections?  We present a special case of a comb filter, called an <i>allpass filter</i> that has a very interesting frequency response.  A simple allpass filter can be constructed from a pair feedforward and feedback comb flters in which the delays are equal and the feedforward and feedback gains are mirror images (i.e., negations) of each other:</p>
+
+<center>
+<img src="signal_processing_files/allpass.png" width="423" height="124" />
+</center>
+
+<p>The <a href="osw/Allpass.html" class="transform">Allpass</a> transform implements a simple allpass filter using the topology illustrated above.  The idea of a filter with a flat frequency response may not sound very interesting at first.  However, allpass filters are very useful in applications where one wants to modify the temporal quality of a sound without changing the &quot;color&quot; or timbral quality of the sound.  Reverberation is one such application, and allpass filters are often found in reverb algorithms.</p>
+<p>Another property of allpass filters is that while the frequency response may be flat, the phase response is not.  This property makes allpass filters useful building blocks for phase-shifter (or &quot;phaser&quot) effects.</p>
+
+<h3 class="title">5.10 Recording</h3>
+<p>You can record signals to audio files using the <a class="transform" href="osw/SampleWriter.html">SampleWriter</a> transform.  It supports all the audio formats used by SampleBuffer and SampleStreamer, and can write multiple channels.</p>
+
+<h3 class="title">5.11 Signals with Math Operators and Functions</h3>
+<p>Unless otherwise indicated, all of the arithemetic operators and <a href="math.html">math functions</a> work with signals.  The same operation that is applied to numeric values is applied to each sample of an signal incoming signal.  Some functions, of course, work better than others.  Some common uses of arithmetic and math functions for signals include:</p>
+<ul>
+<li>The multiplication operator (<b>*</b>) can be used to scale the amplitude of signals (although the <a class="transform" href="osw/Gain.html">Gain</a> transform is better for this purpose).
+<li>Multiplication of two signals using the synchronous-multiplication operator (<b>'*</b>) produces a <a href="http://localhost:7775/OSW_DIR/tutorials/audio/ring_modulator">ring-modulation effect</a>.</li>
+<li>The addition and subtraction operators can be used to shift the amplitude of a signal up or down.</li>
+<li><a href="math.html">Tanh</a> can be used as a compressor or distortion effect.</a></li>
+</ul>
+<p>The user is encouraged to experiment with these and other functions to create interesting signals.  However, beware of singularities (e.g., divisions by zero and certain values of functions like Tan, Sec, Csc, etc.) that may lead to excessive clipping and unstable behavior.  <i>Turn down the volume before experimenting with non-linear signal processing.  Your ears will thank you for it.</i>
+</div>
+
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+
+</html>

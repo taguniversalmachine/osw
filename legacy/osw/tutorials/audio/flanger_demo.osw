@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="flanger_demo" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="flanger1" name="flanger0" x="304.0" y="314.0" width="92" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="326.0" y="101.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="348" y="149" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="371.0" y="196.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="OptionBox" name="optionbox0" x="413.0" y="256.0" width="172" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="optionbox0/options" value="sine triangle saw" />
+</TRANSFORM>
+<TRANSFORM  command="PinkNoise" name="pinknoise0" x="203.0" y="192.0" width="75" height="41" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="304.0" y="403.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0.3771" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="615.0" y="309.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="296.0" y="507.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="fx::Flanger" name="flanger1" x="473.0" y="467.0" width="94" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="flanger1/delay" value="2" />
+
+<STATE name="flanger1/lfo_freq" value="0.25" />
+
+<STATE name="flanger1/lfo_depth" value="1" />
+
+<STATE name="flanger1/max" value="16384" />
+</TRANSFORM>
+<CONNECTION  outlet="flanger0/out" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="flanger0/freq" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="flanger0/amp" vertices="" />
+<CONNECTION  outlet="floatbox2/floatOut" inlet="flanger0/feedback" vertices="377.0 273.0 398.0 273.0" />
+<CONNECTION  outlet="optionbox0/selectOut" inlet="flanger0/waveform" vertices="419.0 303.0 376.0 303.0" />
+<CONNECTION  outlet="pinknoise0/samplesOut" inlet="flanger0/inlet0" vertices="209.0 278.5 310.0 278.5" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="310.0 473.5 371.0 473.5" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="621.0 390.0 346.0 390.0" />
+<TITLE  x="485.0" y="114.0" color="#FFFFFF" text="frequency" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="500.0" y="162.0" color="#FFFFFF" text="amplitude" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="520.0" y="213.0" color="#FFFFFF" text="feedback" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="633.0" y="275.0" color="#FFFFFF" text="waveform" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="220.0" y="46.0" color="#FFFFFF" text="flanger demo" fontface="Arial" fontsize="14" />
+<TITLE  x="522.0" y="441.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+</PATCH>
+</OSW>
+

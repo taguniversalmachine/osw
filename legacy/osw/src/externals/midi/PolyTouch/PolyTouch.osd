@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<osw-external name="PolyTouch" package="midi">
+<description>Generate a MIDI polyphonic aftertouch event</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inlet name="note" type="Integer" default="0" description="note number" persistent="1" />
+<inlet name="press" type="Integer" default="0" description="pressure value" persistent="1" />
+<inlet name="channel" type="Integer" default="0" description="MIDI channel" persistent="1" />
+<outlet name="midiOut" type="MidiMessage" description="MIDI message to output" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">bool Connect (BaseOutlet *source, BaseState *&amp;sink) &#123;
+    makeevent.AddActivator(sink);
+    ostringstream os;
+    os &lt;&lt; "oswFixTransformTerminals " &lt;&lt; PathName() &lt;&lt; endl;
+    oswTclEvalString(os.str().c_str());
+    return Transform::Connect(source,sink);
+&#125;
+
+bool BackDisconnect(BaseState *sink) &#123;
+    makeevent.RemoveActivator(sink,true);
+    ostringstream os;
+    os &lt;&lt; "oswFixTransformTerminals " &lt;&lt; PathName() &lt;&lt; endl;
+    oswTclEvalString(os.str().c_str());
+    return Transform::BackDisconnect(sink);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="makeevent" activators="" order="0" >
+
+midiOut = MidiMessage(channel,0xA,note,press);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">PolyTouch &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_PolyTouch" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  name="polytouch0" x="216.0" y="265.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>PolyTouch&lt;/COMMAND>
+
+&lt;STATE name="polytouch0/note" value="64" />
+
+&lt;STATE name="polytouch0/press" value="37" />
+
+&lt;STATE name="polytouch0/channel" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="midioutput0" x="216.0" y="341.0" width="76" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>MidiOutput&lt;/COMMAND>
+
+&lt;STATE name="midioutput0/driver" value="unknown" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="keyboard0" x="216.0" y="33.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>Keyboard&lt;/COMMAND>
+
+&lt;STATE name="keyboard0/octave" value="5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox1" x="287.0" y="210.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox1/intIn" value="37" />
+
+&lt;STATE name="intbox1/max" value="127" />
+
+&lt;STATE name="intbox1/min" value="0" />
+
+&lt;STATE name="intbox1/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="tbang0" x="216.0" y="155.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>Tbang&lt;/COMMAND>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  name="vslider0" x="624.0" y="31.0" width="31" height="112" color="darkgrey" fontface="" fontsize="8">
+&lt;COMMAND>VSlider&lt;/COMMAND>
+
+&lt;STATE name="vslider0/min" value="0" />
+
+&lt;STATE name="vslider0/max" value="127" />
+
+&lt;STATE name="vslider0/resolution" value="1" />
+
+&lt;STATE name="vslider0/showvalue" value="0" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="polytouch0/midiOut" inlet="midioutput0/message" vertices="" />
+&lt;CONNECTION  outlet="keyboard0/noteOut" inlet="tbang0/input" vertices="" />
+&lt;CONNECTION  outlet="intbox1/intOut" inlet="polytouch0/press" vertices="293.0 254.0 256.0 254.0" />
+&lt;CONNECTION  outlet="tbang0/unitOut" inlet="intbox1/unitIn" vertices="222.0 199.5 379.0 199.5" />
+&lt;CONNECTION  outlet="tbang0/passThru" inlet="polytouch0/note" vertices="266.0 227.0 222.0 227.0" />
+&lt;CONNECTION  outlet="vslider0/floatOut" inlet="intbox1/intIn" vertices="630.0 181.5 293.0 181.5" />
+&lt;STICKY  x="320.0" y="339.0" width="107.0" height="57.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+change MIDI
+output port&lt;/STICKY>
+&lt;STICKY  x="317.0" y="262.0" width="96.0" height="48.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+change MIDI
+channel&lt;/STICKY>
+&lt;TITLE  x="383.0" y="20.0" color="#FFFFFF" text="Note" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="643.0" y="14.0" color="#FFFFFF" text="Pressure" fontface="MS Sans Serif" fontsize="10" />
+&lt;TITLE  x="104.0" y="51.0" color="#FFFFFF" text="PolyTouch" fontface="MS Sans Serif" fontsize="14" />
+&lt;TITLE  x="105.0" y="77.0" color="#FFFFFF" text="(MIDI polyphonic aftertouch)" fontface="MS Sans Serif" fontsize="10" />
+&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

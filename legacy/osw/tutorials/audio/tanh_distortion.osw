@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="tanh_distortion" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Sinewave" name="sinewave0" x="260.0" y="155.0" width="74" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="260.0" y="254.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Tanh" name="tanh0" x="261.0" y="328.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="261.0" y="392.0" width="52" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="192" y="572" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain1" x="261" y="485" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain1/amp_scale" value="0.212714" />
+</TRANSFORM>
+<TRANSFORM  command="Knob" name="knob0" x="443.0" y="352.0" width="58" height="58" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="knob0/min" value="0" />
+
+<STATE name="knob0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="HSlider" name="hslider0" x="421" y="181" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="hslider0/min" value="1" />
+
+<STATE name="hslider0/max" value="10" />
+
+<STATE name="hslider0/resolution" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Scope" name="scope0" x="396" y="512" width="208" height="128" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="scope0/interval" value="0.1" />
+
+<STATE name="scope0/zoom" value="1" />
+
+<STATE name="scope0/background" value="black" />
+
+<STATE name="scope0/foreground" value="green" />
+
+<STATE name="scope0/resolution" value="100" />
+</TRANSFORM>
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="tanh0/in" vertices="266.0 309.5 267.0 309.5" />
+<CONNECTION  outlet="tanh0/out" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="gain1/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="292.0 470.5 402.0 470.5" />
+<CONNECTION  outlet="gain1/samplesOut" inlet="out0/mix" vertices="" />
+<CONNECTION  outlet="knob0/knobOut" inlet="gain1/amp_scale" vertices="449.0 452.5 303.0 452.5" />
+<CONNECTION  outlet="hslider0/floatOut" inlet="gain0/amp_scale" vertices="427.0 238.0 302.0 238.0" />
+<TITLE  x="471.0" y="155.0" color="#FFFFFF" text="distortion" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="482.0" y="321.0" color="#FFFFFF" text="volume" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="307.0" y="79.0" color="#FFFFFF" text="Simple Distortion using Tanh" fontface="Arial" fontsize="14" />
+</PATCH>
+</OSW>
+

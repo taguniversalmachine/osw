@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Atan" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Atan" name="abs0" x="43.0" y="188.0" width="34" height="25" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="43.0" y="132.0" width="89" height="23" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+
+<STATE name="floatbox0/min" value="-1" />
+
+<STATE name="floatbox0/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="43.0" y="252.0" width="89" height="23" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="215.0" y="127.0" width="61" height="38" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Atan" name="abs1" x="215.0" y="201.0" width="34" height="25" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="217.0" y="268.0" width="124" height="58" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="abs0/in" vertices="" />
+<CONNECTION  outlet="abs0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="abs1/in" vertices="" />
+<CONNECTION  outlet="abs1/out" inlet="out0/mix" vertices="221.0 252.0 343.0 252.0" />
+<STICKY  x="35.0" y="62.0" width="115.0" height="45.0" color="#FFFF77" text="Compute the inverse tangent (arctangent) of a number" fontface="MS Sans Serif" fontsize="8"></STICKY><STICKY  x="215.0" y="73.0" width="76.0" height="24.0" color="#FFFF77" text="or a signal" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="66.0" y="27.0" color="#FFFFFF" text="Atan" fontface="Arial" fontsize="18" /></PATCH>
+</OSW>
+

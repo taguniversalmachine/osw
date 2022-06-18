@@ -1,0 +1,72 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">'+</h1>
+<p>Add two values synchronously</p>
+<h3 class="title">Syntax</h3>
+<p>'+ </p>
+<h3 class="title">Options</h3>
+<ul>
+None
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>param1</b></dt><dd>The left inlet.  Any value received via this inlet is added to the number in the right inlet <b>param2</b>, and the result is sent via the outlet <b>result</b>.</dd><dd>Type: Changeable</dd>
+<dt><b>param2</b></dt><dd>The right inlet.  Any value received via this inlet is added to the number in the left inlet <b>param1</b>.</dd>
+<dd>Type: Changeable</dd>
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>result</b></dt>
+<dd>The sum of the two values.</dd>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>The addition operator accepts inputs of any numeric type (ints, floats, doubles, complex and double complex) as well as audio samples and lists.  Different types can be mixed and matched.  For example, addition of a float and an int yields a float, while addition of a float to audio samples yields audio samples where the float is added to each sample value.  Addition on list inputs is performed element-wise, where each element in the list could be a different type.</p>
+<p>The addition operator also accepts string arguments.  The result is the concatenation of the two input strings.</p>
+<p>This operator only outputs a result when new values have been received by both inlets.  Thus, if a new value is received by <b>param1</b>, no result will be computed until a value is received by <b>param2</b> as well.  This is useful if you want to use an addition operator to <a href="http://localhost:7775/OSW_DIR/tutorials/audio/mixing_two_signals.osw">mix two signals together</a>.  If this is not the behavior you want, try the <a href="add.html">+</a> operator instead.</p>
+
+
+<p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="details.html">OSW Programming Details</a></dt>
+<dt><a href="add.html">+</a></dt>
+<dt> <a href="http://localhost:7775/OSW_DIR/tutorials/audio/mixing_two_signals.osw">Tutorial patch: mixing two signals</a></dt>
+<dt><a href="osw/Mixer.html">Mixer</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="sum" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM   name="listIn" x="55.0" y="87.0" width="36" height="40" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Inlet -type List -name listIn -desc "series to sum"</COMMAND>
+</TRANSFORM>
+<TRANSFORM  name="result" x="55.0" y="330.0" width="42" height="40" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Outlet -type Any -name result -desc "summed result"</COMMAND>
+</TRANSFORM>
+<TRANSFORM  name="fold0" x="55.0" y="179.0" width="87" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>list::Fold</COMMAND>
+
+<STATE name="fold0/init" value="" />
+</TRANSFORM>
+<TRANSFORM  command="'+" name="qadd0" x="97.0" y="253.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="listIn_inlet/out" inlet="fold0/listIn" vertices="" />
+<CONNECTION  outlet="fold0/result" inlet="result_outlet/in" vertices="" />
+<CONNECTION  outlet="fold0/left" inlet="qadd0/param1" vertices="" />
+<CONNECTION  outlet="fold0/right" inlet="qadd0/param2" vertices="145.0 234.5 139.0 234.5" />
+<CONNECTION  outlet="qadd0/result" inlet="fold0/returnVal" vertices="103.0 305.0 124.5 305.0 124.5 164.0 146.0 164.0" />
+<TITLE  x="116.0" y="36.0" color="#FFFFFF" text="Sum values in a list" fontface="Arial" fontsize="14" />
+</PATCH>
+</OSW>
+

@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+<osw-external name="Biquad" package="osw">
+<description>Biquad filter</description>
+<copyright>
+Copyright (c) 2001-2004 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="signal to filter" />
+<inlet name="gain" type="Float" default="1.0" description="gain (scale of current input)" persistent="1" />
+<inlet name="zero1" type="Float" default="0.0" persistent="1" />
+<inlet name="zero2" type="Float" default="0.0" persistent="1" />
+<inlet name="pole1" type="Float" default="0.0" persistent="1" />
+<inlet name="pole2" type="Float" default="0.0" persistent="1" />
+<inlet name="coefs" type="List" description="List  of coefficients (gain zero1 zero2 pole1 pole2)" />
+<outlet name="samplesOut" type="Samples" />
+<state name="biquadIn" type="Biquad" description="internal biquad filter state" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">gain = gain;
+zero1 = zero1;
+zero2 = zero2;
+pole1 = pole1;
+pole2 = pole2;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="gain_changed" activators="gain" order="" >
+
+
+
+
+biquadIn->set_gain(gain);
+</activation>
+<activation name="coefs_changed" activators="coefs" order="0" >
+
+
+if (coefs->size() &lt; 5) &#123;
+  Error ("Not enough coefficients for biquad");
+&#125; 
+biquadIn->set_gain(GetElementFromList&lt;Float>(coefs,0));
+biquadIn->set_zeroes(GetElementFromList&lt;Float>(coefs,1),
+                     GetElementFromList&lt;Float>(coefs,2));
+biquadIn->set_poles(GetElementFromList&lt;Float>(coefs,3),
+		    GetElementFromList&lt;Float>(coefs,4));
+</activation>
+<activation name="zero1_changed" activators="zero1" order="" >
+
+
+
+
+biquadIn->set_zeroes(zero1,zero2);
+</activation>
+<activation name="pole1_changed" activators="pole1" order="" >
+
+
+
+
+biquadIn->set_poles(pole1,pole2);
+</activation>
+<activation name="acitvation1" activators="samplesIn" order="" >
+
+
+
+
+samplesOut = Samples(biquadIn(samplesIn));
+</activation>
+<activation name="zero2_changed" activators="zero2" order="" >
+
+
+
+
+biquadIn->set_zeroes(zero1,zero2);
+</activation>
+<activation name="pole2_changed" activators="pole2" order="" >
+
+
+
+
+biquadIn->set_poles(pole1,pole2);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Biquad &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>A &lt;i>biquad filter&lt;/i> is a two-pole, two-zero linear filter described by the following difference equation or signal flow graph:&lt;/p>
+&lt;center>
+&lt;i>y&lt;/i>(&lt;i>n&lt;/i>) = &lt;i>a&lt;/i>&lt;sub>0&lt;/sub>&lt;i>x&lt;/i>(&lt;i>n&lt;/i>) + &lt;i>a&lt;/i>&lt;sub>1&lt;/sub>&lt;i>x&lt;/i>(&lt;i>n&lt;/i>-1) + &lt;i>a&lt;/i>&lt;sub>2&lt;/sub>&lt;i>x&lt;/i>(&lt;i>n&lt;/i>-2) + &lt;i>b&lt;/i>&lt;sub>1&lt;/sub>&lt;i>y&lt;/i>(&lt;i>n&lt;/i>-1) + &lt;i>b&lt;/i>&lt;sub>2&lt;/sub>&lt;i>y&lt;/i>(&lt;i>n&lt;/i>-2)
+&lt;/center>
+&lt;center>
+&lt;img src="../signal_processing_files/biquad_diagram.png" width="336" height="213" />
+&lt;/center>
+&lt;p>Biquads are commonly used to describe a number of commonly used filter topologies, many of which are described by other transforms in OSW.&lt;/p>
+&lt;p>The biquad coefficients can be set individually on their respective inlets, or via a list &lt;i>a&lt;sub>0&lt;/sub>, a&lt;sub>1&lt;/sub>, a&lt;sub>2&lt;/sub>, b&lt;sub>1&lt;/sub>, b&lt;sub>2&lt;/sub>&lt;/i> via the &lt;b>coefs&lt;/b> inlet.&lt;/p></xblock>
+<xblock name="Links">Allpass Bandpass Hipass Lowpass TwoPoleResonz FrequencyResponse</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">biquad filter pole zero</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Biquad" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Array 5 VSlider" name="array0" x="147.0" y="66.0" width="142" height="115" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Array 5 FloatBox" name="array1" x="147.0" y="217.0" width="440" height="26" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Biquad " name="biquad0" x="60.0" y="358.0" width="104" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="biquad0/gain" value="0" />
+
+&lt;STATE name="biquad0/zero1" value="0" />
+
+&lt;STATE name="biquad0/zero2" value="0" />
+
+&lt;STATE name="biquad0/pole1" value="0" />
+
+&lt;STATE name="biquad0/pole2" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WhiteNoise" name="whitenoise0" x="22.0" y="162.0" width="66" height="38" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="* 0.1" name="*5" x="22" y="241" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="65.0" y="434.0" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Unbundle " name="unbundle1" x="148.0" y="272.0" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="array0/floatOut" inlet="array1/floatIn" vertices="" />
+&lt;CONNECTION  outlet="array1/floatOut" inlet="unbundle1/bundleIn" vertices="" />
+&lt;CONNECTION  outlet="biquad0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="*5/param1" vertices="" />
+&lt;CONNECTION  outlet="*5/result" inlet="biquad0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="unbundle1/out1" inlet="biquad0/gain" vertices="" />
+&lt;CONNECTION  outlet="unbundle1/out2" inlet="biquad0/zero1" vertices="" />
+&lt;CONNECTION  outlet="unbundle1/out3" inlet="biquad0/zero2" vertices="" />
+&lt;CONNECTION  outlet="unbundle1/out4" inlet="biquad0/pole1" vertices="" />
+&lt;CONNECTION  outlet="unbundle1/out5" inlet="biquad0/pole2" vertices="" />
+&lt;STICKY  x="342" y="79" width="191.0" height="94.0" color="#FFFF77" text="The Biquad coefficients
+1.  Input gain
+2.  Previous input sample
+3.  The next previous input sample
+4.  The previous output sample
+5.  The next previous output sample
+" fontface="" fontsize="8">&lt;/STICKY>&lt;STICKY  x="298.0" y="277.0" width="184.0" height="35.0" color="#ff0080" text="Be careful with the output sample
+coefficients!
+" fontface="" fontsize="8">&lt;/STICKY>&lt;TITLE  x="51.0" y="34.0" color="#FFFFFF" text="Biquad" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

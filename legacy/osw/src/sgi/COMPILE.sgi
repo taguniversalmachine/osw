@@ -1,0 +1,74 @@
+COMPILING AND INSTALLING THE SOURCE VERSION OF OSW FOR SGI IRIX SYSTEMS
+
+0.  REQUIREMENTS
+
+This source version of OSW should compile on Linux.
+The following additional software is required:
+
+*  The MIPSPro C++ compiler (CC)
+*  Tcl/Tk 8.3 and Itcl
+*  GNU make (gmake)
+
+Note: STLport is not necessary on this OS and compiler combination\
+
+1.  INSTALLING REQUIRED PACKAGES
+
+1.1.  DOWNLOADING AND INSTALLING TCL/TK
+
+SGI does have pre-built versions of Tcl/Tk ready to install, but unfortunately
+they are too old (version 8.0).  This means you probably have to get the
+source versions and build them yourself, but if you're reading this I suppose
+you are not that bothered by compiling source code. You can download 
+Tcl/Tk 8.3 and Itcl 3.2 from the Tcl Developer Xchange (www.scriptics.com).  Unpack the distributions and follow the directions they provide.
+
+1.2.  GNU MAKE
+
+GNU make (gmake) is available from freeware.sgi.com in a ready-to-install 
+package.
+
+2.  Run configure
+
+In the osw/src/linux directory (that is presumably where you are now), run
+the standard "configure" script by typing "./configure". 
+
+Assuming all goes well, you should now have a Makefile osw/src/sgi 
+directory.
+
+3.  COMPILE AND INSTALL THE CORE SYSTEM
+
+You are now ready to compile OSW.  If you haven't done so already, open
+a command prompt window and change to this directory (osw/src/win).  
+To build the core system, type:
+
+  make all
+
+The compilation may take a while, depending on CPU speed and available
+memory.  Because OSW makes extensive use of advanced C++ features, it
+often compiles slower than some other applications.  On SGI platforms, 
+this can be VERY slow, depending on the amount of memory you have.  Whatever
+amount of memory you have, I recommend getting more!
+
+When the compilation is done, you will want to install OSW by typing:
+
+  make install
+
+This will copy the newly compiled binaries plus all the support files
+(scripts, documentation, data files, etc.) to the location you specified
+in System.mak.  Make sure you have write access to the install directory,
+or run the installatiion as root.
+
+4.  COMPILE THE EXTERNALS
+
+Not quite done yet!  You still have to make all the external transforms.
+From the command prompt, type:
+
+  make externals
+
+This will start a series of compilations, and pop up several instances of
+the "Externalizer", the graphical tool for building OSW externals.  During
+this build process, the Externalizer windows are fully automated, so you
+do not need to do anything.
+
+This step also installs the externals, so once its complete you're ready
+to go.  Change to the installation directory, type "osw", and have fun!
+

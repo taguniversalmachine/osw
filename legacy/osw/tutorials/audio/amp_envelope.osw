@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="amp_envelope" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Midi2Freq " name="midi2freq0" x="133.0" y="189.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="midi2freq0/freq_ref" value="440" />
+
+<STATE name="midi2freq0/midi_ref" value="69" />
+
+<STATE name="midi2freq0/degrees" value="12" />
+</TRANSFORM>
+<TRANSFORM  command="Keyboard " name="keyboard0" x="133.0" y="60.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="keyboard0/octave" value="5" />
+</TRANSFORM>
+<TRANSFORM  command="Square " name="square0" x="83.0" y="318.0" width="52" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="square0/frequency" value="987.767" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="133.0" y="246.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="182.0" y="302.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="Array 4 MSlider -width 30" name="array1" x="547.0" y="54.0" width="140" height="114" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Unbundle " name="unbundle1" x="517.0" y="205.0" width="75" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AsyncPack" name="pack1" x="517" y="290" width="75" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Append  0.0" name="append1" x="517.0" y="346.0" width="112" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Prepend 0.0" name="prepend0" x="517" y="399" width="112" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="TimeMachine " name="timemachine0" x="276.0" y="286.0" width="75" height="59" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Lines" name="lines0" x="276" y="394" width="40" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="517.0" y="453.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="0.00000 0.0500000 0.340000 0.260000 1.11000 0.00000" />
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="83" y="416" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="83" y="488" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr $f1 + 1.0" name="expr0" x="640.0" y="248.0" width="94" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="midi2freq0/frequency" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="keyboard0/noteOut" inlet="midi2freq0/midi_note" vertices="" />
+<CONNECTION  outlet="square0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="square0/frequency" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="button0/trigger" vertices="161.0 291.0 188.0 291.0" />
+<CONNECTION  outlet="button0/unitOut" inlet="timemachine0/zero" vertices="188.0 361.0 259.0 361.0 259.0 271.0 330.0 271.0" />
+<CONNECTION  outlet="array1/floatOut" inlet="unbundle1/bundleIn" vertices="553.0 191.5 523.0 191.5" />
+<CONNECTION  outlet="unbundle1/out1" inlet="pack1/in1" vertices="" />
+<CONNECTION  outlet="unbundle1/out2" inlet="pack1/in2" vertices="" />
+<CONNECTION  outlet="unbundle1/out3" inlet="pack1/in3" vertices="" />
+<CONNECTION  outlet="unbundle1/out4" inlet="expr0/f1" vertices="577.0 254.0 611.5 254.0 611.5 233.0 646.0 233.0" />
+<CONNECTION  outlet="pack1/listOut" inlet="append1/listIn" vertices="" />
+<CONNECTION  outlet="append1/listOut" inlet="prepend0/listIn" vertices="" />
+<CONNECTION  outlet="prepend0/listOut" inlet="msgbox1/messageIn" vertices="" />
+<CONNECTION  outlet="timemachine0/timeOut" inlet="lines0/timeIn" vertices="" />
+<CONNECTION  outlet="lines0/floatOut" inlet="gain0/amp_scale" vertices="282.0 443.0 201.5 443.0 201.5 401 121 401" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="lines0/line" vertices="523.0 502.0 421.5 502.0 421.5 379 320 379" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="89.0 469.0 209 469.0" />
+<CONNECTION  outlet="expr0/out" inlet="pack1/in4" vertices="646.0 297.0 611.5 297.0 611.5 275.0 577.0 275.0" />
+<STICKY  x="551.0" y="10.0" width="115.0" height="19.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">AL  D1R  D1L  D2R</STICKY><TITLE  x="105.0" y="18.0" color="#FFFFFF" text="Amplitude Envelope" fontface="MS Sans Serif" fontsize="16" /></PATCH>
+</OSW>
+

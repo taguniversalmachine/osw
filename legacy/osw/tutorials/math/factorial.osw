@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="factorial" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<PATCH CLASS="fact_recursion" Version="1.1beta2" WindowSize="200 230" Background="SystemButtonFace"  x="131" y="195" width="166" height="25" color="darkgrey" >
+<TRANSFORM  command="Inlet -type Integer -name n" name="n" x="136" y="88" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Integer -name result" name="result" x="136.0" y="463.0" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="This" name="this0" x="350.0" y="342.0" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="If $i1 == 0 then 1 else $i1" name="if0" x="136.0" y="164.0" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="306.0" y="229.0" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="- 1" name="sub0" x="350.0" y="285.0" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="'*" name="qmul0" x="306" y="408" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="136" y="394" width="1" height="1" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="n_inlet/out" inlet="if0/i1" vertices="" />
+<CONNECTION  outlet="this0/result" inlet="qmul0/param2" vertices="356.0 392.5 344 392.5" />
+<CONNECTION  outlet="if0/consequent" inlet="fanin0/in1" vertices="" />
+<CONNECTION  outlet="if0/alternative" inlet="fanout0/in" vertices="141.0 202.0 312.0 202.0" />
+<CONNECTION  outlet="fanout0/out1" inlet="qmul0/param1" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="sub0/param1" vertices="333.0 262.5 356.0 262.5" />
+<CONNECTION  outlet="sub0/result" inlet="this0/n" vertices="" />
+<CONNECTION  outlet="qmul0/result" inlet="fanin0/in2" vertices="312.0 434.0 237.5 434.0 237.5 379 163 379" />
+<CONNECTION  outlet="fanin0/out" inlet="result_outlet/in" vertices="" />
+</PATCH>
+
+<TRANSFORM  command="IntBox" name="intbox0" x="131.0" y="264.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="131.0" y="118.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Fact" name="fact0" x="386.0" y="272.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="fact_recursion/result" inlet="intbox0/intIn" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="fact_recursion/n" vertices="" />
+<STICKY  x="374" y="138" width="138.0" height="81.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">This Patch is for 
+tutorial purposes.  
+If you want a more
+efficient factorial function,
+use the Fact transform</STICKY><TITLE  x="121.0" y="36.0" color="#FFFFFF" text="Rescursive Factorial Patch" fontface="MS Sans Serif" fontsize="14" /><TITLE  x="160.0" y="371.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="160" y="389" color="#0000FF" link="math/fib" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

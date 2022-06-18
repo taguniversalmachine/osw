@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="ShepardTonesVoice" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Inlet -type Samples -name rampSignalIn" name="rampSignalIn" x="309.0" y="49.0" width="89" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Delay -max 100000" name="delay1" x="309.0" y="140.0" width="97" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="309.0" y="207.0" width="60" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave0" x="298.0" y="550.0" width="73" height="41" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave0/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Gain" name="gain0" x="298.0" y="633.0" width="32" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="gain0/amp_scale" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Samples -name signalOut" name="signalOut" x="298.0" y="695.0" width="68" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SampleGet" name="sampleget0" x="309.0" y="325.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sampleget0/index" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Expr (2^$f1)^$f2" name="expr0" x="298.0" y="439.0" width="92" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get /ShepardTones/numOctaves" name="get0" x="123.0" y="185.0" width="152" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="* 1.0" name="mul5" x="298.0" y="492.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Get /ShepardTones/baseFreq" name="get1" x="427.0" y="433.0" width="142" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="table::Peek -table /ShepardTones/ampEnv" name="peek1" x="434.0" y="550.0" width="207" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="SampleGet" name="sampleget1" x="639.0" y="386.0" width="57" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sampleget1/index" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Get /ShepardTones/delay" name="get2" x="456.0" y="65.0" width="127" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Outlet -type Samples -name rampSignalOut" name="rampSignalOut" x="808.0" y="314.0" width="100" height="40" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="123.0" y="293.0" width="73" height="33" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="2" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="233.0" y="293.0" width="30" height="34" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout1" x="309.0" y="381.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="% 1.0" name="mod0" x="472.0" y="368.0" width="37" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="TypeFilter -type Float" name="typefilter0" x="427.0" y="493.0" width="122" height="23" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="rampSignalIn_inlet/out" inlet="delay1/samplesIn" vertices="" />
+<CONNECTION  outlet="delay1/samplesOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="sampleget0/samplesIn" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="sampleget1/samplesIn" vertices="334.0 313.0 645.0 313.0" />
+<CONNECTION  outlet="fanout0/out3" inlet="rampSignalOut_outlet/in" vertices="353.0 277.0 814.0 277.0" />
+<CONNECTION  outlet="sinewave0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+<CONNECTION  outlet="gain0/samplesOut" inlet="signalOut_outlet/in" vertices="" />
+<CONNECTION  outlet="sampleget0/sampleValue" inlet="fanout1/in" vertices="" />
+<CONNECTION  outlet="expr0/out" inlet="mul5/param1" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="mul5/result" inlet="sinewave0/freq" vertices="304.0 537.5 375.0 537.5" />
+<CONNECTION  outlet="get1/value" inlet="typefilter0/input" vertices="433.0 479.5 433.0 479.5" />
+<CONNECTION  outlet="peek1/value" inlet="gain0/amp_scale" vertices="440.0 608.0 334.0 608.0" />
+<CONNECTION  outlet="sampleget1/sampleValue" inlet="peek1/floatIndex" vertices="" />
+<CONNECTION  outlet="get2/value" inlet="delay1/delay" vertices="462.0 119.0 362.0 119.0" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="expr0/f1" vertices="129.0 387.5 304.0 387.5" />
+<CONNECTION  outlet="button0/unitOut" inlet="floatbox0/unitIn" vertices="239.0 352.0 219.5 352.0 219.5 278.0 200.0 278.0" />
+<CONNECTION  outlet="fanout1/out1" inlet="button0/trigger" vertices="315.0 429.0 277.0 429.0 277.0 278.0 239.0 278.0" />
+<CONNECTION  outlet="fanout1/out2" inlet="mod0/param1" vertices="336.0 429.0 407.0 429.0 407.0 353.0 478.0 353.0" />
+<CONNECTION  outlet="mod0/result" inlet="expr0/f2" vertices="478.0 420.0 394.0 420.0" />
+<CONNECTION  outlet="typefilter0/output" inlet="mul5/param2" vertices="433.0 541.0 386.0 541.0 386.0 477.0 339.0 477.0" />
+</PATCH>
+</OSW>
+

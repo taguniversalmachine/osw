@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="sendOSC" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="MessageBox" name="msgbox0" x="88.0" y="122.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="/a/b 1 2.2" />
+</TRANSFORM>
+<TRANSFORM  command="OSCBundle " name="oscbundle0" x="148.0" y="197.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscbundle0/host" value="localhost" />
+
+<STATE name="oscbundle0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="282.0" y="114.0" width="33" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<CONNECTION  outlet="msgbox0/messageOut" inlet="oscbundle0/messageIn" vertices="94.0 176.5 154.0 176.5" />
+<CONNECTION  outlet="button0/unitOut" inlet="oscbundle0/sendBundle" vertices="288.0 176.5 222.0 176.5" />
+<STICKY  x="254.0" y="200.0" width="129.0" height="55.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Default port is 7005.
+Double-click OSCBundle
+to change port and host</STICKY><TITLE  x="163.0" y="103.0" color="#FFFFFF" text="type in OSC messages" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="328.0" y="95.0" color="#FFFFFF" text="click here when done to send" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="153.0" y="37.0" color="#FFFFFF" text="sendOSC" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="166.0" y="313.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="169.0" y="335.0" color="#0000FF" link="osc/dumpOSC" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

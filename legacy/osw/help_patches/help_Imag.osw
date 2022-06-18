@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Imag" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox" name="floatbox0" x="108.0" y="128.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="intbox0" x="229.0" y="127.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/floatIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="0.1" />
+</TRANSFORM>
+<TRANSFORM  command="Complex" name="complex0" x="108.0" y="216.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="complex0/real" value="0" />
+
+<STATE name="complex0/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="108.0" y="279.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="108.0" y="338.0" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Real" name="real0" x="108.0" y="408.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Imag" name="imag0" x="227.0" y="409.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="108.0" y="478.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="227" y="472" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Complex" name="complex1" x="460" y="218" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="complex1/real" value="0" />
+
+<STATE name="complex1/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleComplex" name="doublecomplex0" x="460.0" y="289.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublecomplex0/real" value="0" />
+
+<STATE name="doublecomplex0/imag" value="0" />
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="complex0/real" vertices="" />
+<CONNECTION  outlet="intbox0/floatOut" inlet="complex0/imag" vertices="235.0 188.0 139.0 188.0" />
+<CONNECTION  outlet="complex0/complexOut" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="fanout0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="real0/in" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="imag0/in" vertices="136.0 391.0 233.0 391.0" />
+<CONNECTION  outlet="real0/out" inlet="floatbox1/floatIn" vertices="" />
+<CONNECTION  outlet="imag0/out" inlet="floatbox2/floatIn" vertices="" />
+<TITLE  x="133" y="97" color="#FFFFFF" text="real" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="270.0" y="99.0" color="#FFFFFF" text="imag" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="335.0" y="289.0" color="#FFFFFF" text="complex representation" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="155.0" y="47.0" color="#FFFFFF" text="Real / Imag" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="480.0" y="180.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

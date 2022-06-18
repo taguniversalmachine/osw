@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="series_approx_2" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="sum" name="sum0" x="122.0" y="444.0" width="38" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Map" name="map0" x="122.0" y="291.0" width="73" height="27" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="list::Range -from 1 -to 10" name="range0" x="122.0" y="221.0" width="192" height="27" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="range0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="122.0" y="528.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="122.0" y="152.0" width="32" height="36" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="248.0" y="154.0" width="102" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  name="expr1" x="224.0" y="361.0" width="150" height="27" color="darkgrey" fontface="" fontsize="8">
+<COMMAND>Expr 1.0/(&#36;i1 * &#36;i1)</COMMAND>
+</TRANSFORM>
+<CONNECTION  outlet="sum0/result" inlet="floatbox0/floatIn" vertices="" />
+<CONNECTION  outlet="map0/listOut" inlet="sum0/listIn" vertices="" />
+<CONNECTION  outlet="map0/elementOut" inlet="expr1/i1" vertices="199.0 344.5 230.0 344.5" />
+<CONNECTION  outlet="range0/listOut" inlet="map0/listIn" vertices="" />
+<CONNECTION  outlet="button0/unitOut" inlet="range0/send" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="range0/to" vertices="" />
+<CONNECTION  outlet="expr1/out" inlet="map0/elementIn" vertices="230.0 413.0 214.5 413.0 214.5 276.0 199.0 276.0" />
+<TITLE  x="304.0" y="129.0" color="#FFFFFF" text="# of terms" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="139.0" y="121.0" color="#FFFFFF" text="run" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="256.0" y="75.0" color="#FFFFFF" text="series 1 + 1/2^2 + 1/3^2 + ... 1/n^2" fontface="Arial" fontsize="12" />
+</PATCH>
+</OSW>
+

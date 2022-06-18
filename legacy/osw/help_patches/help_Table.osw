@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Table" Version="1.2.1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="Table -name mytable" name="mytable" x="87.0" y="147.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+	</DATA>
+
+<STATE name="mytable/size" value="256" />
+
+<STATE name="mytable/min" value="0" />
+
+<STATE name="mytable/max" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="WaveTable" name="wavetable0" x="72.0" y="324.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="wavetable0/table" value="/sine" />
+</TRANSFORM>
+<TRANSFORM  command="table::Record" name="record0" x="188.0" y="326.0" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="record0/table" value="/sine" />
+</TRANSFORM>
+<TRANSFORM  command="table::Peek" name="peek0" x="68.0" y="393.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="peek0/table" value="/sine" />
+</TRANSFORM>
+<TRANSFORM  command="table::Poke" name="poke0" x="189.0" y="391.0" width="82" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="poke0/index" value="0" />
+
+<STATE name="poke0/table" value="/sine" />
+</TRANSFORM>
+<TRANSFORM  command="Table -name inline_table -inline true" name="inline_table" x="422.0" y="159.0" width="260" height="266" color="darkgrey" fontface="" fontsize="8">
+	<DATA>
+		0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+	</DATA>
+
+<STATE name="inline_table/size" value="256" />
+
+<STATE name="inline_table/min" value="0" />
+
+<STATE name="inline_table/max" value="1" />
+</TRANSFORM>
+<STICKY  x="97.0" y="65.0" width="134.0" height="60.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+manually edit the
+table</STICKY>
+<STICKY  x="94.0" y="233.0" width="147.0" height="71.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">To see what you
+can do with tables,
+visit these help
+patches:</STICKY>
+<STICKY  x="425.0" y="68.0" width="258.0" height="74.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Or create an inline table in your patch by
+adding the option "-inline true" when you
+declare a Table</STICKY>
+<TITLE  x="115.0" y="41.0" color="#FFFFFF" text="Table" fontface="Arial" fontsize="16" />
+</PATCH>
+</OSW>
+

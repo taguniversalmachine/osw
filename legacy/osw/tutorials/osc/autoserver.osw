@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="autoserver" Version="1.1beta3" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCSend -port 7707" name="oscsend0" x="107.0" y="213.0" width="118" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend0/host" value="localhost" />
+</TRANSFORM>
+<TRANSFORM  command="OSCListen -port 7708" name="osclisten0" x="107.0" y="271.0" width="130" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="108.0" y="386.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="107.0" y="90.0" width="156" height="26" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="/autoserver/box/intIn 7" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="325.0" y="90.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="/transform-types" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox3" x="524.0" y="90.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox3/message" value="/osw-quit" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox -name box" name="box" x="560.0" y="310.0" width="88" height="23" color="#0000ff" fontface="" fontsize="8">
+
+<STATE name="box/intIn" value="0" />
+
+<STATE name="box/max" value="100" />
+
+<STATE name="box/min" value="0" />
+
+<STATE name="box/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="107.0" y="155.0" width="60" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Print -name osc" name="osc" x="306.0" y="384.0" width="100" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FanOut" name="fanout0" x="108.0" y="321.0" width="46" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="osclisten0/messageOut" inlet="fanout0/in" vertices="113.0 313.0 114.0 313.0" />
+<CONNECTION  outlet="msgbox1/messageOut" inlet="fanin0/in1" vertices="" />
+<CONNECTION  outlet="msgbox2/messageOut" inlet="fanin0/in2" vertices="331.0 139.5 132.0 139.5" />
+<CONNECTION  outlet="msgbox3/messageOut" inlet="fanin0/in3" vertices="530.0 139.5 151.0 139.5" />
+<CONNECTION  outlet="fanin0/out" inlet="oscsend0/messageIn" vertices="" />
+<CONNECTION  outlet="fanout0/out1" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="fanout0/out2" inlet="osc/to_print" vertices="136.0 369.5 312.0 369.5" />
+<TITLE  x="343.0" y="64.0" color="#FFFFFF" text="send messages to the built-in OSC server on port 7707" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="122.0" y="27.0" color="#FFFFFF" text="Built-in OSC Server" fontface="MS Sans Serif" fontsize="14" /><TITLE  x="280.0" y="460.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="193.0" y="489.0" color="#0000FF" link="osc/sendOSC" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="289.0" y="489.0" color="#0000FF" link="osc/dumpOSC" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="402.0" y="489.0" color="#0000FF" link="osc/invisible_patch" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

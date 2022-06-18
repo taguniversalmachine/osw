@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<osw-external name="WhiteNoise" package="osw">
+<description>Generates white noise.</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="timeIn" type="Time" description="Requires a time value to generate samples" />
+<outlet name="samplesOut" type="Samples" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl">HideName
+label &#36;drawingSpace.icon -image &#91;oswLoadBitmap bitmap noise.xbm&#93;  -bg &#91;&#36;drawingSpace cget -bg&#93; 
+label &#36;drawingSpace.name -text &#91;file tail &#36;transform&#93;  -bg &#91;&#36;drawingSpace cget -bg&#93;  
+pack &#36;drawingSpace.icon &#36;drawingSpace.name -side top</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">friend float random_amp () &#123;
+      return float(rand() - (RAND_MAX >> 1)) / float(RAND_MAX >> 1);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="activation1" activators="timeIn" order="" >
+
+Samples	samples(NumberOfSamples);
+generate_n(samples.begin(),NumberOfSamples,random_amp);
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">WhiteNoise &lt;i>name options&lt;/i></xblock>
+<xblock name="LongDescription">   It's good old-fashioned white noise.  What more can I say?</xblock>
+<xblock name="Links">   PinkNoise BrownNoise</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords">   white, noise, oscillator, generator</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_WhiteNoise" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Scope " name="scope0" x="192.0" y="258.0" width="208" height="128" color="darkgrey" fontface="" fontsize="">
+
+&lt;STATE name="scope0/background" value="black" />
+
+&lt;STATE name="scope0/foreground" value="white" />
+
+&lt;STATE name="scope0/resolution" value="100" />
+
+&lt;STATE name="scope0/zoom" value="1" />
+
+&lt;STATE name="scope0/interval" value="0.1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="26.0" y="296.0" width="124" height="58" color="darkgrey" fontface="" fontsize="">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout0" x="147.0" y="170.0" width="46" height="25" color="darkgrey" fontface="" fontsize="">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="WhiteNoise " name="whitenoise0" x="147.0" y="80.0" width="70" height="38" color="darkgrey" fontface="" fontsize="">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="fanout0/out1" inlet="out0/mix" vertices="" />
+&lt;CONNECTION  outlet="fanout0/out2" inlet="scope0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="whitenoise0/samplesOut" inlet="fanout0/in" vertices="" />
+&lt;TITLE  x="102.0" y="43.0" color="#FFFFFF" text="WhiteNoise" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>
+
+
+

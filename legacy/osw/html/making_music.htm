@@ -1,0 +1,229 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+
+<link href="css/text.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" href="UserGuide.html" target="_top"><img src="oswmantle.png" width="453" height="94" border="0" />
+</td>
+<td align="left">
+<h3 class="title">User Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<div align="Center">
+<h1 class="title">4. Notes and MIDI</h1>
+<br>
+<br>
+</div>
+
+<p>The previous chapters introduced the basic language structures and user interface of OSW.  The following chapters describe how to use its features to write programs that manipulate events and signals in musically interesting ways.  This chapter describes methods for describing and manipulating musical events (notes and MIDI),  and the next chapter introduces <a href="signal_processing.htm">signal processing</a>.</p>
+
+<h3 class="title">4.1. Notes</h3>
+
+<p>Making music usually means writing notes. Exactly what constitutes a musical note is a matter of some debate, but in OSW, notes are property lists (i.e., Blobs) with
+special temporal attributes. In
+particular, each note has a duration and a time until the beginning of the next
+note should be played. A sequence of
+notes, or a <i>score</i> is specified using the <span class="transform">Notes</span> transform. The <span class="transform"><a href="note">Notes</a></span> transform takes a list of
+arguments as follows:</p>
+
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+style='font-family:Arial'>Notes<span style='mso-tab-count:1'>  </span></span><i>pitch-or-properties<sub>1</sub>
+duration<sub>1</sub> next<sub>1</sub> pitch-or-properties<sub>2</sub> duration<sub>2</sub>
+next<sub>2<o:p></o:p></sub></i></p>
+<p>Every three arguments specifies one note. The first argument is either the pitch or a
+list of properties for the note, the second is the duration and the third is
+the time until the next note. Pitches can be specified as Floats representing frequency, Integers representing MIDI note numbers, or Strings representing note names (pitch class and octave). The duration and next properties represent
+relative times as fractions or multiples of whole notes (e.g. a duration of .25
+is a quarter note) using Floats or Strings representing
+standard note durations. The following
+Strings can be used instead of Floats for the time
+properties:</p>
+
+<dl>
+<dd><b>l</b>: long (4.0)</dd>
+<dd><b>b</b>: breve (2.0)</dd>
+<dd><b>w</b>: whole note (1.0)</dd>
+<dd><b>h</b>: half note (0.5)</dd>
+<dd><b>q</b>: quarter note (0.25)</dd>
+<dd><b>e</b>: eighth note (0.125)</dd>
+<dd><b>s</b>: sixteenth (0.0625)</dd>
+<dd><b>t</b>: thirty-second note (0.03125)</dd>
+<dd><b>x</b>: sixty-fourth note (0.015625)</dd>
+</dl>
+
+<p>Additionally, if a name is followed by one or more periods,
+it represents a dotted-note (e.g., “e.” is a dotted eighth note and “h..” is a
+double-dotted half note).
+
+<p>For example, the following phrase in traditional music notation:<br>
+<img width=289 height=100 src="./making_music_files/image001.png">
+<br>
+can be specified using any of the following equivalent note
+commands.</p>
+<p><span
+style='font-family:Arial,Helvetica'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes c4 0.5 0.5 ef4 0.25 0.25 g4 0.25 0.25</span></p>
+
+<p><span class="transform">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes c4 h h eb4 q q g4 q q</span></p>
+
+<p><span class="transform">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes 60 h h 63 q q 67 q q</span></p>
+
+<p><span class="transform">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Notes 261.625 h h 311.127 q q 391.995 q q</span></p>
+
+<p>Of course, there are many other ways to mix-and-match the
+different representations of pitch and time (one note could use Strings
+for pitch and time properties and the next could use Floats).</p>
+
+<p>The pitch property can be replaced be a list of names of
+values representing properties of the note. For example, the following sequence of notes could be used with a
+percussion synthesizer:</p>
+
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+style='font-family:Arial,Helvetica'>Notes {timbre timpani volume 0.75} 0.5 0.25 {timbre
+cymbal volume 0.85} 1.25 1.25</span></p>
+<p>Since all notes are also Blobs, you can dynamically modify
+the properties of any note using <a href="transformgrp.html#blobs">Blob transforms.</a></p>
+
+<h3 class="title"><i>4.1.1 Playing Notes</i></h3>
+
+<p>Okay, so now that we know how to create notes, what can we
+do with them? The <span
+style='font-family:Arial,Helvetica'>Notes </span>transform outputs the notes as an object
+called a <i>score</i>, which can played using the <span style='font-family:
+Arial,Helvetica'><a href="note/PlayScore.html">PlayScore</a></span> transform, which reads a score and outputs note-onset
+and note-ending events at the appropriate times. At the onset of each note in a score, PlayScore sends a copy of
+the note object out its left (“beginNote”) outlet, and then a copy of the note
+object out its middle (“endNote”) outlet once the duration of the note has
+elapsed. The user is then free to interpret the properties at the beginning and
+end each note as he/she wishes. </p>
+
+<p>Consider the simple example of playing a score using a MIDI
+device. The <a href="note/MidiNote.html"><span class="transform">MidiNote</span></a> transform accepts
+the onset and ending copies of each note from <span class="transform">PlayScore</span>, and outputs the
+corresponding MIDI Note-On and Note-Off events.<br><br>
+<div align="center"><img width=306 height=370 src="./making_music_files/midi_score.png"></div></p>
+
+<p>In the above example, the audio output transform is present
+and active in order to provide an implicit clock source for <span class="transform">PlayScore</span> (See “<a href="time.htm">Time in OSW</a>” for more details, and
+also note that this inconvenience will probably no longer be necessary in the
+near future.)</p>
+
+<p>You can also use <span class="transform">PlayScore</span> to drive synthesis within
+OSW. The <span class="transform"><a href="midi/Midi2Freq.html">Midi2Freq</a></span> and <span class="transform"><a href="midi/OnOffAmp.html">OnOffAmp</a></span> transforms are helpful for implementing MIDI-like note behavior in synthesis
+patches.</p>
+<div align="center"><img width=372 height=583 src="./making_music_files/synth_score.png"></div>
+<p>The MIDI and synthesis examples can be found in the
+<a href="http://localhost:7775/OSW_DIR/tutorials/music/midi_score.osw">midi_score</a> and <a href="http://localhost:7775/OSW_DIR/tutorials/music/synth_score.osw">synth_score</a> tutorials, respectively.</p>
+
+<h3 class="title">4.2 MIDI</h3>
+
+<p>A programming language cannot be called a “music programming
+language” unless it supports MIDI. OSW
+meets this requirement, supporting transforms for processing MIDI messages as
+well as sequencing Standard MIDI files.</p>
+
+<p>A MIDI message is a series of bytes, consisting of a
+channel, an instruction and parameters for the instruction. A synthesizer listening on a channel receives
+and interprets the instruction. OSW
+supports input and output of messages from and to MIDI devices. The following patch receives MIDI note messages, raises the note by a perfect fifth, and outputs the result to a MIDI device listening on a different channel:</p>
+
+<div align="center">
+<img src="./making_music_files/midi_transpose.png" width=277 height=275>
+</div>
+
+<p>The <span class="transform">MidiInput</span>
+transform receives messages and unpacks them into four integers corresponding
+to the channel, status (i.e., instruction) and one or two parameters. The user is then free to perform arithmetic
+or any other operations on these numbers, like adding seven to the pitch value in note-on messages. The <span class="transform"><a href="midi/MidiPackBytes.html">MidiPackBytes</a> </span>transform then
+packs the results into a MIDI message, which is sent to a <span
+style='font-family:Arial,Helvetica'>MidiOutput</span> transform and ultimately to a MIDI
+device. By default<span class="transform">, MidiInput</span>
+will accept any incoming MIDI messages. You can filter the messages by channel, status or value. In the above example, we used the “-status”
+parameter to indicate that we only wanted to accept note messages. You can also set up filtering by
+doubling-clicking the <span class="transform">MidiInput</span> and
+set channel, status, parameter, and input port (i.e., “driver”) interactively.</p>
+
+<div align="center">
+<img src="./making_music_files/midi_dialog.png" width=229 height=181>
+</div>
+
+<p>A similar dialog box for <span class="transform">MidiOutput</span>
+transforms allows you to choose the output port.</p>
+<p>The example patch shown in this section can be found in the <a href="http://localhost:7775/OSW_DIR/tutorials/midi/midi_tranpose.osw">midi_tranpose</a> tutorial.</p>
+<h3 class="title"><i>4.2.1. MIDI Note Events</i></h3>
+
+<p>You can use <span class="transform"><a href="midi/MidiPackBytes.html">MidiPackBytes</a> </span>transform to generate MIDI events, such as note-on and note-off events.  In the following example, lists of numbers representing note-on and note-off messages are converted to MIDI messages using <span class="transform">MidiPackBytes</span>.</p>
+
+<div align="center">
+<img src="./making_music_files/midipackbytes.png" width=367 height=391>
+</div>
+
+<p>This patch probably seems a bit tedious if all you want to do is turn a MIDI note on and off.  Fortunately, OSW includes two transforms called <a href="midi/NoteOn.html"><span class="transform">NoteOn</span></a> and <a href="midi/NoteOff.html"><span class="transform">NoteOff</span></a> that more easily convert pitches and velocities into MIDI note events, as illustrated in the following patch.</p>
+
+<div align="center">
+<img src="./making_music_files/noteon.png" width=564 height=513>
+</div>
+
+<p>The <a href="osw/Pipe.html"><span class="transform">Pipe</span></a> transform delays the creation of note-off until a suitable duration after the note-on message.</p>
+
+<p>Similar transforms exist for other MIDI messages.  Refer to <a href="midi/Control.html"><span class="transform">Control</span></a>, <a href="midi/ProgChange.html"><span class="transform">ProgChange</span></a>, <a href="midi/PitchBend.html"><span class="transform">PitchBend</span></a>, <a href="midi/Touch.html"><span class="transform">Touch</span></a> and <a href="midi/PolyTouch.html"><span class="transform">PolyTouch</span></a> for more information.</p>
+
+<h3 class="title"><i>4.2.2. MIDI Sequencing</i></h3>
+
+<p>OSW includes a MIDI sequencer called (surprisingly enough) <span
+class="transform"><a href="midi/MidiSequencer.html">MidiSequencer</a></span>. The <span class="transform">MidiSequencer</span> transform
+reads Standard MIDI Files, and outputs MIDI events in a timely fashion:</p>
+
+<div align="center">
+<img src="./making_music_files/sequencer.png" width=274 height=473>
+</div>
+
+<p><span class="transform">MidiSequencer</span>
+also includes parameters for changing the tempo and <a href="time.htm">explicit time
+control</a>. </p>
+
+<h3 class="title"><i>4.2.3. Polyphony</i></h3>
+
+<p>Use the <span class="transform"><a href="midi/PolyManager.html">PolyManager</a></span> transform to manage voices in polyphonic MIDI patches.</p>
+
+<h3 class="title"><i>4.2.4. Converting Between MIDI notes and frequencies</i></h3>
+
+<p>OSW includes two utility transforms <span style='font-family:
+Arial,Helvetica'><a href="midi/Freq2Midi.html">Freq2Midi</a></span> and <span class="transform"><a href="midi/Midi2Freq.html">Midi2Freq</a></span>
+that convert between MIDI note numbers and frequencies. These are useful when playing MIDI files or
+OSW scores.</p>
+
+</div>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+
+</html>

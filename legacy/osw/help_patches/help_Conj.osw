@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_Conj" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FloatBox " name="floatbox0" x="109.0" y="137.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="1" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="234.0" y="135.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="0" />
+
+<STATE name="floatbox1/max" value="1" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="Complex" name="complex0" x="109.0" y="206.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="complex0/real" value="0" />
+
+<STATE name="complex0/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Conj" name="conj0" x="110.0" y="333.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="109.0" y="268.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="110.0" y="407.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="Complex" name="complex1" x="457" y="196" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="complex1/real" value="0" />
+
+<STATE name="complex1/imag" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="DoubleComplex " name="doublecomplex0" x="457.0" y="268.0" width="94" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="doublecomplex0/real" value="0" />
+
+<STATE name="doublecomplex0/imag" value="0" />
+</TRANSFORM>
+<CONNECTION  outlet="floatbox0/floatOut" inlet="complex0/real" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="complex0/imag" vertices="240.0 187.0 140.0 187.0" />
+<CONNECTION  outlet="complex0/complexOut" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="conj0/out" inlet="msgbox1/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="conj0/in" vertices="115.0 317.5 116.0 317.5" />
+<STICKY  x="336.0" y="350.0" width="144.0" height="106.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Adding a complex
+number to its
+conjugate should
+always yield a zero
+imaginary result.  This
+is left as an exercise
+to the reader.</STICKY><TITLE  x="490.0" y="159.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="132.0" y="46.0" color="#FFFFFF" text="Conj" fontface="MS Sans Serif" fontsize="16" /><TITLE  x="128" y="97" color="#FFFFFF" text="real" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="255.0" y="98.0" color="#FFFFFF" text="imag" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

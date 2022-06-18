@@ -1,0 +1,184 @@
+<?xml version="1.0" ?>
+<osw-external name="FloatBox" package="osw">
+<description>Display or modify floating-point values</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="interactivedraw" />
+<inlet name="floatIn" type="Float" description="Set the current value" persistent="1" />
+<inlet name="unitIn" type="Changeable" description="Send the current value when a unit is received via this inlet." />
+<outlet name="floatOut" type="Float" description="The current value of the FloatBox" />
+<state name="max" type="Float" default="1.0" description="maximum value" persistent="1" />
+<state name="min" type="Float" default="0.0" description="Minimum value" persistent="1" />
+<state name="step" type="Float" default="0.01" description="The interactive buttons increase or decrease the value by this amount" persistent="1" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<inherited-state name="widget" type="String" default="none" description="Tk Widget Name" />
+<xblock name="drawCodeTcl">HideName
+floatbox &#36;drawingSpace.fb -labeltext "f>" -command &#91;list oswSet &#36;transform/floatOut&#93;  -min &#91;oswGet &#36;transform/min&#93; -max &#91;oswGet &#36;transform/max&#93;  -step &#91;oswGet &#36;transform/step&#93; -value 0.0
+
+pack &#36;drawingSpace.fb -fill both -expand yes</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">oswLoadScript floatbox.tcl</xblock>
+<activation name="maxchanged" activators="max" order="" >
+
+
+
+ SetWidgetProperty (widget + ".fb","-max",&amp;max);
+</activation>
+<activation name="activation2" activators="unitIn" order="" >
+
+
+
+floatOut = floatOut;
+</activation>
+<activation name="stepchanged" activators="step" order="" >
+
+
+
+SetWidgetProperty (widget + ".fb","-step",&amp;step);
+</activation>
+<activation name="minchanged" activators="min" order="" >
+
+
+
+ SetWidgetProperty (widget + ".fb","-min",&amp;min);
+</activation>
+<activation name="activation1" activators="floatIn" order="" >
+
+
+
+floatOut = floatIn;
+ SetWidgetProperty (widget + ".fb","-value",&amp;floatIn);
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">FloatBox  &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_FloatBox" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="119.0" y="171.0" width="91" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="0.56" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="119.0" y="307.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="0.69" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="226.0" y="94.0" width="29" height="32" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="HSlider" name="hslider0" x="68.0" y="91.0" width="112" height="31" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="hslider0/min" value="0" />
+
+&lt;STATE name="hslider0/max" value="1" />
+
+&lt;STATE name="hslider0/resolution" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="33.0" y="383.0" width="89" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="0" />
+
+&lt;STATE name="intbox0/max" value="100" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/step" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="DoubleBox" name="doublebox0" x="150.0" y="383.0" width="89" height="29" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="doublebox0/max" value="1" />
+
+&lt;STATE name="doublebox0/min" value="0" />
+
+&lt;STATE name="doublebox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FanOut" name="fanout1" x="119.0" y="240.0" width="45" height="23" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print" name="print0" x="218.0" y="307.0" width="38" height="24" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="fanout1/in" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="floatbox0/unitIn" vertices="232.0 153.5 214.0 153.5" />
+&lt;CONNECTION  outlet="hslider0/floatOut" inlet="floatbox0/floatIn" vertices="74.0 151.5 125.0 151.5" />
+&lt;CONNECTION  outlet="fanout1/out1" inlet="msgbox0/messageIn" vertices="" />
+&lt;CONNECTION  outlet="fanout1/out2" inlet="print0/to_print" vertices="146.0 290.0 224.0 290.0" />
+&lt;STICKY  x="243.0" y="172.0" width="112.0" height="60.0" color="#FFFF77" fontface="Helvetica" fontsize="8">Use the arrows 
+to change the current
+value&lt;/STICKY>&lt;TITLE  x="91.0" y="34.0" color="#FFFFFF" text="FloatBox" fontface="Arial" fontsize="18" />&lt;TITLE  x="65.0" y="162.0" color="#FFFFFF" text="Input new values" fontface="Helvetica" fontsize="10" />&lt;TITLE  x="346.0" y="109.0" color="#FFFFFF" text="output the current value" fontface="Helvetica" fontsize="10" />&lt;TITLE  x="139.0" y="358.0" color="#FFFFFF" text="see also" fontface="Helvetica" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

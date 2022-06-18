@@ -1,0 +1,69 @@
+<html>
+<head>
+	<meta name="Author" content="">
+	<meta name="Generator" content="OSW Externalizer">
+	<meta name="KeyWords" content="">
+<link href="css/text.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="white">
+<!-- BEGIN header -->
+<table border="0" width="100%">
+<tr>
+<td>
+<a class="mantle" target="_top" href="UserGuide.html"><img src="oswmantle.png" width="453" height="94" border="0" /></a>
+</td>
+<td align="left">
+<h3 class="title">Transform Reference Guide</h3>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="menubar">
+<a href="UserGuide.html" target="_top" class="menu">User Guide</a> 
+|
+<a href="Transform_by_group.html" target="_top" class="menu">Transform Guide</a> 
+|
+<a href="http://osw.sourceforge.net" target="_top" class="menu">OSW on the Web</a> 
+</td>
+</tr>
+</table>
+<!-- END header -->
+<h1 class="title">'%</h1>
+<p>Compute the modulus of two values synchronously</p>
+<h3 class="title">Syntax</h3>
+<p>'% </p>
+<h3 class="title">Options</h3>
+<ul>
+None
+</ul>
+<h3 class="title">Inlets</h3>
+<ul><dl>
+<dt><b>param1</b></dt><dd>The left inlet.  The remainder of this value divided by value of the right inlet <b>param2</b> is sent via the outlet <b>result</b>.</dd><dd>Type: Changeable</dd>
+<dt><b>param2</b></dt><dd>The right inlet.</dd>
+<dd>Type: Changeable</dd>
+</dl></ul>
+<h3 class="title">Outlets</h3>
+<ul>
+<dl>
+<dt><b>result</b></dt>
+<dd>The modulus of the two values.</dd>
+<dd>Type: Changeable</dd>
+</dl>
+</ul>
+<h3 class="title">Comments</h3>
+<p>The modulus operator computes the remainder of <b>param1</b> divided by <b>param2</b>.  The operator accepts inputs and initialization arguments of any numeric type (ints, floats, doubles) as well as audio samples and lists.  Different types can be mixed and matched (<i>note: the modulus operator does not currently work with complex numbers, but this will be fixed).  For example, a float modulo an int (or an int modulo a float) yields a float result, while the modulus of audio samples by a float power yields audio samples where each output sample is the modulus of each input sample the float argument.  The modulus of list inputs is computed element-wise, where each element in the list could be a different type.</p>
+<p>This operator only outputs a result when new values have been received by both inlets.  Thus, if a new value is received by <b>param1</b>, no result will be computed until a value is received by <b>param2</b> as well.  If this is not the behavior you want, try the <a href="mod.html">%</a> operator instead.</p>
+
+
+<p>
+<h3 class="title">See Also</h3>
+<dl>
+<dt><a href="details.html">OSW Programming Details</a></dt>
+<dt><a href="mod.html">%</a></dt>
+</dl>
+<!-- BEGIN footer -->
+<hr />
+<a target="_top" href="http://osw.sourceforge.net">Open Sound World</a> User Guide<br />
+&copy; 2000-2004 Amar Chaudhary.  All rights reserved.
+<!-- END footer -->
+</body>
+</html>

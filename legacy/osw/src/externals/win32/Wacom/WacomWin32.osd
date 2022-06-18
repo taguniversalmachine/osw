@@ -1,0 +1,276 @@
+<?xml version="1.0" ?>
+<osw-external name="Wacom" package="input">
+<description>Wacom tablet input driver</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="timedomain" />
+<inlet name="tick" type="Unit" description="Get state of tablet now." />
+<outlet name="x" type="Integer" description="X (horizontal) position." synchronous="1" />
+<outlet name="y" type="Integer" description="Y (vertical) position" synchronous="1" />
+<outlet name="z" type="Integer" description="Z (?) position" synchronous="1" />
+<outlet name="pressure" type="Integer" description="pen pressure" synchronous="1" />
+<outlet name="tangent_pressure" type="Integer" description="Tangent, or barrel pressure" synchronous="1" />
+<outlet name="buttons" type="Integer" description="State of buttons on pen/puck" synchronous="1" />
+<outlet name="azimuth" type="Integer" description="Azimuth, or rotion of pen about a verticle axis" synchronous="1" />
+<outlet name="altitude" type="Integer" description="Tilt of the pen" synchronous="1" />
+<outlet name="twist" type="Integer" description="not quite sure what this is" synchronous="1" />
+<outlet name="cursor" type="Integer" description="Cursor (i.e., pen, puck, etc.) being used" synchronous="1" />
+<outlet name="cursor_type" type="Integer" description="Type of cursor/device being used" synchronous="1" />
+<state name="tablet" type="Integer" default="0" description="Specify which tablet to use" persistent="1" />
+<state name="name" type="String" default="!quotdefault tablet!quot" description="name of selected tablet device" persistent="1" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement">Wacom: OSW Interface to Wacom Tablet Driver for Windows NT/98/95.
+(c) 2001-2002 Amar Chaudhary.
+(c) 1999-2001 Regents of the University of California.
+&#92;"Wacom&#92;" is a registered trademark of Wacom Technology Co.</xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">	hctx = NULL;
+
+	if (!WTInfo(0, 0, NULL)) &#123;
+	  MessageBox(NULL, "WinTab Services Not Available.", "WinTab",
+		     MB_OK | MB_ICONHAND);
+	  return;
+	&#125;
+  
+	hWnd = GetForegroundWindow();
+	if (hWnd == NULL) &#123;
+	  hWnd = GetDesktopWindow();
+	&#125;
+	
+	hctx = TabletInit(hWnd);</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor">
+        WTClose(hctx);</xblock>
+<xblock name="Private">    HWND hWnd;
+    HCTX hctx;
+    PACKET packets&#91;8&#93;;
+    DWORD tools&#91;10&#93;;
+    
+    HCTX TabletInit(HWND hWnd) &#123;
+      LOGCONTEXT lcMine;
+      lcMine.lcDevice = (UINT) tablet;
+
+      char buffer&#91;256&#93;;
+      WTInfo(WTI_DEVICES+tablet,DVC_NAME,buffer);
+      name = buffer;
+
+      AXIS  axis;
+      int   x,y,z;
+      WTInfo(WTI_DEVICES+tablet,DVC_X,&amp;axis);
+      x = axis.axMax - axis.axMin;
+      WTInfo(WTI_DEVICES+tablet,DVC_Y,&amp;axis);
+      y = axis.axMax - axis.axMin;
+      WTInfo(WTI_DEVICES+tablet,DVC_Z,&amp;axis);
+      z = axis.axMax - axis.axMin;
+
+
+      /* get default region */
+      WTInfo(WTI_DEFCONTEXT, 0, &amp;lcMine);
+      
+      /* modify the digitizing region */
+      strcpy(lcMine.lcName, "OSW Wacom Driver");
+      lcMine.lcPktData = PACKETDATA;
+      lcMine.lcPktMode = PACKETMODE;
+      lcMine.lcMoveMask = PACKETDATA;
+      lcMine.lcBtnUpMask = lcMine.lcBtnDnMask;
+      
+      /* output in 1000ths of cm */
+      lcMine.lcOutOrgX = lcMine.lcOutOrgY = 0;
+      lcMine.lcOutExtX = 10000;
+      lcMine.lcOutExtY = 10000;
+      lcMine.lcOutExtZ = 1000;
+      lcMine.lcInOrgX = lcMine.lcInOrgY = 0;
+      lcMine.lcInExtX = x;
+      lcMine.lcInExtY = y;
+      lcMine.lcInExtZ = z;
+	      
+
+      lcMine.lcDevice = (UINT) tablet;
+      
+      for (int i = 0; i &lt; 10; ++i) &#123;
+	tools&#91;i&#93; = 0;
+      &#125;
+      /* open the region */
+      return WTOpen(hWnd, &amp;lcMine, TRUE);
+    &#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global">#include &lt;windows.h>
+#include &lt;wintab.h>
+#define PACKETDATA	(PK_X | PK_Y | PK_Z | PK_BUTTONS | PK_NORMAL_PRESSURE | PK_ORIENTATION | PK_CURSOR | PK_TANGENT_PRESSURE)
+#define PACKETMODE	0
+#include &lt;pktdef.h>
+
+#define CSR_TYPE ( ( UINT ) 20 )</xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="change_tablet" activators="tablet" order="" >
+
+
+
+
+
+hctx = TabletInit(hWnd);
+</activation>
+<activation name="poll" activators="tick" order="" >
+
+
+
+
+
+    int numpackets = WTPacketsGet(hctx,8,packets);
+      if (numpackets > 0) &#123;
+	int i = numpackets - 1;
+	buttons = (int) packets&#91;i&#93;.pkButtons;
+	x = (int)packets&#91;i&#93;.pkX;
+	y = (int)packets&#91;i&#93;.pkY;
+	z = (int)packets&#91;i&#93;.pkZ;
+	pressure = (int)packets&#91;i&#93;.pkNormalPressure;
+	azimuth = (int)packets&#91;i&#93;.pkOrientation.orAzimuth;
+	altitude = (int)packets&#91;i&#93;.pkOrientation.orAltitude,
+	twist = (int)packets&#91;i&#93;.pkOrientation.orTwist;
+	WORD wCsrType;
+        DWORD dwCsrID;
+        WTInfo(WTI_CURSORS + packets&#91;i&#93;.pkCursor, CSR_TYPE, &amp;wCsrType);
+        WTInfo(WTI_CURSORS + packets&#91;i&#93;.pkCursor, CSR_PHYSID, &amp;dwCsrID);
+        for (int j = 0; j &lt; 5; ++j) &#123;
+	   if (tools&#91;j&#93; == dwCsrID) &#123;
+	      cursor = j;
+	      break;
+	   &#125; else if (!tools&#91;j&#93;) &#123;
+              tools&#91;j&#93; = dwCsrID;
+	      cursor = j;
+	      break;
+           &#125;
+        &#125;
+	   
+        cursor_type = (int)((wCsrType &amp; 0xC000) >> 12);
+        tangent_pressure = (int)packets&#91;i&#93;.pkTangentPressure;
+      &#125;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries">        safe/wintab32.lib &#123;&#125;</xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Wacom&lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;p>If you have more than tablet device, use the &lt;b>tablet&lt;/b> option to select a particular device.&lt;/p>
+&lt;p>Some of the features may not be available (or always return zero) depending on the tools and the capabilities of your tablet.  For example, tangent_pressure is only useful with airbrush tools, and altitude and azimuth are available on pens with ArtZ, Intuos and Intuos 2 devices (but not Graphire tablets).&lt;/p>
+&lt;p>The Wacom transform polls the tablet each time it receives a unit value via its inlet.  Thus, attaching a Ticker transform to the inlet allows periodic polling of the device.  To change the responsiveness, adjust the interval of the ticker.  The recommended interval for good responsiveness is 10ms (i.e., set the interval of the Ticker to 0.01).&lt;/p>
+&lt;p>The name "Wacom" is a trademark of Wacom Technology Co.&lt;/p>
+&lt;p>&lt;b>Note:&lt;/b> The Wacom transform is currently only available on Windows platforms.&lt;/p></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Wacom" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Wacom" name="wacom0" x="218" y="144" width="135" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="wacom0/tablet" value="1" />
+
+&lt;STATE name="wacom0/name" value="WACOM Tablet" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Ticker -interval 0.01" name="ticker0" x="219.0" y="78.0" width="136" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name x" name="x" x="143" y="271" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name y" name="y" x="134.0" y="322.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name z" name="z" x="123.0" y="369.0" width="88" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name pressure" name="pressure" x="265.0" y="281.0" width="130" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name buttons" name="buttons" x="623.0" y="239.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name azimuth" name="azimuth" x="444.0" y="286.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name altitude" name="altitude" x="445.0" y="332.0" width="130" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name twist" name="twist" x="449.0" y="380.0" width="112" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name cursor" name="cursor" x="623.0" y="291.0" width="118" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="120" y="484" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name tangent" name="tangent" x="268.0" y="328.0" width="124" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Print -name cursor_type" name="cursor_type" x="617.0" y="349.0" width="148" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="wacom0/x" inlet="x/to_print" vertices="224 225 149 225" />
+&lt;CONNECTION  outlet="wacom0/y" inlet="y/to_print" vertices="240 250.5 140.0 250.5" />
+&lt;CONNECTION  outlet="wacom0/z" inlet="z/to_print" vertices="256 274.0 129.0 274.0" />
+&lt;CONNECTION  outlet="wacom0/pressure" inlet="pressure/to_print" vertices="263.0 230.0 271.0 230.0" />
+&lt;CONNECTION  outlet="wacom0/tangent_pressure" inlet="tangent/to_print" vertices="276.0 253.5 274.0 253.5" />
+&lt;CONNECTION  outlet="wacom0/buttons" inlet="buttons/to_print" vertices="289.0 209.0 629.0 209.0" />
+&lt;CONNECTION  outlet="wacom0/azimuth" inlet="azimuth/to_print" vertices="302.0 232.5 450.0 232.5" />
+&lt;CONNECTION  outlet="wacom0/altitude" inlet="altitude/to_print" vertices="315.0 255.5 451.0 255.5" />
+&lt;CONNECTION  outlet="wacom0/twist" inlet="twist/to_print" vertices="328.0 279.5 455.0 279.5" />
+&lt;CONNECTION  outlet="wacom0/cursor" inlet="cursor/to_print" vertices="341.0 235.0 629.0 235.0" />
+&lt;CONNECTION  outlet="wacom0/cursor_type" inlet="cursor_type/to_print" vertices="354.0 264.0 623.0 264.0" />
+&lt;CONNECTION  outlet="ticker0/tick" inlet="wacom0/tick" vertices="225.0 128.5 224.0 128.5" />
+&lt;STICKY  x="378.0" y="72.0" width="96.0" height="48.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click to
+change response
+interval&lt;/STICKY>&lt;STICKY  x="93.0" y="140.0" width="109.0" height="66.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double click
+to select a different
+tablet (If you're lucky enough to have 2)&lt;/STICKY>&lt;STICKY  x="21.0" y="335.0" width="83.0" height="48.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">View the 
+messages
+on the console&lt;/STICKY>&lt;STICKY  x="276.0" y="481.0" width="75" height="50" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Click here to
+start Ticker&lt;/STICKY>&lt;TITLE  x="106" y="21" color="#FFFFFF" text="Wacom" fontface="Arial" fontsize="16" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

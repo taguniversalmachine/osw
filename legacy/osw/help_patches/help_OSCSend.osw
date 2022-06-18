@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_OSCSend" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCSend " name="oscsend0" x="79.0" y="180.0" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend0/host" value="localhost" />
+
+<STATE name="oscsend0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="OSCListen " name="osclisten0" x="78.0" y="251.0" width="70" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="osclisten0/port" value="7005" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="79.0" y="120.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="/a/b 1 2 3" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="78.0" y="313.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="526.0" y="365.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="Get /foo" name="get0" x="526.0" y="303.0" width="58" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="OSCSend -port 7707" name="oscsend2" x="398.0" y="202.0" width="118" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend2/host" value="localhost" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox2" x="398.0" y="147.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox2/message" value="/foo 3" />
+</TRANSFORM>
+<TRANSFORM  command="OSCDispatch " name="oscdispatch0" x="309.0" y="415.0" width="82" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="osclisten0/messageOut" inlet="msgbox1/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="oscsend0/messageIn" vertices="" />
+<CONNECTION  outlet="get0/value" inlet="intbox0/intIn" vertices="" />
+<CONNECTION  outlet="msgbox2/messageOut" inlet="oscsend2/messageIn" vertices="" />
+<STICKY  x="182.0" y="202.0" width="99.0" height="47.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">OSCSend sends
+message to
+OSCListen</STICKY><STICKY  x="575.0" y="149.0" width="116.0" height="61.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Send value to the
+variable /foo via
+the built-in OSC
+server</STICKY><TITLE  x="74.0" y="39.0" color="#FFFFFF" text="OSCSend" fontface="MS Sans Serif" fontsize="14" /><TITLE  x="352.0" y="396.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="354.0" y="469.0" color="#0000FF" link="osc/autoserver" fontface="MS Sans Serif" fontsize="10" /><HYPERLINK  x="351.0" y="490.0" color="#0000FF" link="osc/sendOSC" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

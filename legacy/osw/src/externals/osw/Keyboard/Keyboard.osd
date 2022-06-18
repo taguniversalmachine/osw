@@ -1,0 +1,239 @@
+<?xml version="1.0" ?>
+<osw-external name="Keyboard" package="osw">
+<description>Double octave piano keyboard</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="interactivedraw" />
+<inlet name="noteIn" type="Integer" description="MIDI note number to display" />
+<inlet name="octave" type="Integer" default="5" description="Octave of keybarod" persistent="1" />
+<outlet name="noteOut" type="Integer" description="Note number of key pressed" />
+<inherited-state name="widget" type="String" default="none" description="Tk Widget Name" />
+<inherited-state name="drawInfo" type="TkDrawingInfo" default="none" />
+<xblock name="drawCodeTcl">HideName
+keyboard &#36;drawingSpace.keyb -command "oswSet &#36;transform/noteOut"
+pack &#36;drawingSpace.keyb</xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private"></xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">
+class keyboard &#123;
+    inherit itk::Widget
+
+    constructor &#123;args&#125; &#123;
+	
+	itk_component add keyboard &#123;
+
+	    canvas &#36;itk_interior.k  -width 360 -height 80
+	&#125; &#123;
+	    usual
+	&#125;
+
+	&#36;itk_interior.k create rectangle 0 0 24 80 -tag d0  -fill white
+	&#36;itk_interior.k create rectangle 24 0 48 80 -tag d2 -fill white
+	&#36;itk_interior.k create rectangle 48 0 72 80 -tag d4 -fill white
+	&#36;itk_interior.k create rectangle 72 0 96 80 -tag d5 -fill white
+	&#36;itk_interior.k create rectangle 96 0 120 80 -tag d7 -fill white
+	&#36;itk_interior.k create rectangle 120 0 144 80 -tag d9 -fill white
+	&#36;itk_interior.k create rectangle 144 0 168 80 -tag d11 -fill white
+	&#36;itk_interior.k create rectangle 168 0 192 80 -tag d12 -fill white
+	&#36;itk_interior.k create rectangle 192 0 216 80 -tag d14 -fill white
+	&#36;itk_interior.k create rectangle 216 0 240 80 -tag d16 -fill white
+	&#36;itk_interior.k create rectangle 240 0 264 80 -tag d17 -fill white
+	&#36;itk_interior.k create rectangle 264 0 288 80 -tag d19 -fill white
+	&#36;itk_interior.k create rectangle 288 0 312 80 -tag d21 -fill white
+	&#36;itk_interior.k create rectangle 312 0 336 80 -tag d23 -fill white
+	&#36;itk_interior.k create rectangle 336 0 360 80 -tag d24 -fill white
+	
+	&#36;itk_interior.k create rectangle 16 0 32 50 -tag d1 -fill black
+	&#36;itk_interior.k create rectangle 40 0 56 50 -tag d3 -fill black
+	&#36;itk_interior.k create rectangle 88 0 104 50 -tag d6 -fill black
+	&#36;itk_interior.k create rectangle 112 0 128 50 -tag d8 -fill black
+	&#36;itk_interior.k create rectangle 136 0 152 50 -tag d10 -fill black
+	&#36;itk_interior.k create rectangle 184 0 200 50 -tag d13 -fill black
+	&#36;itk_interior.k create rectangle 208 0 224 50 -tag d15 -fill black
+	&#36;itk_interior.k create rectangle 256 0 272 50 -tag d18 -fill black
+	&#36;itk_interior.k create rectangle 280 0 296 50 -tag d20 -fill black
+	&#36;itk_interior.k create rectangle 304 0 320 50 -tag d22 -fill black
+
+	for &#123;set i 0&#125; &#123;&#36;i &lt; 25&#125; &#123;incr i&#125; &#123;
+	    &#36;itk_interior.k bind d&#36;i &lt;Button-1> &#91;list &#91;code &#36;this _keypressed&#93; &#36;i&#93;
+	&#125;
+
+	eval itk_initialize &#36;args
+
+	pack &#36;itk_interior.k
+    &#125;
+
+    itk_option define -octave octave Octave 5
+    itk_option define -degree degree Degree 0
+    itk_option define -notein   notein   Notein   -1
+    itk_option define -command command Command &#123;&#125;
+
+    private variable arrangement &#123;white black white black white white black white black white black white white black white black white white black white black white black white white &#125;
+
+    private method _keypressed &#123;keynum&#125; &#123;
+	if &#123;&#91;llength &#36;itk_option(-command)&#93; > 0&#125; &#123;
+	    eval &#36;itk_option(-command) &#91;expr &#36;itk_option(-octave) * 12 + &#36;keynum&#93;
+	&#125; 
+	configure -degree &#36;keynum
+    &#125;
+    private variable olddegree 0
+&#125;
+
+configbody keyboard::notein &#123;
+    set noteOctave &#91;expr &#36;itk_option(-notein) / 12&#93;
+    set noteOctave &#91;expr &#36;noteOctave - &#36;itk_option(-octave)&#93;
+    if &#123;&#36;noteOctave == 0 || &#36;noteOctave == 1&#125; &#123;
+	configure -degree &#91;expr &#36;itk_option(-notein) % 12 + &#36;noteOctave * 12&#93;
+    &#125; else &#123;
+	&#36;itk_interior.k itemconfigure d&#91;set itk_option(-degree)&#93; &#92;
+		-fill &#91;lindex &#36;arrangement &#36;itk_option(-degree)&#93;
+    &#125;
+&#125;
+
+configbody keyboard::degree &#123;
+    &#36;itk_interior.k itemconfigure d&#36;olddegree -fill &#91;lindex &#36;arrangement &#36;olddegree&#93;
+    &#36;itk_interior.k itemconfigure d&#91;set itk_option(-degree)&#93; -fill gray
+    set olddegree &#36;itk_option(-degree)
+&#125;</xblock>
+<activation name="activation2" activators="octave" order="" >
+
+
+
+
+
+
+SetWidgetProperty (widget + ".keyb","-octave",&amp;octave);
+</activation>
+<activation name="activation1" activators="noteIn" order="" >
+
+
+
+
+
+
+SetWidgetProperty (widget + ".keyb","-notein",&amp;noteIn);
+noteOut = noteIn;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Keyboard &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"> The keyboard widget can be used to display incoming MIDI notes (that lie within the selected octave) or to transmit an approriate MIDI note number when a key is hit.</xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"> keyboard, widget, midi</xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Keyboard" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="Keyboard" name="keyboard0" x="122.0" y="76.0" width="368" height="88" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="keyboard0/octave" value="5" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Sinewave" name="sinewave0" x="63.0" y="256.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="sinewave0/freq" value="261.625" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Midi2Freq" name="midi2freq0" x="122.0" y="193.0" width="70" height="25" color="darkgrey" fontface="MS Sans Serif" fontsize="8">
+
+&lt;STATE name="midi2freq0/freq_ref" value="440" />
+
+&lt;STATE name="midi2freq0/midi_ref" value="69" />
+
+&lt;STATE name="midi2freq0/degrees" value="12" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="IntBox" name="intbox0" x="391.0" y="31.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="intbox0/intIn" value="5" />
+
+&lt;STATE name="intbox0/step" value="1" />
+
+&lt;STATE name="intbox0/min" value="0" />
+
+&lt;STATE name="intbox0/max" value="100" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Knob" name="knob0" x="153.0" y="253.0" width="48" height="48" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="knob0/min" value="0" />
+
+&lt;STATE name="knob0/max" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Gain" name="gain0" x="62.0" y="332.0" width="34" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="gain0/amp_scale" value="1" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="53" y="410" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="keyboard0/noteOut" inlet="midi2freq0/midi_note" vertices="" />
+&lt;CONNECTION  outlet="sinewave0/samplesOut" inlet="gain0/samplesIn" vertices="" />
+&lt;CONNECTION  outlet="midi2freq0/frequency" inlet="sinewave0/freq" vertices="" />
+&lt;CONNECTION  outlet="intbox0/intOut" inlet="keyboard0/octave" vertices="" />
+&lt;CONNECTION  outlet="knob0/knobOut" inlet="gain0/amp_scale" vertices="" />
+&lt;CONNECTION  outlet="gain0/samplesOut" inlet="out0/mix" vertices="" />
+&lt;STICKY  x="250.0" y="10.0" width="122.0" height="50.0" color="#FFFF77" text="Transpose keyboard
+up or down by
+octaves" fontface="" fontsize="8">&lt;/STICKY>&lt;TITLE  x="80.0" y="44.0" color="#FFFFFF" text="Keyboard" fontface="Arial" fontsize="18" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

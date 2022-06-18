@@ -1,0 +1,148 @@
+<?xml version="1.0" ?>
+<osw-external name="Comb" package="osw">
+<description>Feedback/Feedforward comb filter</description>
+<copyright></copyright>
+<inherit class="timedomain" />
+<inlet name="samplesIn" type="Samples" description="Input samples" />
+<inlet name="gain" type="Float" description="input gain" persistent="1" />
+<inlet name="forward" type="Float" default="0" description="Feed-forward gain" persistent="1" />
+<inlet name="feedback" type="Float" default="0" description="Feedback gain" persistent="1" />
+<inlet name="delay" type="Float" default="0.05" description="Delay, in seconds" persistent="1" />
+<outlet name="samplesOut" type="Samples" description="Output samples" />
+<inherited-state name="SampleRate" type="Float" default="44100" description="Sample Rate" />
+<inherited-state name="NumberOfSamples" type="UInteger" default="128" description="Number of samples processed at one" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Announcement"></xblock>
+<xblock name="TclDialog"></xblock>
+<xblock name="Constructor">xdelay.set_max(SampleRate / 4);
+xdelay.set_delay(delay * SampleRate);
+xbdelay.set_max(SampleRate / 4);
+xbdelay.set_delay(delay * SampleRate);
+xlastoutput = 0;</xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">DelayLine  xdelay,xbdelay;
+Float      xlastoutput;
+
+
+void SampleRateHasChanged () &#123;
+  xdelay.set_delay(delay * SampleRate);
+  xbdelay.set_delay(delay * SampleRate);
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup"></xblock>
+<activation name="delay_changed" activators="delay" order="0" >
+
+
+
+xdelay.set_delay(delay * SampleRate);
+xbdelay.set_delay(delay * SampleRate);
+</activation>
+<activation name="do_comb" activators="samplesIn" order="0" >
+
+
+
+
+Samples samples(samplesIn->size());
+
+for (int i = 0; i &lt; samplesIn->size(); ++i) &#123;
+  xlastoutput = gain * samplesIn&#91;i&#93; + feedback * xbdelay(xlastoutput);
+  samples&#91;i&#93; = forward * xdelay(gain * samplesIn&#91;i&#93;) + xlastoutput;
+&#125;
+
+samplesOut = samples;
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">Comb &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription">&lt;b>Comb&lt;/b> implements a generalized feedback and feed-forward comb filter:
+&lt;p>
+
+&lt;/p>
+&lt;p>More detailed information can be found in this &lt;a href="http://www-ccrma.stanford.edu/~jos/waveguide/Comb_Filters.html">tutorial by Julius Smith.&lt;/a>&lt;/p>
+
+&lt;h4>Issues&lt;/h4>
+Currently only accepts a maximum delay of 0.25 seconds.  For greater delays, use the Delay transform.</xblock>
+<xblock name="Links">Delay Biquad TwoPoleResonz</xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_Comb" Version="1.1beta1" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="AudioOutput 1 2" name="out0" x="158" y="415" width="124" height="58" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Comb -delay 0.05" name="comb0" x="155.0" y="286.0" width="100" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="comb0/gain" value="1" />
+
+&lt;STATE name="comb0/forward" value="0" />
+
+&lt;STATE name="comb0/feedback" value="0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox0" x="329.0" y="95.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox0/floatIn" value="1" />
+
+&lt;STATE name="floatbox0/max" value="1" />
+
+&lt;STATE name="floatbox0/min" value="0" />
+
+&lt;STATE name="floatbox0/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox1" x="352.0" y="142.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox1/floatIn" value="0" />
+
+&lt;STATE name="floatbox1/max" value="1" />
+
+&lt;STATE name="floatbox1/min" value="0" />
+
+&lt;STATE name="floatbox1/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox2" x="374.0" y="183.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox2/floatIn" value="0" />
+
+&lt;STATE name="floatbox2/max" value="1" />
+
+&lt;STATE name="floatbox2/min" value="0" />
+
+&lt;STATE name="floatbox2/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="FloatBox" name="floatbox3" x="397.0" y="227.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="floatbox3/floatIn" value="0" />
+
+&lt;STATE name="floatbox3/max" value="1" />
+
+&lt;STATE name="floatbox3/min" value="0" />
+
+&lt;STATE name="floatbox3/step" value="0.01" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="154.0" y="95.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="1.0" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Impulse " name="impulse0" x="155.0" y="155.0" width="58" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Delay" name="delay0" x="421" y="436" width="45" height="25" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="delay0/max" value="16384" />
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="comb0/samplesOut" inlet="out0/mix" vertices="161.0 368.0 284.0 368.0" />
+&lt;CONNECTION  outlet="floatbox0/floatOut" inlet="comb0/gain" vertices="335.0 207.0 185.0 207.0" />
+&lt;CONNECTION  outlet="floatbox1/floatOut" inlet="comb0/forward" vertices="358.0 230.5 209.0 230.5" />
+&lt;CONNECTION  outlet="floatbox2/floatOut" inlet="comb0/feedback" vertices="380.0 251.0 233.0 251.0" />
+&lt;CONNECTION  outlet="floatbox3/floatOut" inlet="comb0/delay" vertices="403.0 273.0 257.0 273.0" />
+&lt;CONNECTION  outlet="msgbox0/messageOut" inlet="impulse0/impulse" vertices="160.0 142.0 217.0 142.0" />
+&lt;CONNECTION  outlet="impulse0/samplesOut" inlet="comb0/samplesIn" vertices="" />
+&lt;TITLE  x="179.0" y="40.0" color="#FFFFFF" text="Comb" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="451.0" y="106.0" color="#FFFFFF" text="gain" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="500.0" y="156.0" color="#FFFFFF" text="feed-forward gain" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="517.0" y="191.0" color="#FFFFFF" text="feedback gain" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="542.0" y="243.0" color="#FFFFFF" text="delay, in seconds" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="224.0" y="81.0" color="#FFFFFF" text="hit the button for impulse" fontface="MS Sans Serif" fontsize="10" />&lt;TITLE  x="447.0" y="414.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_FanOut" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="FanOut" name="fanout0" x="154" y="171" width="46" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="154.0" y="106.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="77" y="245" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="188" y="250" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="306" y="249" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/max" value="100" />
+</TRANSFORM>
+<TRANSFORM  command="FanIn" name="fanin0" x="105" y="347" width="40" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Switch" name="switch0" x="190.0" y="347.0" width="52" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="fanout0/out1" inlet="intbox1/intIn" vertices="160 225.5 83.0 225.5" />
+<CONNECTION  outlet="fanout0/out2" inlet="intbox2/intIn" vertices="182 228.0 194.0 228.0" />
+<CONNECTION  outlet="intbox0/intOut" inlet="fanout0/in" vertices="" />
+<STICKY  x="283.0" y="122.0" width="125.0" height="66.0" color="#FFFF77" text="If you connect the 
+last outlet from a 
+FanOut, a new outlet
+will automatically appear" fontface="MS Sans Serif" fontsize="8"></STICKY><TITLE  x="192.0" y="77.0" color="#FFFFFF" text="FanOut connects a single outlet to multiple inlets" fontface="MS Sans Serif" fontsize="10" /><TITLE  x="59.0" y="33.0" color="#FFFFFF" text="FanOut" fontface="Arial" fontsize="18" /><TITLE  x="173.0" y="321.0" color="#FFFFFF" text="See also" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

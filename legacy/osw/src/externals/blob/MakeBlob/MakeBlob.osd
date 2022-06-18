@@ -1,0 +1,166 @@
+<?xml version="1.0" ?>
+<osw-external name="MakeBlob" package="blob">
+<description>Create new blob</description>
+<copyright>
+Copyright (c) 2001 Amar Chaudhary. All rights reserved.
+Copyright (c) 1998-2001 Regents of the University of California.
+All rights reserved.
+
+     ``The contents of this file are subject to the Open Sound World Public
+     License Version 1.0 (the "License"); you may not use this file except in
+     compliance with the License. A copy of the License should be included
+     in a file named "License" or "License.txt" in the distribution from 
+     which you obtained this file. 
+
+     Software distributed under the License is distributed on an "AS IS"
+     basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+     License for the specific language governing rights and limitations
+     under the License.
+
+     The Original Code is Open Sound World (OSW) software.
+
+     The Initial Developer of the Original Code is Amar Chaudhary.
+     Portions created by Amar Chaudhary are Copyright (C) 1998-2001 
+     Regents of the University of California and Amar Chaudhary. 
+     All Rights Reserved.
+
+     Contributor(s):
+
+
+
+From the UC Regents:
+
+Permission to use, copy, modify, and distribute this software and its
+documentation, without fee and without a signed licensing agreement, is hereby
+granted, provided that the above copyright notice, this paragraph and the
+following two paragraphs appear in all copies, modifications, and
+distributions.  Contact The Office of Technology Licensing, UC Berkeley, 2150
+Shattuck Avenue, Suite 510, Berkeley, CA 94720-1620, (510) 643-7201, for
+commercial licensing opportunities.
+
+Written by Amar Chaudhary, The Center for New Music and Audio Technologies, 
+University of California, Berkeley.
+
+     IN NO EVENT SHALL REGENTS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+     SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
+     PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+     DOCUMENTATION, EVEN IF REGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF
+     SUCH DAMAGE.
+
+     REGENTS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT
+     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+     FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING
+     DOCUMENTATION, IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS".
+     REGENTS HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+     ENHANCEMENTS, OR MODIFICATIONS.
+
+</copyright>
+<inherit class="datasource" />
+<inlet name="send" type="Unit" description="Create and output new blob" />
+<outlet name="blobOut" type="Blob" description="newly created blob" />
+<inherited-state name="src" type="string" default="none" description="External Data Source" />
+<xblock name="drawCodeTcl"></xblock>
+<xblock name="drawCodeCpp"></xblock>
+<xblock name="Copyright"></xblock>
+<xblock name="TclDialog">bigTextBox &#91;file tail &#36;transformPath&#93; &#91;list oswSetData &#36;transformPath&#93; &#91;oswGetData &#36;transformPath&#93;</xblock>
+<xblock name="Constructor"></xblock>
+<xblock name="PreConstructor"></xblock>
+<xblock name="Destructor"></xblock>
+<xblock name="Private">Blob xblob;
+
+
+void SetData(const string &amp;adata) &#123;
+  DataSource::SetData(adata);
+  int p = 0;
+  while (isspace(adata&#91;p&#93;)) &#123;++p;&#125;
+  xblob.clear();
+  for (int q = adata.find_first_of(",:",p); q != string::npos;) &#123;
+    string field = adata.substr(p,q-p);
+    p = q + 1;
+    while (isspace(adata&#91;p&#93;)) &#123;++p;&#125;
+    q = adata.find_first_of(';',p);
+    if (q == string::npos) &#123;
+      Error(" syntax error following field name '"+field+"'");
+      break;
+    &#125;
+    istringstream is(adata.substr(p,q-p));
+    List xlist;
+    is >> xlist;
+    if (xlist.size() == 1) &#123;
+       xblob.add(field,xlist.nth(0));
+    &#125; else &#123;
+       xblob.add(field,new Datum&lt;List>(xlist));
+    &#125;
+    p = q + 1;
+    while (isspace(adata&#91;p&#93;)) &#123;++p;&#125;
+    q = adata.find_first_of(",:",p);
+  &#125;
+&#125;
+
+string GetData() const &#123;
+  ostringstream os;
+  for (Blob::const_iterator p = xblob.begin(); p != xblob.end(); ++p) &#123;
+   os &lt;&lt; p->first &lt;&lt; ": " &lt;&lt; *(p->second) &lt;&lt; ';' &lt;&lt; endl;
+  &#125;
+  return os.str();
+&#125;</xblock>
+<xblock name="Initialize"></xblock>
+<xblock name="Global"></xblock>
+<xblock name="TclStartup">oswLoadScript oswBigTextBox.tcl</xblock>
+<activation name="send_now" activators="send" order="" >
+
+cout &lt;&lt; "QQ&#92;n";
+blobOut = xblob;
+cout &lt;&lt; "RR&#92;n";
+</activation>
+<xblock name="SourceFiles">
+</xblock>
+<xblock name="Libraries"></xblock>
+<xblock name="Includes"></xblock>
+<xblock name="Syntax">MakeBlob &lt;i>options&lt;/i></xblock>
+<xblock name="LongDescription"></xblock>
+<xblock name="Links"></xblock>
+<xblock name="Author"></xblock>
+<xblock name="OnTheWeb"></xblock>
+<xblock name="HTMLIncludes"></xblock>
+<xblock name="Keywords"></xblock>
+<xblock name="HTMLIcon"></xblock>
+<xblock name="HelpPatch">&lt;?xml version="1.0" ?>
+&lt;OSW Version="1.0.0">
+&lt;PATCH CLASS="help_MakeBlob" Version="1.0.0" WindowSize="200 230" Background="#CCCCCC">
+&lt;TRANSFORM  command="MakeBlob " name="makeblob0" x="184" y="132" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+	&lt;DATA>
+		animals: cows goats pigs sheep;
+fruits: apple orange kiwi;
+numbers: 1 2 3.14159; 
+	&lt;/DATA>
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="Button" name="button0" x="184.0" y="68.0" width="32" height="35" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="button0/color" value="red" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="blob::Get " name="get0" x="184.0" y="215.0" width="70" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="MessageBox" name="msgbox0" x="184.0" y="289.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="msgbox0/message" value="cows goats pigs sheep" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="OptionBox " name="optionbox0" x="308.0" y="158.0" width="149" height="23" color="darkgrey" fontface="" fontsize="8">
+
+&lt;STATE name="optionbox0/options" value="numbers fruits animals" />
+&lt;/TRANSFORM>
+&lt;TRANSFORM  command="blob::Set" name="set0" x="196" y="401" width="64" height="25" color="darkgrey" fontface="" fontsize="8">
+&lt;/TRANSFORM>
+&lt;CONNECTION  outlet="makeblob0/blobOut" inlet="get0/blobIn" vertices="" />
+&lt;CONNECTION  outlet="button0/unitOut" inlet="makeblob0/send" vertices="" />
+&lt;CONNECTION  outlet="get0/value" inlet="msgbox0/messageIn" vertices="" />
+&lt;CONNECTION  outlet="optionbox0/selectOut" inlet="get0/property" vertices="314.0 203.0 258.0 203.0" />
+&lt;STICKY  x="49.0" y="70.0" width="103.0" height="59.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Create a new
+instance of
+the blob and send it on its way&lt;/STICKY>&lt;STICKY  x="338.0" y="103.0" width="94.0" height="37.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Select a property
+to view&lt;/STICKY>&lt;STICKY  x="57.0" y="152.0" width="92.0" height="63.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Double-click
+the MakeBlob
+transform to edit
+the blob&lt;/STICKY>&lt;TITLE  x="176.0" y="29.0" color="#FFFFFF" text="MakeBlob / blob::Get" fontface="MS Sans Serif" fontsize="16" />&lt;TITLE  x="233.0" y="373.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />&lt;/PATCH>
+&lt;/OSW></xblock>
+</osw-external>

@@ -1,0 +1,135 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="help_smul" Version="1.1beta4" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="'*" name="mul1" x="106.0" y="154.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox0" x="106.0" y="83.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox0/intIn" value="0" />
+
+<STATE name="intbox0/max" value="100" />
+
+<STATE name="intbox0/min" value="0" />
+
+<STATE name="intbox0/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox1" x="228.0" y="83.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox1/intIn" value="3" />
+
+<STATE name="intbox1/max" value="100" />
+
+<STATE name="intbox1/min" value="0" />
+
+<STATE name="intbox1/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox2" x="106.0" y="224.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox2/intIn" value="6" />
+
+<STATE name="intbox2/max" value="100" />
+
+<STATE name="intbox2/min" value="0" />
+
+<STATE name="intbox2/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox0" x="384.0" y="82.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox0/floatIn" value="0" />
+
+<STATE name="floatbox0/max" value="10" />
+
+<STATE name="floatbox0/min" value="0" />
+
+<STATE name="floatbox0/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox1" x="511.0" y="82.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox1/floatIn" value="1.5" />
+
+<STATE name="floatbox1/max" value="10" />
+
+<STATE name="floatbox1/min" value="0" />
+
+<STATE name="floatbox1/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="'*" name="mul2" x="384.0" y="147.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="FloatBox" name="floatbox2" x="384.0" y="219.0" width="89" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="floatbox2/floatIn" value="0.0296" />
+
+<STATE name="floatbox2/max" value="1" />
+
+<STATE name="floatbox2/min" value="0" />
+
+<STATE name="floatbox2/step" value="0.01" />
+</TRANSFORM>
+<TRANSFORM  command="/" name="div0" x="672.0" y="149.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="'*" name="mul4" x="672.0" y="204.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Expr" name="expr0" x="673.0" y="253.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="+" name="add0" x="672.0" y="97.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="'*" name="qmul1" x="241.0" y="411.0" width="34" height="24" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="AudioOutput 1 2" name="out0" x="172.0" y="470.0" width="72" height="54" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave1" x="147.0" y="339.0" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave1/freq" value="440" />
+</TRANSFORM>
+<TRANSFORM  command="Sinewave" name="sinewave2" x="286" y="337" width="61" height="38" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="sinewave2/freq" value="820" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox3" x="15.0" y="349.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox3/intIn" value="440" />
+
+<STATE name="intbox3/max" value="1000" />
+
+<STATE name="intbox3/min" value="0" />
+
+<STATE name="intbox3/step" value="1" />
+</TRANSFORM>
+<TRANSFORM  command="IntBox" name="intbox4" x="397.0" y="352.0" width="88" height="23" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="intbox4/intIn" value="820" />
+
+<STATE name="intbox4/max" value="1000" />
+
+<STATE name="intbox4/min" value="0" />
+
+<STATE name="intbox4/step" value="1" />
+</TRANSFORM>
+<CONNECTION  outlet="mul1/result" inlet="intbox2/intIn" vertices="" />
+<CONNECTION  outlet="intbox0/intOut" inlet="mul1/param1" vertices="" />
+<CONNECTION  outlet="intbox1/intOut" inlet="mul1/param2" vertices="234.0 135.0 144.0 135.0" />
+<CONNECTION  outlet="floatbox0/floatOut" inlet="mul2/param1" vertices="" />
+<CONNECTION  outlet="floatbox1/floatOut" inlet="mul2/param2" vertices="517.0 131.0 422.0 131.0" />
+<CONNECTION  outlet="mul2/result" inlet="floatbox2/floatIn" vertices="" />
+<CONNECTION  outlet="qmul1/result" inlet="out0/mix" vertices="" />
+<CONNECTION  outlet="sinewave1/samplesOut" inlet="qmul1/param1" vertices="153.0 399.0 247.0 399.0" />
+<CONNECTION  outlet="sinewave2/samplesOut" inlet="qmul1/param2" vertices="292 398.0 279.0 398.0" />
+<CONNECTION  outlet="intbox3/intOut" inlet="sinewave1/freq" vertices="21.0 397.0 116.5 397.0 116.5 324.0 212.0 324.0" />
+<CONNECTION  outlet="intbox4/intOut" inlet="sinewave2/freq" vertices="403.0 400.0 377.0 400.0 377.0 322.0 351.0 322.0" />
+<STICKY  x="238.0" y="169.0" width="112.0" height="68.0" color="#00ffff" fontface="MS Sans Serif" fontsize="8">Both inlets are 
+active and must be
+set before an output
+value is emitted</STICKY>
+<STICKY  x="363.0" y="434.0" width="115.0" height="68.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">The synchronous
+multiplication operator
+can be used for
+ring modulation</STICKY>
+<TITLE  x="69.0" y="35.0" color="#FFFFFF" text="'*" fontface="MS Sans Serif" fontsize="18" />
+<TITLE  x="210.0" y="55.0" color="#FFFFFF" text="integers" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="499.0" y="58.0" color="#FFFFFF" text="real numbers" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="691.0" y="71.0" color="#FFFFFF" text="see also" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="53.0" y="329.0" color="#FFFFFF" text="freq 1" fontface="MS Sans Serif" fontsize="10" />
+<TITLE  x="445.0" y="331.0" color="#FFFFFF" text="freq 2" fontface="MS Sans Serif" fontsize="10" />
+<HYPERLINK  x="696.0" y="306.0" color="#0000FF" link="audio/ring_modulator" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+

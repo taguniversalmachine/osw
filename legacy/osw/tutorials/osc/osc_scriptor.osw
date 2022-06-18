@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<OSW Version="1.0.0">
+<PATCH CLASS="osc_scriptor" Version="1.1beta2" WindowSize="200 230" Background="#CCCCCC">
+<TRANSFORM  command="OSCSend -port 7707" name="oscsend0" x="117.0" y="309.0" width="118" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="oscsend0/host" value="localhost" />
+</TRANSFORM>
+<TRANSFORM  command="TextIn " name="textin0" x="117.0" y="181.0" width="60" height="25" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="textin0/fileIn" value="build_sinewave_patch.txt" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox0" x="117.0" y="244.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox0/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="FilePicker " name="filepicker0" x="109.0" y="98.0" width="44" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="filepicker0/save" value="0" />
+</TRANSFORM>
+<TRANSFORM  command="Button" name="button0" x="197" y="96" width="19" height="32" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="button0/color" value="red" />
+</TRANSFORM>
+<TRANSFORM  command="MessageBox" name="msgbox1" x="400.0" y="312.0" width="150" height="24" color="darkgrey" fontface="" fontsize="8">
+
+<STATE name="msgbox1/message" value="" />
+</TRANSFORM>
+<TRANSFORM  command="OSCListen -port 7708" name="osclisten1" x="400" y="246" width="130" height="25" color="darkgrey" fontface="" fontsize="8">
+</TRANSFORM>
+<CONNECTION  outlet="textin0/lineOut" inlet="msgbox0/messageIn" vertices="" />
+<CONNECTION  outlet="msgbox0/messageOut" inlet="oscsend0/messageIn" vertices="" />
+<CONNECTION  outlet="filepicker0/fileOut" inlet="textin0/fileIn" vertices="115.0 160.5 123.0 160.5" />
+<CONNECTION  outlet="button0/unitOut" inlet="textin0/next" vertices="203 159.5 142.0 159.5" />
+<CONNECTION  outlet="osclisten1/messageOut" inlet="msgbox1/messageIn" vertices="" />
+<STICKY  x="242.0" y="95.0" width="94.0" height="51.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Send OSC
+commands from
+a file</STICKY><STICKY  x="14.0" y="98.0" width="73.0" height="67.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Default 
+script builds
+a sinewave
+patch</STICKY><STICKY  x="117.0" y="353.0" width="130.0" height="66.0" color="#FFFF77" fontface="MS Sans Serif" fontsize="8">Run oswbin on another
+host and direct the OSC
+messages there.  Double-click on OSCSend.</STICKY><TITLE  x="453.0" y="228.0" color="#FFFFFF" text="return messages" fontface="MS Sans Serif" fontsize="10" /></PATCH>
+</OSW>
+
